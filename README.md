@@ -2,11 +2,12 @@
 
 ## Team members
 The members of the team are:
-- *Enter member 1*
-- *Enter member 2*
-- *Enter member 3*
-- *Enter member 4*
-*Add any further information about the team here, such as absent team members.*
+- *Zakariya Ahmed Mohamed*
+- *Ammar Alshareef*
+- *Seif Eunice*
+- *Said Mammadov*
+- *Rohit Pun*
+- *Taseen Rahman*
 
 ## Project structure
 The project is called `system`.  It currently consists of a single app `clubs`.
