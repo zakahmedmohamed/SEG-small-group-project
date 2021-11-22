@@ -39,3 +39,12 @@ def log_in(request):
 
     form = Log_in_form()
     return render(request, 'log_in.html', {'form':form})
+
+def user_list(request):
+    model = get_user_model()
+    users = get_user_model().objects.all()
+    return render(request, 'user_list.html', {'users': users})
+
+def show_user(request, user_id):
+    users = get_user_model().objects.get(id=user_id)
+    return render(request, 'show_user.html', {'users': users})
