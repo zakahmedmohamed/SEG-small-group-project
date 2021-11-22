@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
@@ -30,4 +31,12 @@ class User(AbstractUser):
         gravatarObj = Gravatar(self.email)
         gravatarURL = gravatarObj.get_image(size=size, default='mp')
         return gravatarURL
+
+class Club(models.Model):
+    #The club consists of the club name, location, description
+    name = models.CharField(max_length=20,blank=False,unique=True)
+    description = models.CharField(max_length=120,blank=False,unique=False)
+    location = models.CharField(max_length=20,blank=False,unique=False)
+
+
 
