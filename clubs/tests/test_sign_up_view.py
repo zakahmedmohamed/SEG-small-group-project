@@ -55,9 +55,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(after_count, before_count+1)
 
         #for now goes to sign_up
-        response_url = reverse('sign_up')
+        response_url = reverse('applications')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'sign_up.html')
+        self.assertTemplateUsed(response, 'applications.html')
         user = User.objects.get(username='@janedoe')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
