@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from clubs.forms import Log_in_form
 from .forms import SignUpForm
-
+from .models import User
 
 # View for the sign up page
 def sign_up(request):
@@ -13,7 +13,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            
+
             #For now goes back to sign up
             return redirect('sign_up')
     else:
@@ -41,8 +41,7 @@ def log_in(request):
     return render(request, 'log_in.html', {'form':form})
 
 def user_list(request):
-    model = get_user_model()
-    users = get_user_model().objects.all()
+    users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
 
 def show_user(request, user_id):

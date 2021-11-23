@@ -5,9 +5,14 @@
  <body>
    <h1>User list</h1>
    {% for user in users %}
-   <p>
-     <a href="{% url 'show_user' user.pk %}">{{user.username}}</a>
-   </p>
+   <tr>
+     <td>
+       <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" >
+     </td>
+     <td>{{ user.username }}</td>
+     <td>{{ user.full_name }}</td>
+     <td>{{ user.bio }}</td>
+   </tr>
    {%endfor%}
  </body>
 </html>
