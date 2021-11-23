@@ -20,4 +20,9 @@ from clubs import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sign_up/', views.sign_up, name = 'sign_up'),
+    path('', views.home, name= 'home'),
+    path('log_in/', views.log_in, name='log_in'),
+    path('applications/', views.applications, name='applications'),
+    path('approve_application/<int:user_id>', views.approve_application, name='approve_application'),
+    path('awaiting_application', views.awaiting_application, name='awaiting_application'),
 ]
