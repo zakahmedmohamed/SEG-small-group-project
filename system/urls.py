@@ -27,5 +27,5 @@ urlpatterns = [
     path('user/<int:user_id>', views.show_user, name='show_user'),
     path('applications/', views.applications, name='applications'),
     path('approve_application/<int:user_id>', views.approve_application, name='approve_application'),
-    path('awaiting_application', views.awaiting_application, name='awaiting_application')
+    path('awaiting_application', views.awaiting_application, name='awaiting_application'),
 ]
