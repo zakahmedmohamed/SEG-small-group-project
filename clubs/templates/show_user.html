@@ -5,10 +5,14 @@
  <body>
    <h1>User:</h1>
    <p>
-     <a href="{% url 'show_user' }"></a>
+     <img src="{{ user.gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image" >
      <h1>{{users.full_name}}</h1>
      <h1>{{users.bio}}</h1>
+     {% if users.is_officer == True or users.is_owner == True%}
      <h1>{{users.email}}</h1>
+     <h1>{{users.statement}}</h1>
+     <h1>{{users.chess_xp}}</h1>
+     {% endif %}
    </p>
  </body>
 </html>
