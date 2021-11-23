@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from clubs.models import Club
+from clubs.models import Club, UserClubs
 from .models import User
 
 # Register your models here.
@@ -15,3 +15,6 @@ class ClubAdmin(admin.ModelAdmin):
     list_display = [
         'name','description','location'
     ]
+
+
+#admin.site.unregister()
