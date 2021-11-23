@@ -31,3 +31,16 @@ class User(AbstractUser):
         gravatarURL = gravatarObj.get_image(size=size, default='mp')
         return gravatarURL
 
+class Club(models.Model):
+    name = models.CharField(max_length=20, unique=True, blank=False)
+    description = models.CharField(max_length=520, blank=True)
+    location = models.CharField(max_length=20, blank=False)
+
+
+class UserClubs(models.Model):
+    user = User
+    club = Club
+    application_pending = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
+
+    
