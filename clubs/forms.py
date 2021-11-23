@@ -5,6 +5,11 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.forms import fields,widgets
 
 
+class Log_in_form(forms.Form):
+    username = forms.CharField(label="Username: ")
+    password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
+   
+
 class SignUpForm(forms.ModelForm):
     """Form enabling unregistered users to sign up."""
 
@@ -50,11 +55,4 @@ class SignUpForm(forms.ModelForm):
             password=self.cleaned_data.get('new_password'),
         )
         return user
-
-#Forms will be made here
-
-class Log_in_form(forms.Form):
-    username = forms.CharField(label="Username: ")
-    password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
-   
    
