@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, get_user_model,login,logout
 from django.contrib import messages
 from django.http import HttpResponse
 from clubs.forms import Log_in_form
+from clubs.models import Club
 from .forms import SignUpForm
 
 
@@ -27,15 +28,25 @@ def home(request):
 
 def log_in(request):
     if request.method == "POST":
-        form = Log_in_form()
+        form = Log_in_form(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('feed')
+                return redirect('club_list')
             messages.add_message(request, messages.ERROR, 'The credentials provided were invalid')
 
     form = Log_in_form()
     return render(request, 'log_in.html', {'form':form})
+
+
+def club_list(request):
+    model = Club
+    clubs = Club.objects.filter().order_by()
+    return render(request, 'club_list.html', {'clubs':clubs})
+
+def log_out(request):
+    logout(request)
+    return(redirect('home'))
