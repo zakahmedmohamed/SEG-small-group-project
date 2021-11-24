@@ -8,7 +8,7 @@ from django.forms import fields,widgets
 class Log_in_form(forms.Form):
     username = forms.CharField(label="Username: ")
     password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
-   
+
 
 class SignUpForm(forms.ModelForm):
     """Form enabling unregistered users to sign up."""
@@ -18,18 +18,26 @@ class SignUpForm(forms.ModelForm):
 
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'statement', 'chess_xp']
-        widgets = { 'bio': forms.Textarea(), 'statement': forms.Textarea() }
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Enter your username'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}) # needs to be resized properly
+        }
 
     new_password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
         validators=[RegexValidator(
             regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
             message='Password must contain an uppercase character, a lowercase '
                     'character and a number'
             )]
     )
-    password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}))
 
     def clean(self):
         """Clean the data and generate messages for any errors."""
@@ -55,4 +63,3 @@ class SignUpForm(forms.ModelForm):
             password=self.cleaned_data.get('new_password'),
         )
         return user
-   

@@ -1,13 +1,49 @@
 <html>
-<head>
-  <title>Clubs</title>
-</head>
-  <body>
-    <h1>Sign up</h1>
+  <head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'sign_up.css' %}">
+   </head>
+<body>
+  <div class="wrapper">
+    <h2>Sign Up</h2>
     <form action="{% url 'sign_up' %}" method="post">
       {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Sign up">
+      <div class="input-box">
+        {{ form.first_name }}
+      </div>
+      <div class="input-box">
+        {{ form.last_name }}
+      </div>
+      <div class="input-box">
+        {{ form.username }}
+      </div>
+      <div class="input-box">
+        {{ form.email }}
+      </div>
+      <div class="input-box">
+        {{ form.new_password }}
+      </div>
+      <div class="input-box">
+        {{ form.password_confirmation }}
+      </div>
+      <div class="input-box">
+        {{ form.bio }}
+      </div>
+      <div class="input-box">
+        {{ form.statement }}
+      </div>
+      <div class="input-box">
+        {{ form.chess_xp }}
+      </div>
+      <div class="input-box button">
+        <input type="submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="{% url 'log_in'%}">Login now</a></h3>
+      </div>
     </form>
-  </body>
+  </div>
+</body>
 </html>
