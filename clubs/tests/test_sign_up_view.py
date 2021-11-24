@@ -15,8 +15,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.form_input = {
             'first_name': 'Jane',
             'last_name': 'Doe',
-            'username': '@janedoe',
-            'email': 'janedoe@example.org',
+            'username': 'janedoe@example.org',
             'bio': 'My bio',
             'statement': 'My statement',
             'chess_xp': 100,
@@ -58,10 +57,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response_url = reverse('applications')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'applications.html')
-        user = User.objects.get(username='@janedoe')
+        user = User.objects.get(username='janedoe@example.org')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
-        self.assertEqual(user.email, 'janedoe@example.org')
         self.assertEqual(user.bio, 'My bio')
         self.assertEqual(user.statement, 'My statement')
         self.assertEqual(user.chess_xp, 100)

@@ -6,8 +6,8 @@ from django.forms import fields,widgets
 
 
 class Log_in_form(forms.Form):
-    username = forms.CharField(label="Username: ")
-    password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
+    username = forms.EmailField(label="Email")
+    password = forms.CharField(label='Password', widget=forms.PasswordInput())
    
 
 class SignUpForm(forms.ModelForm):
@@ -15,10 +15,12 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         """Form options."""
-
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'statement', 'chess_xp']
+        fields = ['first_name', 'last_name', 'username', 'bio', 'statement', 'chess_xp']
         widgets = { 'bio': forms.Textarea(), 'statement': forms.Textarea() }
+
+    
+    username = forms.EmailField(label="Email")
 
     new_password = forms.CharField(
         label='Password',
