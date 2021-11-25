@@ -17,18 +17,19 @@ class UserListTest(TestCase):
         self.assertEqual(len(response.context['users']), 15)
         for user_id in range(15):
             self.assertContains(response, f'@user{user_id}')
-            self.assertContains(response, f'First{user_id}')
-            self.assertContains(response, f'Last{user_id}')
+            self.assertContains(response, user_id)
 
-    def _create_test_users(self, user_count=10):
+    def _create_test_users(self, user_count=15):
         for user_id in range(user_count):
             User.objects.create_user(f'@user{user_id}',
                 email=f'user{user_id}@test.org',
                 password='Password123',
                 first_name=f'First{user_id}',
                 last_name=f'Last{user_id}',
-                bio=f'Bio {user_id}',
-                statement = f'Statement {user_id}',
-                chess_xp = 1000,
+                bio=f'Bio{user_id}',
+                statement = f'Statement{user_id}',
+                chess_xp = user_id,
                 is_member = True,
+                is_officer = True,
+                is_owner = False,
             )
