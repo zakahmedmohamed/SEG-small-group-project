@@ -17,15 +17,15 @@ class SignUpForm(forms.ModelForm):
         """Form options."""
 
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'statement', 'chess_xp']
+        fields = ['first_name', 'last_name', 'username', 'email', 'new_password', 'password_confirmation', 'bio', 'statement', 'chess_xp']
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'email': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'username': forms.TextInput(attrs={'placeholder': 'Enter your username'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
-            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly
-            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}) # needs to be resized properly
+            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly, add this: 'style': 'resize: none;'
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}) # needs to be resized properly, add this: 'style': 'resize: none;'
         }
 
     new_password = forms.CharField(

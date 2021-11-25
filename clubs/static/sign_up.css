@@ -61,8 +61,9 @@ form .input-box input{
   transition: all 0.3s ease;
 }
 
-form .input-box-biostat input{
-  height: 102px;
+form .input-box-biostat textarea{
+  resize: none;
+  height: 105px;
   width: 100%;
   outline: none;
   padding: 0 15px;
@@ -79,7 +80,7 @@ form .input-box-biostat input{
   border-color: #4070f4;
 }
 
-.input-box-biostat input:focus{
+.input-box-biostat textarea:focus{
   border-color: #4070f4;
 }
 

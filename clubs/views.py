@@ -51,6 +51,10 @@ def log_in(request):
     form = Log_in_form()
     return render(request, 'log_in.html', {'form':form})
 
+def log_out(request):
+    logout(request)
+    return redirect('home')
+
 
 def user_list(request):
     users = User.objects.all()
@@ -59,7 +63,7 @@ def user_list(request):
 def show_user(request, user_id):
     users = get_user_model().objects.get(id=user_id)
     return render(request, 'show_user.html', {'users': users})
-    
+
 def awaiting_application(request):
     return render(request, 'awaiting_application.html')
 
