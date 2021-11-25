@@ -20,7 +20,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=520, blank=True)
     statement = models.CharField(max_length=1000, blank=False)
-    chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=0)
+    chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=None)
     is_member = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
     is_officer = models.BooleanField(default=False)

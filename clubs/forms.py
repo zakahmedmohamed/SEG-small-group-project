@@ -26,6 +26,7 @@ class SignUpForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly - Ammar
             'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), # needs to be resized properly - Ammar
+            "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 
     new_password = forms.CharField(
