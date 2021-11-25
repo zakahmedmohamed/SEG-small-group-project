@@ -55,7 +55,6 @@ def log_out(request):
     logout(request)
     return redirect('home')
 
-
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})

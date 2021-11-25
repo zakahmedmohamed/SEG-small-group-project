@@ -1,16 +1,30 @@
 <html>
-<head>
+  <head>
+    {% load static %}
     <title>Clubs</title>
-</head>
-<body>
-    <h1>Log In Page!</h1>
-    {% for message in messages %}
-        <p><b>{{message}}</b></p>
-    {%endfor%}
-    <form action= "{%url 'log_in' %}" method="post">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'sign_up-log_in.css' %}" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h2>Log in</h2>
+      {% for message in messages %}
+      <br><b>{{ message }}</b>
+      {% endfor %}
+      <form action="{% url 'log_in' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type= 'submit' value= 'Log In'>
-    <p><a href = '{%url 'home' %}'>Home Page!</a></p>
-</body>
+        {% for field in form %}
+        <div class="input-box">{{field}}</div>
+        {% endfor %}
+        <div class="input-box button">
+          <input type="submit" value="Log in" />
+        </div>
+        <div class="text">
+          <h3>Dont have an account?<a href="{% url 'sign_up'%}"> Sign up now</a></h3>
+          <a href="{%url 'home' %}">Home page</a>
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

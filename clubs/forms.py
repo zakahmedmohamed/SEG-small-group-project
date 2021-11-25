@@ -6,8 +6,8 @@ from django.forms import fields,widgets
 
 
 class Log_in_form(forms.Form):
-    username = forms.CharField(label="Username: ")
-    password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class SignUpForm(forms.ModelForm):
@@ -24,8 +24,8 @@ class SignUpForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'username': forms.TextInput(attrs={'placeholder': 'Enter your username'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
-            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly, add this: 'style': 'resize: none;'
-            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}) # needs to be resized properly, add this: 'style': 'resize: none;'
+            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly - Ammar
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), # needs to be resized properly - Ammar
         }
 
     new_password = forms.CharField(
