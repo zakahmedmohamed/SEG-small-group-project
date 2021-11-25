@@ -13,8 +13,7 @@ class SignUpFormTestCase(TestCase):
         self.form_input = {
             'first_name': 'Jane',
             'last_name': 'Doe',
-            'username': '@janedoe',
-            'email': 'janedoe@example.org',
+            'username': 'janedoe@example.org',
             'bio': 'My bio',
             'statement': 'My statement',
             'chess_xp': 100,
@@ -31,8 +30,7 @@ class SignUpFormTestCase(TestCase):
         self.assertIn('first_name', form.fields)
         self.assertIn('last_name', form.fields)
         self.assertIn('username', form.fields)
-        self.assertIn('email', form.fields)
-        email_field = form.fields['email']
+        email_field = form.fields['username']
         self.assertTrue(isinstance(email_field, forms.EmailField))
         self.assertIn('bio', form.fields)
         self.assertIn('statement', form.fields)
@@ -78,10 +76,9 @@ class SignUpFormTestCase(TestCase):
         form.save()
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count+1)
-        user = User.objects.get(username='@janedoe')
+        user = User.objects.get(username='janedoe@example.org')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
-        self.assertEqual(user.email, 'janedoe@example.org')
         self.assertEqual(user.bio, 'My bio')
         self.assertEqual(user.statement, 'My statement')
         self.assertEqual(user.chess_xp, 100)

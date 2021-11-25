@@ -6,7 +6,7 @@ from django.forms import fields,widgets
 
 
 class Log_in_form(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
@@ -15,19 +15,20 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         """Form options."""
-
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'new_password', 'password_confirmation', 'bio', 'statement', 'chess_xp']
+        fields = ['first_name', 'last_name', 'username', 'new_password', 'password_confirmation', 'bio', 'statement', 'chess_xp']
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
-            'email': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
-            'username': forms.TextInput(attrs={'placeholder': 'Enter your username'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly - Ammar
             'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), # needs to be resized properly - Ammar
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
+
+    
+    username = forms.EmailField(label="Email")
 
     new_password = forms.CharField(
         label='Password',
