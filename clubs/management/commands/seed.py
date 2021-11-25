@@ -38,7 +38,7 @@ class Command(BaseCommand):
             bio = "My name is val",
             statement = 'I hate Tuesdays...',
             chess_xp = 2,
-            is_member = False,
+            is_member = True,
             is_owner = False,
             is_officer = True
         )
@@ -52,9 +52,9 @@ class Command(BaseCommand):
             bio = "Name's Bill",
             statement = 'Zzz',
             chess_xp = 3,
-            is_member = False,
+            is_member = True,
             is_owner = True,
-            is_officer = False
+            is_officer = True
         )
         userList.append(jebediah)
         userList.append(valentina)
