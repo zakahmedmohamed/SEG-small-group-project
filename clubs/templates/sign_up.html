@@ -12,11 +12,11 @@
         <form action="{% url 'sign_up' %}" method="post">
           {% csrf_token %}
           {% for field in form %}
-          {% if forloop.counter <= 6 %}
+          {% if forloop.counter <= 5 %}
             <div class="input-box">
               {{ field }}
             </div>
-          {% elif forloop.counter < 9 %}
+          {% elif forloop.counter < 8 %}
             <div class="input-box-biostat">
               {{ field }}
             </div>

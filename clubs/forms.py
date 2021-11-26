@@ -27,8 +27,8 @@ class SignUpForm(forms.ModelForm):
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 
-    
-    username = forms.EmailField(label="Email")
+
+    #username = forms.EmailField(label="Email")
 
     new_password = forms.CharField(
         label='Password',
