@@ -19,6 +19,10 @@
                 <p><a href = '{%url 'home' %}'>Home!</a></p>
               {% csrf_token%}
               <p>
+                <a href='{% url 'view_members' club.id %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
+              View Members!
+            </a>
+              <p>
                 <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
               Apply!
             </a>

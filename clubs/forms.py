@@ -1,9 +1,10 @@
 from django import forms
-from .models import User
+
+from .models import User,Club,UserClubs
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 from django.forms import fields,widgets
-
+from django.utils import timezone
 
 class SignUpForm(forms.ModelForm):
     """Form enabling unregistered users to sign up."""
@@ -58,5 +59,21 @@ class Log_in_form(forms.Form):
     password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
    
    
-class Create_A_Club(forms.Form):
-    
+class Create_A_Club_Form(forms.Form):
+    class Meta:
+        model = Club
+        fields = ['name', 'description', 'location']
+        widgets = { 'description': forms.Textarea()}
+
+    def save(self):
+        #create a new clun and save it
+        super().save(commit = False)
+        club = Club.objects.create(
+            name = self.cleaned_data.get('name'),
+            description = self.cleaned_data.get('description'),
+            location = self.cleaned_data.get('location'),
+            created_at = timezone.now()
+        )
+        return club
+
+

@@ -47,7 +47,7 @@ class Club(models.Model):
 class UserClubs(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    accepted = models.BooleanField(default=False)
+    is_applicant = models.BooleanField(default=False)
     is_member = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
     is_officer = models.BooleanField(default=False)

@@ -16,5 +16,11 @@ class ClubAdmin(admin.ModelAdmin):
         'name','description','location'
     ]
 
+@admin.register(UserClubs)
+class UserClubsAdmin(admin.ModelAdmin):
+    list_display = [
+        'user','club','is_owner','is_officer','is_member'
+    ]
+
 
 #admin.site.unregister()
