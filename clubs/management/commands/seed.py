@@ -18,8 +18,7 @@ class Command(BaseCommand):
         jebediah = User.objects.create_user(
             first_name = 'Jebediah',
             last_name = 'Kerman',
-            username = '@jeb',
-            email = 'jeb@example.org',
+            username = 'jeb@example.org',
             password = 'Password123',
             bio = "My name is jeb",
             statement = 'I guide others to treasure I cannot possess',
@@ -32,8 +31,7 @@ class Command(BaseCommand):
         valentina = User.objects.create_user(
             first_name = 'Valentina',
             last_name = 'Kerman',
-            username = '@val',
-            email = 'val@example.org',
+            username = 'val@example.org',
             password = 'Password123',
             bio = "My name is val",
             statement = 'I hate Tuesdays...',
@@ -46,8 +44,7 @@ class Command(BaseCommand):
         billie = User.objects.create_user(
             first_name = 'Billie',
             last_name = 'Kerman',
-            username = '@billie',
-            email = 'billie@example.org',
+            username = 'billie@example.org',
             password = 'Password123',
             bio = "Name's Bill",
             statement = 'Zzz',
@@ -64,8 +61,7 @@ class Command(BaseCommand):
             user = User.objects.create_user(
                 first_name = self.faker.first_name(),
                 last_name = self.faker.last_name(),
-                username = f'@{self.faker.user_name()}',
-                email = self.faker.email(),
+                username = self.faker.email(),
                 password = 'Password123',
                 bio = self.faker.text(max_nb_chars=520),
                 statement = self.faker.text(max_nb_chars=20),
@@ -79,5 +75,3 @@ class Command(BaseCommand):
         for user in userList:
             user.full_clean()
             user.save()
-
-# The database seeder must also generate a realistic number of other members and other officers per club.
