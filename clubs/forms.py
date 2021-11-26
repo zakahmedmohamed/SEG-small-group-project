@@ -58,3 +58,5 @@ class Log_in_form(forms.Form):
     password = forms.CharField(label='Password: ', widget=forms.PasswordInput())
    
    
+class Create_A_Club(forms.Form):
+    

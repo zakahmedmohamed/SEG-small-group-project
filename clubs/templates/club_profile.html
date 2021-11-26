@@ -11,23 +11,16 @@
     <div class="row h-100">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-2 offset-lg-4">
-          <h1 class="cover-heading">Club List</h1>
-          
-          <ul>
-            {%for club in clubs%}
-            <div class = "card cover-card"
-            <li> {{club.name}} - {{club.created_at}}<br/>
-            {{club.description}}<br/>
-            <a href='{% url 'club_profile' club.name %}' class="btn btn-lg btn-secondary">
-              View Club!
-            </a>
-            </div>
-            {% endfor %}
-          </ul>
-          {% csrf_token%}
-          <p>
-            <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
-              Home Page
+          <h1 class="cover-heading">Club Profile</h1>
+                <h1>{{club.name}}'s Profile</h1>
+                <p>Here you can view {{club.name}}'s Profile!</p>
+                <p>Description: {{club.description}}</p>
+                <p>Created: {{club.created_at}}</p>
+                <p><a href = '{%url 'home' %}'>Home!</a></p>
+              {% csrf_token%}
+              <p>
+                <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
+              Apply!
             </a>
           </p>
         </div>
@@ -38,5 +31,3 @@
 
 </body>
 </html>
-
-  

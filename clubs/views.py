@@ -1,3 +1,4 @@
+from os import name
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model,login,logout
 from django.contrib import messages
@@ -46,6 +47,11 @@ def club_list(request):
     model = Club
     clubs = Club.objects.filter().order_by()
     return render(request, 'club_list.html', {'clubs':clubs})
+
+def club_profile(request,club_name):
+    club = Club.objects.get(name = club_name)
+    print(club)
+    return (render(request, 'club_profile.html', {'club':club}))
 
 def log_out(request):
     logout(request)

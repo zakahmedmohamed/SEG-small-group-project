@@ -40,13 +40,13 @@ class Club(models.Model):
 
     def __str__(self):
         return self.name
+
     class meta:
         ordering = ['created_at']
 
 class UserClubs(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    application_pending = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
     is_member = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
