@@ -29,21 +29,37 @@ class UserListTest(TestCase, LogInTester):
         self.assertTemplateUsed(response, 'user_list.html')
         self.assertEqual(len(response.context['users']), 16)
         for user_id in range(15):
+<<<<<<< HEAD
             self.assertContains(response, f'user{user_id}@example.org')
             self.assertContains(response, f'First{user_id}')
             self.assertContains(response, f'Last{user_id}')
 
     def _create_test_users(self, user_count):
+=======
+            self.assertContains(response, f'@user{user_id}')
+            self.assertContains(response, user_id)
+
+    def _create_test_users(self, user_count=15):
+>>>>>>> 5482408b51701ae53586139b439490d00c520133
         for user_id in range(user_count):
             User.objects.create_user(
                 f'user{user_id}@example.org',
                 password='Password123',
                 first_name=f'First{user_id}',
                 last_name=f'Last{user_id}',
+<<<<<<< HEAD
                 bio=f'Bio {user_id}',
                 statement = f'Statement {user_id}',
                 chess_xp = 10,
                 is_member = True,
                 is_owner = False,
                 is_officer = False,
+=======
+                bio=f'Bio{user_id}',
+                statement = f'Statement{user_id}',
+                chess_xp = user_id,
+                is_member = True,
+                is_officer = True,
+                is_owner = False,
+>>>>>>> 5482408b51701ae53586139b439490d00c520133
             )
