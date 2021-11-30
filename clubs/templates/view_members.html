@@ -17,7 +17,7 @@
           <div class = "card cover-card">
            {% endif %}
           -->
-          {% if currentClub.is_officer%}
+          {% if currentClub.is_officer or currentClub.is_owner %}
             <div class = "card cover-card">
             <ul>
               {%for user in users%}
@@ -27,7 +27,7 @@
               </div>
             {% else %}
             <div class = "card cover-card">
-            Youre not an officer
+            ERROR: You do not have these access rights
             </div>
           {% endif %}
           {% csrf_token%}
