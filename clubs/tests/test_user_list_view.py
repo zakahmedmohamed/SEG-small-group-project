@@ -14,7 +14,6 @@ class UserListTest(TestCase, LogInTester):
             statement ='hi',
             password ='Password123',
             chess_xp = 10,
-            is_member = True,
         )
 
     def test_user_list_url(self):
@@ -43,7 +42,4 @@ class UserListTest(TestCase, LogInTester):
                 bio=f'Bio {user_id}',
                 statement = f'Statement {user_id}',
                 chess_xp = 10,
-                is_member = True,
-                is_owner = False,
-                is_officer = False,
             )

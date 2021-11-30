@@ -19,7 +19,7 @@ def sign_up(request):
             login(request, user)
 
             #For now goes back to sign up
-            return redirect('sign_up')
+            return redirect('user_home')
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -82,7 +82,7 @@ def view_members(request,club_name):
     currentClub = UserClubs.objects.all().filter(club = club_name).filter(user = request.user)
     members = UserClubs.objects.all().filter(club = club_name).filter(is_member=True)
     return (render(request, 'view_members.html',{'users':members, 'currentClub': currentClub} ))
-    
+
 
 def club_profile(request,club_name):
     club = Club.objects.get(name = club_name)
@@ -96,7 +96,7 @@ def club_application(request, club_name):
         club_user = UserClubs(user = new_user, club = apply_club)
         club_user.save()
     return redirect('club_list')
-    
+
 def application_list(request, club_name):
     apply_club = Club.objects.get(name = club_name)
     users = UserClubs.objects.filter(club = apply_club, is_member = False)
