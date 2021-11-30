@@ -1,0 +1,21 @@
+<html>
+  <head>
+    {% load static %}
+    <title>Create a club</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'sign_up-log_in.css' %}">
+   </head>
+  <body>
+    <div class="wrapper">
+      <h2>Create a club</h2>
+        <form action="{% url 'create_club' %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="input-box button">
+            <input type="submit" value="Register Now">
+          </div>
+      </form>
+    </div>
+  </body>
+</html>
