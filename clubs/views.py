@@ -38,6 +38,7 @@ def create_club(request):
 def home(request):
     return render(request, 'home.html')
 
+
 def user_home(request):
     return render(request, 'user_home.html')
 
