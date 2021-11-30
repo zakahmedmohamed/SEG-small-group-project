@@ -10,17 +10,24 @@
   <div class="container vh-100">
     <div class="row h-100">
       <div class="col-12 my-auto">
-        <div class="card cover-card offset-sm-2 offset-md-4 offset-lg-7">
-          <h1 class="cover-heading">Chess Club</h1>
-          <p class="cover-text">The place for chess</p>
-          <p>
-            <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary">
-              Log in
+        <div class="card cover-card offset-md-2 offset-lg-4">
+          <h1 class="cover-heading">Club List</h1>
+          
+          <ul>
+            {%for club in clubs%}
+            <div class = "card cover-card"
+            <li> {{club.name}} - {{club.created_at}}<br/>
+            {{club.description}}<br/>
+            <a href='{% url 'club_profile' club.name %}' class="btn btn-lg btn-secondary">
+              View Club!
             </a>
-          </p>
+            </div>
+            {% endfor %}
+          </ul>
+          {% csrf_token%}
           <p>
-            <a href='{% url 'sign_up' %}' class="btn btn-lg btn-secondary">
-              Sign up
+            <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
+              Home Page
             </a>
           </p>
         </div>

@@ -22,9 +22,6 @@ class User(AbstractUser):
     bio = models.CharField(max_length=520, blank=True)
     statement = models.CharField(max_length=1000, blank=False)
     chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=0)
-    is_member = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
-    is_officer = models.BooleanField(default=False)
 
     def gravatar(self, size=120):
         """Return a URL to the user's gravatar."""
@@ -32,11 +29,31 @@ class User(AbstractUser):
         gravatarURL = gravatarObj.get_image(size=size, default='mp')
         return gravatarURL
 
+    def __str__(self):
+        return self.username
+
+
 class Club(models.Model):
-    #The club consists of the club name, location, description
-    name = models.CharField(max_length=20,blank=False,unique=True)
-    description = models.CharField(max_length=120,blank=False,unique=False)
-    location = models.CharField(max_length=20,blank=False,unique=False)
+    name = models.CharField(max_length=20, unique=True, blank=False)
+    description = models.CharField(max_length=520, blank=True)
+    location = models.CharField(max_length=20, blank=False)
+    created_at = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return self.name
+
+    class meta:
+        ordering = ['created_at']
+
+class UserClubs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    is_applicant = models.BooleanField(default=False)
+    is_member = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
+    is_officer = models.BooleanField(default=False)
 
 
 
+
+    
