@@ -19,6 +19,31 @@ class Create_A_Club_Form_TestCase(TestCase):
         form = Create_A_Club_Form(data=self.form_input)
         self.assertTrue(form.is_valid())
 
+    def test_form_rejects_blank_club_name(self):
+        self.form_input['name'] = ''
+        form = Create_A_Club_Form(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_club_name(self):
+        self.form_input['name'] = 'x' * 30
+        form = Create_A_Club_Form(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_accepts_blank_description(self):
+        self.form_input['description'] = ''
+        form = Create_A_Club_Form(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_form_rejects_blank_location(self):
+        self.form_input['location'] = ''
+        form = Create_A_Club_Form(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_club_location(self):
+        self.form_input['location'] = 'x' * 30
+        form = Create_A_Club_Form(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
     def test_form_has_necessary_fields(self):
         form = Create_A_Club_Form()
         self.assertIn('name', form.fields)

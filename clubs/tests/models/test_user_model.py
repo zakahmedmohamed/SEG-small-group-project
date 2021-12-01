@@ -7,16 +7,10 @@ from clubs.models import User
 class UserModelTestCase(TestCase):
     """Unit tests for the User model."""
 
-    
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
+
     def setUp(self):
-        self.user = User.objects.create_user(
-            username = 'johndoe@example.org',
-            first_name = 'John',
-            last_name = 'Doe',
-            bio = 'This is my bio',
-            statement = 'This is my statement',
-            chess_xp = 500,
-        )
+        self.user = User.objects.get(username = 'janedoe@example.org')
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -118,16 +112,17 @@ class UserModelTestCase(TestCase):
             self.user.full_clean()
         except (ValidationError):
             self.fail('Test user should be valid')
-    
+
     def _assert_user_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.user.full_clean()
 
     def _create_second_user(self):
         second_user = User.objects.create_user(
-            username = 'janedoe@example.org',
+            username = 'janedoe1@example.org',
             first_name = 'Jane',
             last_name = 'Doe',
+            password = 'Password123',
             bio = 'This is my bio',
             statement = 'This is my statement',
             chess_xp = 500,

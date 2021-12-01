@@ -69,6 +69,64 @@ class SignUpFormTestCase(TestCase):
         self.form_input['password_confirmation'] = 'WrongPassword123'
         form = SignUpForm(data=self.form_input)
         self.assertFalse(form.is_valid())
+    def test_valid_club_form(self):
+        form = SignUpForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_form_rejects_blank_username(self):
+        self.form_input['username'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_blank_first_name(self):
+        self.form_input['first_name'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_first_name(self):
+        self.form_input['first_name'] = 'x' * 60
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_blank_last_name(self):
+        self.form_input['last_name'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_last_name(self):
+        self.form_input['last_name'] = 'x' * 60
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_accepts_blank_bio(self):
+        self.form_input['bio'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_form_rejects_invalid_club_bio(self):
+        self.form_input['bio'] = 'x' * 530
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_blank_statement(self):
+        self.form_input['statement'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_club_statement(self):
+        self.form_input['statement'] = 'x' * 1010
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_accepts_blank_chessxp(self):
+        self.form_input['chess_xp'] = ''
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_rejects_invalid_club_chessxp(self):
+        self.form_input['chess_xp'] = -100
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
 
     def test_form_must_save_correctly(self):
         form = SignUpForm(data=self.form_input)

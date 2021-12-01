@@ -5,10 +5,16 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import SignUpForm
 from clubs.models import User
-from .helpers import LogInTester
+from clubs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
+
+#    fixtures = ["clubs/tests/fixtures/default_user.json"]
+
+#    def setUp1(self):
+#        self.user = User.objects.get(username = 'janedoe@example.org')
+#        self.url = reverse('sign_up')
 
     def setUp(self):
         self.url = reverse('sign_up')
