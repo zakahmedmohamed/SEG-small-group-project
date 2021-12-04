@@ -7,7 +7,7 @@ from clubs.models import User
 class UserModelTestCase(TestCase):
     """Unit tests for the User model."""
 
-    fixtures = ["clubs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
@@ -118,13 +118,5 @@ class UserModelTestCase(TestCase):
             self.user.full_clean()
 
     def _create_second_user(self):
-        second_user = User.objects.create_user(
-            username = 'janedoe1@example.org',
-            first_name = 'Jane',
-            last_name = 'Doe',
-            password = 'Password123',
-            bio = 'This is my bio',
-            statement = 'This is my statement',
-            chess_xp = 500,
-        )
+        second_user = User.objects.get(username = 'janedoe1@example.org')
         return second_user

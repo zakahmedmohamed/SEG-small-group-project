@@ -1,0 +1,22 @@
+[
+  {
+    "model": "clubs.club",
+    "pk": 3,
+    "fields": {
+      "name": "TheGrand",
+      "description": "The best",
+      "location": "London",
+      "created_at": "2021-12-04T13:12:12+00:00"
+    }
+  },
+  {
+    "model": "clubs.club",
+    "pk": 4,
+    "fields": {
+      "name": "Club2",
+      "description": "Second best",
+      "location": "London",
+      "created_at": "2021-11-04T13:12:12+00:00"
+    }
+  }
+]

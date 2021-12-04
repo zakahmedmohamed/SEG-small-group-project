@@ -5,7 +5,7 @@ from django.test import TestCase
 from clubs.forms import Create_A_Club_Form
 from clubs.models import Club
 
-class Create_A_Club_Form_TestCase(TestCase):
+class Create_A_Club_Form_testCase(TestCase):
     """Unit tests of the create a club form."""
 
     def setUp(self):
@@ -18,6 +18,12 @@ class Create_A_Club_Form_TestCase(TestCase):
     def test_valid_club_form(self):
         form = Create_A_Club_Form(data=self.form_input)
         self.assertTrue(form.is_valid())
+
+    def test_form_has_necessary_fields(self):
+        form = Create_A_Club_Form()
+        self.assertIn('name', form.fields)
+        self.assertIn('description', form.fields)
+        self.assertIn('location', form.fields)
 
     def test_form_rejects_blank_club_name(self):
         self.form_input['name'] = ''

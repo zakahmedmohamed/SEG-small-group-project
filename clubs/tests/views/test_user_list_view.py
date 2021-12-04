@@ -4,7 +4,7 @@ from clubs.models import User
 from clubs.tests.helpers import LogInTester
 
 class UserListTest(TestCase, LogInTester):
-    fixtures = ["clubs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
@@ -20,7 +20,7 @@ class UserListTest(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user_list.html')
-        self.assertEqual(len(response.context['users']), 16)
+        self.assertEqual(len(response.context['users']), 17)
         for user_id in range(15):
             self.assertContains(response, f'user{user_id}@example.org')
             self.assertContains(response, f'First{user_id}')
