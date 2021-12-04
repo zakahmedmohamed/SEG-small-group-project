@@ -1,21 +1,14 @@
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User
-from .helpers import LogInTester
+from clubs.tests.helpers import LogInTester
 
 class UserListTest(TestCase, LogInTester):
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
+
     def setUp(self):
+        self.user = User.objects.get(username = 'janedoe@example.org')
         self.url = reverse('user_list')
-        self.user = User.objects.create_user(
-            username ='Johndoe@example.org',
-            first_name ='John',
-            last_name ='Doe',
-            bio ='Hello, I am John Doe.',
-            statement ='hi',
-            password ='Password123',
-            chess_xp = 10,
-            is_member = True,
-        )
 
     def test_user_list_url(self):
         self.assertEqual(self.url,'/users/')
@@ -43,7 +36,4 @@ class UserListTest(TestCase, LogInTester):
                 bio=f'Bio {user_id}',
                 statement = f'Statement {user_id}',
                 chess_xp = 10,
-                is_member = True,
-                is_owner = False,
-                is_officer = False,
             )

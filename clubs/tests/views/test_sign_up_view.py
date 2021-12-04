@@ -5,10 +5,16 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import SignUpForm
 from clubs.models import User
-from .helpers import LogInTester
+from clubs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
+
+#    fixtures = ["clubs/tests/fixtures/default_user.json"]
+
+#    def setUp1(self):
+#        self.user = User.objects.get(username = 'janedoe@example.org')
+#        self.url = reverse('sign_up')
 
     def setUp(self):
         self.url = reverse('sign_up')
@@ -54,9 +60,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(after_count, before_count+1)
 
         #for now goes to sign_up
-        response_url = reverse('applications')
+        response_url = reverse('user_home')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'applications.html')
+        self.assertTemplateUsed(response, 'user_home.html')
         user = User.objects.get(username='janedoe@example.org')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')

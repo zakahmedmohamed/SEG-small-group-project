@@ -19,7 +19,7 @@ def sign_up(request):
             login(request, user)
 
             #For now goes back to sign up
-            return redirect('sign_up')
+            return redirect('user_home')
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -43,6 +43,7 @@ def create_club(request):
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
+
 
 def user_home(request):
     return render(request, 'user_home.html')
