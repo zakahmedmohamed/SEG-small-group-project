@@ -2,11 +2,15 @@
 from django import forms
 from django.test import TestCase
 from clubs.forms import Log_in_form
+from clubs.models import User
 
 class LogInFormTestCase(TestCase):
     """Unit tests of the log in form."""
+
+    fixtures = ["clubs/tests/fixtures/users.json"]
+
     def setUp(self):
-        self.form_input = {'username': 'Johndoe@example.org', 'password': 'Password123'}
+        self.form_input = {'username': 'janedoe@example.org', 'password': 'Password123'}
 
     def test_form_contains_required_fields(self):
         form = Log_in_form()

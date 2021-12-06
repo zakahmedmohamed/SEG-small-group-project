@@ -1,5 +1,6 @@
 from django import forms
 from .models import User,Club,UserClubs
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 from django.forms import fields,widgets
