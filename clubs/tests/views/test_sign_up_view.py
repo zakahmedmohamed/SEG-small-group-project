@@ -58,9 +58,11 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count+1)
-        response_url = reverse('user_home')
+
+        #for now goes to sign_up
+        response_url = reverse('my_clubs')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'user_home.html')
+        self.assertTemplateUsed(response, 'my_clubs.html')
         user = User.objects.get(username='janedoe@example.org')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
