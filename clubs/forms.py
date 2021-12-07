@@ -71,7 +71,11 @@ class Create_A_Club_Form(forms.ModelForm):
     class Meta:
         model = Club
         fields = ['name', 'description', 'location']
-        widgets = { 'description': forms.Textarea()}
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter the club name'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Enter the club description'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Enter the club location'}),
+        }
 
     def save(self):
         #create a new clun and save it
@@ -83,3 +87,43 @@ class Create_A_Club_Form(forms.ModelForm):
             created_at = timezone.now()
         )
         return club
+
+class UserForm(forms.ModelForm):
+    """Form to update user profiles."""
+
+    class Meta:
+        """Form options."""
+
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'bio', 'statement','chess_xp']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
+            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}),
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), 
+            "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
+        }
+
+class PasswordForm(forms.Form):
+    """Form enabling users to change their password."""
+    password = forms.CharField(label='Current password', widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
+    new_password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
+        validators=[RegexValidator(
+            regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
+            message='Password must contain an uppercase character, a lowercase '
+                    'character and a number'
+            )]
+    )
+    password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput(attrs={'placeholder': 'Password confirmation'}))
+
+    def clean(self):
+        """Clean the data and generate messages for any errors."""
+
+        super().clean()
+        new_password = self.cleaned_data.get('new_password')
+        password_confirmation = self.cleaned_data.get('password_confirmation')
+        if new_password != password_confirmation:
+            self.add_error('password_confirmation', 'Confirmation does not match password.')

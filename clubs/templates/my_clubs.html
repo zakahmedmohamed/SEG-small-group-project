@@ -25,8 +25,20 @@
           </ul>
           {% csrf_token%}
           <p>
-            <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
-              Home Page
+            <a href='{% url 'club_list' %}' class="btn btn-md btn-secondary">
+              Apply for a club
+            </a>
+            <p>
+            <a href='{% url 'create_club' %}' class="btn btn-md btn-secondary">
+              Create your own club
+            </a>
+            <p>
+            <a href='{% url 'profile' %}' class="btn btn-md btn-secondary">
+              Change your profile
+            </a>
+            <p>
+            <a href='{% url 'password' %}' class="btn btn-md btn-secondary">
+              Change your password
             </a>
           </p>
         </div>

@@ -11,7 +11,7 @@
     <div class="row h-100">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-2 offset-lg-4">
-          <h1 class="cover-heading">Members List</h1>
+          <h1 class="cover-heading">Owner commands</h1>
           <!--{% if currentClub.is_officer%}
                 {% else %}
           <div class = "card cover-card">
@@ -24,11 +24,11 @@
                 <li> {{member.user.first_name}} {{member.user.last_name}}</li>
                 <li> Is officer: {{member.is_officer}}</li>
                 <li> Is owner: {{member.is_owner}}</li>
-                <li> <a href='{% url 'promote_member' member.id %}' class="btn btn-lg btn-secondary">
+                <li> <a href='{% url 'promote_member' selected_club.name member.id %}' class="btn btn-lg btn-secondary">
                     Promote Member
                     </a> 
                 </li>
-                <li> <a href='{% url 'demote_officer' member.id %}' class="btn btn-lg btn-secondary">
+                <li> <a href='{% url 'demote_officer' selected_club.name member.id %}' class="btn btn-lg btn-secondary">
                     Demote Officer
                     </a> 
                 </li>
@@ -38,6 +38,9 @@
                 </li>
                 <br>
                 {% endfor %}
+                {% if not members%}
+                  <h1>No members to execute commands</h1> 
+                {% endif %}
                 </ul>
               </div>
           {% csrf_token%}

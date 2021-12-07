@@ -120,7 +120,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/clubs/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -131,3 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'clubs.User'
 AUTH_CLUB_MODEL = 'clubs.Club'
 AUTH_USERCLUBS_MODEL = 'clubs.UserClubs'
+
+# Login URL for redirecting users from login protected views
+LOGIN_URL = 'log_in'
