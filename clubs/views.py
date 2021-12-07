@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model,login,logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -44,10 +45,11 @@ def create_club(request):
 def home(request):
     return render(request, 'home.html')
 
-
+@login_required
 def user_home(request):
     return render(request, 'user_home.html')
 
+@login_required
 def club_home(request, club_name):
     club = Club.objects.get(name = club_name)
     club_user = UserClubs.objects.all().get(user = request.user, club = club)
@@ -62,16 +64,20 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('user_home')
+                redirect_url = request.POST.get('next') or 'user_home'
+                return redirect(redirect_url)
             messages.add_message(request, messages.ERROR, 'The credentials provided were invalid')
     form = Log_in_form()
-    return render(request, 'log_in.html', {'form':form})
+    next = request.GET.get('next') or ''
+    return render(request, 'log_in.html', {'form':form, 'next': next})
 
+@login_required
 def club_list(request):
     joined_clubs = UserClubs.objects.all().filter(user = request.user)
     clubs = Club.objects.filter().order_by()
     return render(request, 'club_list.html', {'clubs':clubs})
 
+@login_required
 def my_clubs(request):
     joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
@@ -80,6 +86,7 @@ def my_clubs(request):
     user = request.user
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user })
 
+@login_required
 def view_members(request,club_name):
     """
     currentUser = request.user
@@ -94,14 +101,15 @@ def view_members(request,club_name):
     currentClub = UserClubs.objects.all().get(club = clubObject, user = request.user)
     members = UserClubs.objects.all().filter(club = clubObject).filter(is_member=True)
     return (render(request, 'view_members.html',{'users':members, 'currentClub': currentClub} ))
-    
 
+@login_required
 def club_profile(request,club_name):
     currentClub = Club.objects.get(name = club_name)
     memberSize = UserClubs.objects.all().filter(club = currentClub).count()
     owner = UserClubs.objects.all().get(club = currentClub, is_owner = True)
     return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner}))
 
+@login_required
 def club_application(request, club_name):
     new_user = request.user
     apply_club = Club.objects.get(id = club_name)
@@ -109,12 +117,14 @@ def club_application(request, club_name):
         club_user = UserClubs(user = new_user, club = apply_club)
         club_user.save()
     return redirect('club_list')
-    
+
+@login_required
 def application_list(request, club_name):
     apply_club = Club.objects.get(name = club_name)
     users = UserClubs.objects.filter(club = apply_club, is_member = False)
     return render(request, 'application_list.html', {'users': users})
 
+@login_required
 def approve_application(request, user_id):
     try:
         user = UserClubs.objects.get(id=user_id)
@@ -125,11 +135,13 @@ def approve_application(request, user_id):
         user.save()
         return redirect('my_clubs')
 
+@login_required
 def owner_commands(request, club_name):
     selected_club = Club.objects.get(name = club_name)
     members = UserClubs.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
     return (render(request, 'owner_commands.html',{'members':members, 'selected_club': selected_club} ))
 
+@login_required
 def promote_member(request, user_id):
     try:
         user = UserClubs.objects.get(id=user_id)
@@ -140,6 +152,7 @@ def promote_member(request, user_id):
         user.save()
         return redirect('my_clubs')
 
+@login_required
 def demote_officer(request, user_id):
     try:
         user = UserClubs.objects.get(id=user_id)
@@ -150,6 +163,7 @@ def demote_officer(request, user_id):
         user.save()
         return redirect('my_clubs')
 
+@login_required
 def transfer_ownership(request, club_name, user_id):
     try:
         user = UserClubs.objects.get(id=user_id)
@@ -168,6 +182,7 @@ def transfer_ownership(request, club_name, user_id):
 def log_out(request):
     logout(request)
     return redirect('home')
+
 
 def user_list(request):
     users = User.objects.all()
