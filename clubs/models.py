@@ -23,7 +23,7 @@ class User(AbstractUser):
     bio = models.CharField(max_length=520, blank=True)
     statement = models.CharField(max_length=1000, blank=False)
     chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=None)
-    
+
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

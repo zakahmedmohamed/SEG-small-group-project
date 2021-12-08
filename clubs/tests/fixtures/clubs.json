@@ -13,7 +13,7 @@
     "model": "clubs.club",
     "pk": 4,
     "fields": {
-      "name": "Club2",
+      "name": "ClubB",
       "description": "Second best",
       "location": "London",
       "created_at": "2021-11-04T13:12:12+00:00"

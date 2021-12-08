@@ -10,12 +10,6 @@ from clubs.tests.helpers import LogInTester
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
 
-#    fixtures = ["clubs/tests/fixtures/default_user.json"]
-
-#    def setUp1(self):
-#        self.user = User.objects.get(username = 'janedoe@example.org')
-#        self.url = reverse('sign_up')
-
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
