@@ -1,12 +1,5 @@
-<html>
-  <head>
-    {% load static %}
-    <title>Log In</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'sign_up-log_in.css' %}" />
-  </head>
-  <body>
+{% extends 'FormsBase.html' %}
+{% block body %}
     <div class="wrapper">
       <h2>Log in</h2>
       {% for message in messages %}
@@ -27,5 +20,4 @@
         </div>
       </form>
     </div>
-  </body>
-</html>
+{% endblock %}

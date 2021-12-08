@@ -1,38 +1,30 @@
-<html>
-  <head>
-    {% load static %}
-    <title>Change Profile</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'sign_up-log_in.css' %}">
-   </head>
-  <body>
-    <div class="wrapper">
-      <h2>Change Profile</h2>
-        <form action="{% url 'profile' %}" method="post">
-          {% csrf_token %}
-          {% for field in form %}
-          {% if forloop.counter <= 3 %}
-            <div class="input-box">
-              {{ field }}
-            </div>
-          {% elif forloop.counter < 6 %}
-            <div class="input-box-biostat">
-              {{ field }}
-            </div>
-          {% else %}
-            <div class="input-box">
-              {{ field }}
-            </div>
-          {% endif %}
-          {% endfor %}
-          <div class="input-box button">
-            <input type="submit" value="Update">
-          </div>
-          <div class="text">
-            <a href="{%url 'club_list' %}">Go back</a>
+{% extends 'FormsBase.html' %}
+{% block body %}
+<div class="wrapper">
+  <h2>Change Profile</h2>
+    <form action="{% url 'profile' %}" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      {% if forloop.counter <= 3 %}
+        <div class="input-box">
+          {{ field }}
         </div>
-      </form>
+      {% elif forloop.counter < 6 %}
+        <div class="input-box-biostat">
+          {{ field }}
+        </div>
+      {% else %}
+        <div class="input-box">
+          {{ field }}
+        </div>
+      {% endif %}
+      {% endfor %}
+      <div class="input-box button">
+        <input type="submit" value="Update">
+      </div>
+      <div class="text">
+        <a href="{%url 'club_list' %}">Go back</a>
     </div>
-  </body>
-</html>
+  </form>
+</div>
+{% endblock %}

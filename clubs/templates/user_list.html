@@ -1,27 +1,23 @@
-<html>
-<head>
-  <title>Users</title>
-</head>
- <body>
-   <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1>Users</h1>
-        <table class="table">
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+<div class="row">
+  <div class="col-12">
+    <h1>Users</h1>
+    <table class="table">
+      {% if user.is_member %}
+        {% for user in users %}
           {% if user.is_member %}
-            {% for user in users %}
-              {% if user.is_member %}
-              <tr>
-                <td><img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image" ></td>
-                <td>{{ user.full_name }}</td>
-                <td><a href="{% url 'show_user' user.id %}">{{ user.username }}</a></td>
-              </tr>
-              {% endif %}
-            {% endfor %}
+          <tr>
+            <td><img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image" ></td>
+            <td>{{ user.full_name }}</td>
+            <td><a href="{% url 'show_user' user.id %}">{{ user.username }}</a></td>
+          </tr>
           {% endif %}
-        </table>
-      </div>
-    </div>
+        {% endfor %}
+      {% endif %}
+    </table>
   </div>
-</body>
-</html>
+</div>
+</div>
+{% endblock %}
