@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from clubs.models import User
+from clubs.models import User,Club, UserClubs
 
 class Command(BaseCommand):
         """The database unseeder."""
@@ -9,9 +9,15 @@ class Command(BaseCommand):
         def handle(self, *args, **options):
             #print("TODO: The database unseeder will be added here...")
             user_set = User.objects.all()
+            userClubs_set = UserClubs.objects.all()
+            club_set = Club.objects.all()
 
             print('unseeding data...')
             for user in user_set.iterator():
                 if user.is_superuser == False:
                     user.delete()
+            for club in club_set.iterator():
+                club.delete() 
+            for userClub in userClubs_set.iterator():
+                userClub.delete() 
             print('done.')
