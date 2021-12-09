@@ -1,39 +1,31 @@
-<html>
-  <head>
-    {% load static %}
-    <title>Sign Up</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'form_style.css' %}">
-   </head>
-  <body>
-    <div class="wrapper">
-      <h2>Sign Up</h2>
-        <form action="{% url 'sign_up' %}" method="post">
-          {% csrf_token %}
-          {% for field in form %}
-          {% if forloop.counter <= 5 %}
-            <div class="input-box">
-              {{ field }}
-            </div>
-          {% elif forloop.counter < 8 %}
-            <div class="input-box-biostat">
-              {{ field }}
-            </div>
-          {% else %}
-            <div class="input-box">
-              {{ field }}
-            </div>
-          {% endif %}
-          {% endfor %}
-          <div class="input-box button">
-            <input type="submit" value="Register Now">
-          </div>
-          <div class="text">
-            <h3>Already have an account? <a href="{% url 'log_in'%}">Login now</a></h3>
-            <a href="{%url 'home' %}">Home page</a>
+{% extends 'FormsBase.html' %}
+{% block body %}
+<div class="wrapper">
+  <h2>Sign Up</h2>
+    <form action="{% url 'sign_up' %}" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      {% if forloop.counter <= 5 %}
+        <div class="input-box">
+          {{ field }}
         </div>
-      </form>
+      {% elif forloop.counter < 8 %}
+        <div class="input-box-biostat">
+          {{ field }}
+        </div>
+      {% else %}
+        <div class="input-box">
+          {{ field }}
+        </div>
+      {% endif %}
+      {% endfor %}
+      <div class="input-box button">
+        <input type="submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="{% url 'log_in'%}">Login now</a></h3>
+        <a href="{%url 'home' %}">Home page</a>
     </div>
-  </body>
-</html>
+  </form>
+</div>
+{% endblock %}

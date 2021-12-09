@@ -115,9 +115,6 @@ def create_club(request):
 def home(request):
     return render(request, 'home.html')
 
-@login_required
-def user_home(request):
-    return render(request, 'user_home.html')
 
 @login_required
 @member_required
@@ -161,7 +158,11 @@ def my_clubs(request):
     clubs = Club.objects.filter(id__in = clubIDs)
     #clubs = Club.objects.filter().order_by()
     user = request.user
-    return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user })
+    owner_dict = {}
+    for c in clubs:
+        owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
+        # owner_dict[c] = User.objects.all().get(username = temp.user)
+    return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
 @login_required
 @member_required
@@ -172,7 +173,6 @@ def view_members(request,club_name):
     if currentClub.is_officer:
         {'currentClub',currentClub}
     """
-
     #currentUser = request.user
     #currentClub = UserClubs.objects.get(user = currentUser.id, club = club_name)
     clubObject = Club.objects.get(name = club_name)

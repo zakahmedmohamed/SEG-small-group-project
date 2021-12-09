@@ -1,31 +1,24 @@
-<html>
-  <head>
-    {% load static %}
-    <title>Log In</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'form_style.css' %}" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <h2>Log in</h2>
-      {% for message in messages %}
-      <br><b>{{ message }}</b>
-      {% endfor %}
-      <form action="{% url 'log_in' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        {% for field in form %}
-        <div class="input-box">{{field}}</div>
-        {% endfor %}
-        <div class="input-box button">
-          <input type="submit" value="Log in" />
-        </div>
-        <div class="text">
-          <h3>Dont have an account?<a href="{% url 'sign_up'%}"> Sign up now</a></h3>
-          <a href="{%url 'home' %}">Home page</a>
-        </div>
-      </form>
+{% extends 'FormsBase.html' %}
+{% block body %}
+<div class="wrapper">
+  <h2>Log in</h2>
+  {% for message in messages %}
+  <br><b>{{ message }}</b>
+  {% endfor %}
+  <form action="{% url 'log_in' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    {% for field in form %}
+    <div class="input-box">{{field}}</div>
+    {% endfor %}
+    <div class="input-box button">
+      <input type="submit" value="Log in" />
     </div>
-  </body>
-</html>
+    <div class="text">
+      <h3>Dont have an account?<a href="{% url 'sign_up'%}"> Sign up now</a></h3>
+      <a href="{%url 'home' %}">Home page</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
