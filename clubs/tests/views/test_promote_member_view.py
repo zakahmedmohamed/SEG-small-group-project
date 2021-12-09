@@ -1,4 +1,4 @@
-from django.test import TestCase
+"""""from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User, UserClubs, Club
 from clubs.tests.helpers import reverse_with_next
@@ -6,8 +6,7 @@ from clubs.tests.helpers import reverse_with_next
 class ShowUserTest(TestCase):
 
     fixtures = [
-        'clubs/tests/fixtures/default_user.json',
-        'clubs/tests/fixtures/other_users.json',
+        'clubs/tests/fixtures/users.json',
         'clubs/tests/fixtures/clubs.json'
     ]
 
@@ -43,7 +42,7 @@ class ShowUserTest(TestCase):
     def test_promote_user_who_is_already_officer(self):
         pass
 
-    """def test_get_follow_toggle_for_followee(self):
+    def test_get_follow_toggle_for_followee(self):
         self.client.login(username=self.user.username, password='Password123')
         self.user.toggle_follow(self.followee)
         user_followers_before = self.user.follower_count()
@@ -77,3 +76,4 @@ class ShowUserTest(TestCase):
         response_url = reverse('user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'user_list.html')"""
+""

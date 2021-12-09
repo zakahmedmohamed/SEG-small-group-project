@@ -9,7 +9,7 @@ from clubs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
 
-    fixtures = ["clubs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     """Tests of the sign up view."""
     def setUp(self):

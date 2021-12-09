@@ -35,6 +35,16 @@ class ApplicationListTest(TestCase):
             self.assertContains(response, f'user{user_id}@example.org')
             self.assertContains(response, f'First{user_id}')
             self.assertContains(response, f'Last{user_id}')
+            self.assertContains(response, f'Bio{user_id}')
+            self.assertContains(response, f'Statement{user_id}')
+            self.assertContains(response, f'Chess experience: {user_id}')
+
+    def test_empty_application_list(self):
+        self.client.login(username=self.user.username, password='Password123')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'application_list.html')
+        self.assertContains(response, 'No applications')
 
     def test_get_application_list_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
@@ -48,9 +58,9 @@ class ApplicationListTest(TestCase):
                 password='Password123',
                 first_name=f'First{user_id}',
                 last_name=f'Last{user_id}',
-                bio=f'Bio {user_id}',
-                statement = f'Statement {user_id}',
-                chess_xp = 10,
+                bio=f'Bio{user_id}',
+                statement = f'Statement{user_id}',
+                chess_xp = user_id
             )
             self.club_user = UserClubs.objects.create(
             user = self.user,

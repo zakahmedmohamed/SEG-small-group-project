@@ -10,7 +10,7 @@ from clubs.tests.helpers import LogInTester
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
 
-    fixtures = ["clubs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     def setUp(self):
         self.url = reverse('sign_up')
@@ -67,5 +67,3 @@ class SignUpViewTestCase(TestCase, LogInTester):
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())
-
-    

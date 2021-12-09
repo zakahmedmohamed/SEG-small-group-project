@@ -1,7 +1,7 @@
 [
   {
     "model": "clubs.club",
-    "pk": 3,
+    "pk": 10,
     "fields": {
       "name": "TheGrand",
       "description": "The best",
@@ -11,7 +11,7 @@
   },
   {
     "model": "clubs.club",
-    "pk": 4,
+    "pk": 11,
     "fields": {
       "name": "ClubB",
       "description": "Second best",
