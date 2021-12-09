@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import check_password
+from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import Create_A_Club_Form
@@ -42,6 +43,11 @@ class createCLubTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, Create_A_Club_Form))
 
-    
-
-        
+    def test_create_a_club_fail(self):
+        self.client.login(username= 'johndoe@example.org', password = 'WrongPassword123')
+        self.form_input['name'] = ""
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'create_club.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, Create_A_Club_Form))

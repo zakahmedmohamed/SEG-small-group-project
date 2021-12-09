@@ -12,13 +12,13 @@ class LogInViewTestCase(TestCase, LogInTester):
      def setUp(self):
         self.url = reverse('log_in')
         self.user = User.objects.create_user('@johndoe',
-            first_name='John',
-            last_name='Doe',
-            email='johndoe@example.org',
-            bio='Hello, I am John Doe.',
-            password='Password123',
-            is_active = True,
-            )
+        first_name='John',
+        last_name='Doe',
+        bio='Hello, I am John Doe.',
+        statement='The best chess player',
+        chess_xp = 3,
+        is_active=True,
+    )
 
      def test_log_in_url(self):
         self.assertEqual(self.url,'/log_in/')
@@ -31,7 +31,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
         messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list))
+        self.assertEqual(len(messages_list), 0)
 
      def test_unsuccesful_log_in(self):
         form_input = { 'username': '@johndoe', 'password': 'WrongPassword123' }
@@ -43,21 +43,18 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
         messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list),1)
+        self.assertEqual(len(messages_list), 1)
         self.assertEqual(messages_list[0].level, messages.ERROR)
 
      def test_succesful_log_in(self):
         form_input = { 'username': '@johndoe', 'password': 'Password123' }
         response = self.client.post(self.url, form_input, follow=True)
         self.assertTrue(self._is_logged_in())
-        response_url = reverse('feed')
+        response_url = reverse('user_home')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, 'user_home.html')
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
-
-     def _is_logged_in(self):
-        return '_auth_user_id' in self.client.session.keys()
 
      def test_valid_log_in_by_inactive_user(self):
         self.user.is_active = False
@@ -70,4 +67,6 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
-
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
