@@ -12,7 +12,7 @@
             <div class = "card cover-card"
             <li> {{club.name}} - {{club.created_at}}<br/>
             {{club.description}}<br/>
-            <a href='{% url 'club_profile' club.name %}' class="btn btn-lg btn-secondary">
+            <a href='{% url 'club_profile' club.id %}' class="btn btn-lg btn-secondary">
               View Club!
             </a>
             </div>
@@ -20,7 +20,7 @@
           </ul>
           {% csrf_token%}
           <p>
-            <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
+            <a href='{% url 'user_home' %}' class="btn btn-lg btn-secondary">
               Home Page
             </a>
           </p>
