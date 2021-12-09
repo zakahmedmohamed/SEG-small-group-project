@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.db.models import Q
 from clubs.forms import Log_in_form
 from clubs.models import User
 from .forms import SignUpForm, Create_A_Club_Form, Log_in_form
@@ -73,9 +74,10 @@ def log_in(request):
 
 @login_required
 def club_list(request):
-    joined_clubs = UserClubs.objects.all().filter(user = request.user)
-    clubs = Club.objects.filter().order_by()
-    return render(request, 'club_list.html', {'clubs':clubs})
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True) # All the clubs the user is in
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs 
+    return render(request, 'club_list.html', {'clubs':clubs, 'joined_clubs':joined_clubs})
 
 @login_required
 def my_clubs(request):
