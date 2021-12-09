@@ -105,7 +105,7 @@ def create_club(request):
             club_user.is_officer = True
             club_user.is_owner = True
             club_user.save()
-            return redirect('club_list')
+            return redirect('my_clubs')
     else:
         form = Create_A_Club_Form()
     return render(request, 'create_club.html', {'form': form})
@@ -182,10 +182,15 @@ def view_members(request,club_name):
 
 @login_required
 def club_profile(request,club_name):
-    currentClub = Club.objects.get(name = club_name)
-    memberSize = UserClubs.objects.all().filter(club = currentClub, is_member = True).count()
-    owner = UserClubs.objects.all().get(club = currentClub, is_owner = True)
-    return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner}))
+    try:
+        currentClub = Club.objects.get(name = club_name)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        memberSize = UserClubs.objects.all().filter(club = currentClub, is_member = True).count()
+        owner = UserClubs.objects.all().get(club = currentClub, is_owner = True)
+        have_applied = UserClubs.objects.all().filter(club = currentClub, user = request.user).exists()
+        return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied}))
 
 @login_required
 def club_application(request, club_name):
