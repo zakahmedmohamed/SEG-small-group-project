@@ -18,18 +18,21 @@
             <a href='{% url 'view_members' club %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
             View Members!
             </a>
+            <br/>
             <p>
             {% if user.is_officer%}
             <a href='{% url 'application_list' club %}' class="btn btn-lg btn-secondary">
                 Approve or reject applications!
-            </a>
+              </a>
             {% endif %}
+            </p>
+          <p>
             {% if user.is_owner%}
             <a href='{% url 'owner_commands' club %}' class="btn btn-lg btn-secondary">
                 Promote, demote or tranfer ownership as the club's owner
             </a>
             {% endif %}
-            
+          </p>  
             </div>
           </ul>
           {% csrf_token%}
