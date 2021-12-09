@@ -161,7 +161,6 @@ def my_clubs(request):
     owner_dict = {}
     for c in clubs:
         owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
-        # owner_dict[c] = User.objects.all().get(username = temp.user)
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
 @login_required

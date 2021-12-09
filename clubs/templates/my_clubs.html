@@ -5,9 +5,9 @@
     <div class="row h-100 ">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-3 offset-lg-4">
-          <h5>My Clubs</h5>
+          <h4 style="text-align: center;">My Clubs</h4>
           <ul class="nav nav-tabs" id="clubTabs" role="tablist">
-        {% for club in clubs %}
+        {% for club in clubs %}        
           <li class="nav-item">
             {% if forloop.counter == 1 %}
             <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
@@ -15,6 +15,12 @@
             <button class="nav-link" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
           {% endif %}
             </li>
+          {%empty%}
+          <ul style="list-style-type:none;">
+          <li>&nbsp;</li>
+          <li><h5>No clubs joined.</h5></li>
+          <li><p>Please join or create a club</p></li>
+          </ul>
         {% endfor %}
       </ul>
 
