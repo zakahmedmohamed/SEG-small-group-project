@@ -9,13 +9,12 @@
             <div class = "card cover-card">
             <ul style="list-style-type:none;">
               {%for user in users%}
-                <li> {{user.user.full_name}}</li>
-                <p> {{user.user.bio}}</p>
-                <p><img src="{{ user.user.mini_gravatar }}" alt="Gravatar of {{ user.user.full_name }}" class="rounded-circle profile-image" ></p>
+                <li><img src="{{ user.user.mini_gravatar }}" alt="Gravatar of {{ user.user.full_name }}" class="rounded-circle profile-image" > {{user.user.full_name}}</li>
+                <li>Bio: {{user.user.bio}}</li>
                 {% if currentClub.is_officer%}
-                <p> {{user.user.username}}</p>
-                <p> Chess xp: {{user.user.chess_xp}}</p>
-                <p> {{user.user.statement}}</p>
+                <li>Username: {{user.user.username}}</li>
+                <li> Chess xp: {{user.user.chess_xp}}</li>
+                <li>Statement: {{user.user.statement}}</li>
                 {% endif %}
                 {% endfor %}
                 </ul>
