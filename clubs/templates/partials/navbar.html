@@ -1,0 +1,17 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      {% if user.is_authenticated %}
+      <a class="navbar-brand" href="{% url 'my_clubs' %}">
+        {% endif %}
+      <span class="icon"></span><i class="fas fa-chess"></i> Chess Club
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if user.is_authenticated %}
+      {% include "partials/menu.html" %}
+    {% endif %}
+  </div>
+</nav>

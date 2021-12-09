@@ -129,7 +129,7 @@ def club_home(request, club_name):
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
     #form.fields['clubs'] = clubs
-    return render(request, 'club_home.html', {'club': club_name, 'user': club_user})
+    return render(request, 'club_home.html', {'club': club_name, 'clubUser': club_user})
 
 @login_prohibited
 def log_in(request):
