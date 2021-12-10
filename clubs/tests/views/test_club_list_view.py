@@ -34,7 +34,7 @@ class ClubListTest(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    def _create_test_clubs(self, club_count=10):
+    def _create_test_clubs(self, club_count=5):
         for club_id in range(club_count):
             name=f'Club{club_id}'
             description=f'The best{club_id}'

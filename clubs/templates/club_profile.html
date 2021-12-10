@@ -15,20 +15,23 @@
                 <h1>{{club.name}}'s Profile</h1>
                 <p>Here you can view {{club.name}}'s Profile!</p>
                 <p>Description: {{club.description}}</p>
+                <p>Location: {{club.location}}</p>
                 <p>Created: {{club.created_at}}</p>
                 <p>Number of members: {{memberSize}}</p>
-
                 <p>Owner: {{owner.user.full_name}}</p>
                 <p><img src="{{ owner.user.mini_gravatar }}" alt="Gravatar of {{ owner.user.full_name }}" class="rounded-circle profile-image" ></p>
                 <p>Bio: {{owner.user.bio}}</p>
                 <p><a href = '{%url 'home' %}'>Home!</a></p>
               {% csrf_token%}
-              
+              {% if not have_applied %}
               <p>
-                <a href='{% url 'club_application' club.id %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
+                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
               Apply!
             </a>
           </p>
+          {%else%}
+            <button class="btn btn-lg btn-secondary" disabled>Already applied</button>
+          {%endif%}
         </div>
       </div>
     </div>
