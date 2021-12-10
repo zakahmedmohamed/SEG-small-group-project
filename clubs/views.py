@@ -99,12 +99,7 @@ def create_club(request):
         form = Create_A_Club_Form(request.POST)
         if form.is_valid():
             newClub = form.save()
-            #clubName = form.cleaned_data['name']
-            club_user = UserClubs(user = request.user, club = newClub)
-            club_user.is_member = True
-            club_user.is_officer = True
-            club_user.is_owner = True
-            club_user.save()
+            request.user.make_club_owner(newClub)
             return redirect('my_clubs')
     else:
         form = Create_A_Club_Form()
@@ -194,13 +189,18 @@ def club_profile(request,club_name):
 
 @login_required
 def club_application(request, club_name):
-    new_user = request.user
-    apply_club = Club.objects.get(id = club_name)
-    if(not(UserClubs.objects.filter(user = new_user, club = apply_club).exists())):
-        club_user = UserClubs(user = new_user, club = apply_club)
-        club_user.save()
-    return redirect('club_list')
-
+    try:
+        new_user = request.user
+        apply_club = Club.objects.get(name = club_name)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        if(not(UserClubs.objects.filter(user = new_user, club = apply_club).exists())):
+            new_user.apply_club(apply_club)
+            #club_user = UserClubs(user = new_user, club = apply_club)
+            #club_user.save()
+        return redirect('club_list')
+    
 @login_required
 @officer_required
 def application_list(request, club_name):
@@ -212,13 +212,14 @@ def application_list(request, club_name):
 @officer_required
 def approve_application(request, club_name, user_id):
     try:
+        club = Club.objects.get(name = club_name)
+        officer = UserClubs.objects.get(user = request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
         #club_name = user.club.name
     except ObjectDoesNotExist:
         return redirect('my_clubs')
     else:
-        user.is_member=True
-        user.save()
+        officer.approve_application(user)
         return redirect('application_list', club_name=club_name)
 
 @login_required
@@ -232,41 +233,39 @@ def owner_commands(request, club_name):
 @owner_required
 def promote_member(request, club_name, user_id):
     try:
+        club = Club.objects.get(name = club_name)
+        owner = UserClubs.objects.get(user = request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('owner_commands', club_name = club_name)
     else:
-        user.is_officer=True
-        user.save()
+        owner.promote_member(user)
         return redirect('owner_commands', club_name = club_name)
 
 @login_required
 @owner_required
 def demote_officer(request, club_name, user_id):
     try:
+        club = Club.objects.get(name = club_name)
+        owner = UserClubs.objects.get(user = request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('owner_commands', club_name = club_name)
     else:
-        user.is_officer=False
-        user.save()
+        owner.demote_officer(user)
         return redirect('owner_commands', club_name = club_name)
 
 @login_required
 @owner_required
 def transfer_ownership(request, club_name, user_id):
     try:
+        club = Club.objects.get(name = club_name)
+        owner = UserClubs.objects.get(user=request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('club_home', club_name = club_name)
     else:
-        selected_club = Club.objects.get(name = club_name)
-        owner_user = UserClubs.objects.get(user=request.user, club = selected_club)
-        owner_user.is_owner = False
-        owner_user.save()
-        user.is_officer=True
-        user.is_owner=True
-        user.save()
+        owner.transfer_ownership(user)
         return redirect('club_home', club_name = club_name)
 
 def log_out(request):

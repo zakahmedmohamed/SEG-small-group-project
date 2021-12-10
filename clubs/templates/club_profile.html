@@ -25,12 +25,12 @@
               {% csrf_token%}
               {% if not have_applied %}
               <p>
-                <a href='{% url 'club_application' club.id %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
+                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
               Apply!
             </a>
           </p>
           {%else%}
-            <button class="btn btn-lg btn-secondary">Already applied</button>
+            <button class="btn btn-lg btn-secondary" disabled>Already applied</button>
           {%endif%}
         </div>
       </div>

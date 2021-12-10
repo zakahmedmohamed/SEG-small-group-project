@@ -7,7 +7,7 @@ from clubs.tests.helpers import reverse_with_next
 class Club_Profile_Test(TestCase):
 
     fixtures = [
-        'clubs/tests/fixtures/default_user.json',
+        'clubs/tests/fixtures/users.json',
         'clubs/tests/fixtures/clubs.json'
     ]
 

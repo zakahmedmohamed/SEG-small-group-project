@@ -9,7 +9,7 @@ from clubs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
 
-    fixtures = ["clubs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     """Tests of the sign up view."""
     def setUp(self):
@@ -45,7 +45,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, Create_A_Club_Form))
         self.assertTrue(form.is_bound)
 
-    def test_succesful_sign_up(self):
+    def test_succesful_create_club(self):
         before_count = Club.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Club.objects.count()

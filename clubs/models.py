@@ -41,6 +41,17 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def make_club_owner(self, new_club):
+        club_user = UserClubs(user = self, club = new_club)
+        club_user.is_member = True
+        club_user.is_officer = True
+        club_user.is_owner = True
+        club_user.save()
+
+    def apply_club(self, new_club):
+        club_user = UserClubs(user = self, club = new_club)
+        club_user.save()
+
 class Club(models.Model):
     name = models.CharField(max_length=20, unique=True, blank=False)
     description = models.CharField(max_length=520, blank=True)
@@ -58,5 +69,24 @@ class UserClubs(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     is_applicant = models.BooleanField(default=False)
     is_member = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
     is_officer = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
+
+    def promote_member(self, user):
+        user.is_officer = True
+        user.save()
+
+    def demote_officer(self, user):
+        user.is_officer = False
+        user.save()
+
+    def transfer_ownership(self, user):
+        self.is_owner = False
+        user.is_officer = True
+        user.is_owner = True
+        self.save()
+        user.save()
+
+    def approve_application(self,user):
+        user.is_member = True
+        user.save()
