@@ -23,7 +23,7 @@ class ShowUserTest(TestCase):
     def test_promote_member_url(self):
         self.assertEqual(self.url,f'/promote_member/{self.other_member.club.name}/{self.other_user.id}')
 
-    def test_get_follow_toggle_redirects_when_not_logged_in(self):
+    def test_get_promote_member_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

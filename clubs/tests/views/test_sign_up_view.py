@@ -67,5 +67,3 @@ class SignUpViewTestCase(TestCase, LogInTester):
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())
-
-    

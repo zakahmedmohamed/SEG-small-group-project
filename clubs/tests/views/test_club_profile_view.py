@@ -32,7 +32,7 @@ class Club_Profile_Test(TestCase):
         self.assertContains(response, "Jane Doe")
         self.assertContains(response, "My bio")
         self.assertContains(response, "Number of members: 11")
-        
+
     def _create_test_users(self, user_count = 10):
         for user_id in range(user_count):
             self.user2 = User.objects.create_user(
