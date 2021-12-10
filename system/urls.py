@@ -23,7 +23,6 @@ urlpatterns = [
     path('', views.home, name= 'home'),
     path('profile/', views.profile, name='profile'),
     path('password/', views.password, name='password'),
-    path('user_home/', views.user_home, name= 'user_home'),
     path('club_home/<club_name>/', views.club_home, name= 'club_home'),
     path('log_in/', views.log_in, name='log_in'),
     path('application_list/<club_name>/', views.application_list, name='application_list'),
@@ -31,7 +30,7 @@ urlpatterns = [
     path('create_club/', views.create_club, name = 'create_club'),
     path('club_list/', views.club_list, name='club_list'),
     path('my_clubs/', views.my_clubs, name='my_clubs'),
-    path('club_profile/<int:club_id>/', views.club_profile, name ='club_profile'),
+    path('club_profile/<club_name>/', views.club_profile, name ='club_profile'),
     path('club_application/<club_name>/', views.club_application, name ='club_application'),
     path('view_members/<club_name>/', views.view_members, name ='view_members'),
     path('owner_commands/<club_name>/', views.owner_commands, name ='owner_commands'),
@@ -39,6 +38,5 @@ urlpatterns = [
     path('demote_officer/<club_name>/<int:user_id>', views.demote_officer, name='demote_officer'),
     path('transfer_ownership/<club_name>/<int:user_id>', views.transfer_ownership, name='transfer_ownership'),
     path('log_out/', views.log_out, name='log_out'),
-    #path('user/<int:user_id>', views.show_user, name='show_user'),
-    #path('users/', views.user_list, name='user_list'),
+
 ]

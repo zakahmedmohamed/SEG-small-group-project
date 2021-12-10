@@ -1,40 +1,43 @@
-{% extends 'base.html' %}
-{% block body %}
-<div id = "cover-image">
-    <div class="container vh-100">
-        <div class="row h-100">
-        <div class="col-12 my-auto">
-            <div class="card cover-card offset-md-2 offset-lg-4">
-            <h1 class="cover-heading">Applications</h1>
-                <table class="table">
-                    {% for applicant in users %}
-                    <tr>
-                        <td>Username: {{ applicant.user.username }}</td>
-                    </tr>
-                    <tr>
-                        <td>Full name: {{ applicant.user.first_name }} {{ applicant.user.last_name }} </td>
-                    </tr>
-                    <tr>
-                        <td>Bio: {{ applicant.user.bio }}</td>
-                    </tr>
-                    <tr>
-                        <td>Statement: {{ applicant.user.statement }}</td>
-                    </tr>
-                    <tr>
-                        <td>Chess experience: {{ applicant.user.chess_xp }}</td>
-                    </tr>
-                    <tr>
-                        <td><a href="{% url 'approve_application' club_name applicant.id %}">Approve application</a></td>
-                    </tr>  
-                    
-                    {% endfor %}
-                    {% if not users%}
-                        <h1>No applications</h1> 
-                    {% endif %}
-                </table>
-            </div>
+{% extends "base_content.html" %}
+{% block content %}
+<div id="cover-image">
+  <div class="container vh-100">
+    <div class="row h-100">
+      <div class="col-12 my-auto">
+        <div class="card cover-card offset-md-2 offset-lg-4">
+          <h1 class="cover-heading">Applications</h1>
+          <table class="table">
+            {% for applicant in users %}
+            <tr>
+              <td>Username: {{ applicant.user.username }}</td>
+            </tr>
+            <tr>
+              <td>
+                Full name: {{ applicant.user.first_name }} {{applicant.user.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <td>Bio: {{ applicant.user.bio }}</td>
+            </tr>
+            <tr>
+              <td>Statement: {{ applicant.user.statement }}</td>
+            </tr>
+            <tr>
+              <td>Chess experience: {{ applicant.user.chess_xp }}</td>
+            </tr>
+            <tr>
+              <td>
+                <a href="{% url 'approve_application' club_name applicant.id %}">Approve application</a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% if not users%}
+            <h1>No applications</h1>
+            {% endif %}
+          </table>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </div>
 {% endblock %}

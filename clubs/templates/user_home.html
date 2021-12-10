@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-{% block body %}
-<h1>User Home</h1>
-<p>The chess website</p>
-<a href="{%url 'club_list' %}">Club list</a>
-<a href="{%url 'my_clubs' %}">My clubs</a>
+{% extends "base_content.html" %}
+{% block content %}
+    <h1>User Home</h1>
+    <p>The chess website</p>
+    <a href="{%url 'club_list' %}">Club list</a>
+    <a href="{%url 'my_clubs' %}">My clubs</a>
 {% endblock %}
