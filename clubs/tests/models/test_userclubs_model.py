@@ -64,7 +64,7 @@ class UserClubModelTestCase(TestCase):
         self.assertEqual(beforeCount, afterCount + 1)
 
     def test_on_delete_club(self):
-        beforeCount = Club.objects.count()
+        beforeCount = UserClubs.objects.count()
         self.club.delete()
-        afterCount = Club.objects.count()
-        self.assertEqual(beforeCount, afterCount + 1)
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount + 2)
