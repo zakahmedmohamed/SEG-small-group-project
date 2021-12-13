@@ -12,171 +12,72 @@ class UserClubModelTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
-        self.club = Club.objects.get(name = 'ClubB')
-        self.is_applicant = True
-        self.is_member = False
-        self.is_owner = False
-        self.is_officer = False
-    
-    def test_valid_user(self):
-        self._assert_user_is_valid()
+        self.other_user = User.objects.get(username = 'janedoe1@example.org')
+        self.club = Club.objects.get(name = 'TheGrand')
+        self.owner = UserClubs(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.owner.save()
+        self.other_member = UserClubs(user = self.other_user, club = self.club, is_member = True)
+        self.other_member.save()
 
-    def test_xp_cannot_be_less_than_zero(self):
-        self.user.chess_xp = -1
-        self._assert_user_is_invalid()
+    def test_promote_member(self):
+        beforeOfficer = self.other_member.is_officer
+        self.owner.promote_member(self.other_member)
+        afterOfficer = self.other_member.is_officer
+        self.assertFalse(beforeOfficer)
+        self.assertTrue(afterOfficer)
 
-    def test_first_name_must_not_be_blank(self):
-        self.user.first_name = ''
-        self._assert_user_is_invalid()
+    def test_demote_officer(self):
+        self.other_member.is_officer = True
+        beforeOfficer = self.other_member.is_officer
+        self.owner.demote_officer(self.other_member)
+        afterOfficer = self.other_member.is_officer
+        self.assertTrue(beforeOfficer)
+        self.assertFalse(afterOfficer)
 
-    def test_first_name_need_not_be_unique(self):
-        second_user = self._create_second_user()
-        self.user.first_name = second_user.first_name
-        self._assert_user_is_valid()
+    def test_transfer_ownership(self):
+        beforeOwner = self.owner.is_owner
+        beforeOtherMemberOwner = self.other_member.is_owner
+        beforeOtherMemberOfficer = self.other_member.is_officer
+        self.owner.transfer_ownership(self.other_member)
+        afterOwner = self.owner.is_owner
+        afterOtherMemberOwner = self.other_member.is_owner
+        afterOtherMemberOfficer = self.other_member.is_officer
+        self.assertTrue(beforeOwner)
+        self.assertFalse(beforeOtherMemberOwner)
+        self.assertFalse(beforeOtherMemberOfficer)
+        self.assertFalse(afterOwner)
+        self.assertTrue(afterOtherMemberOwner)
+        self.assertTrue(afterOtherMemberOfficer)
 
-    def test_first_name_may_contain_50_characters(self):
-        self.user.first_name = 'x' * 50
-        self._assert_user_is_valid()
+    def test_approve_application(self):
+        self.other_member.is_member = False
+        beforeMember = self.other_member.is_member
+        self.owner.approve_application(self.other_member)
+        afterMember = self.other_member.is_member
+        self.assertFalse(beforeMember)
+        self.assertTrue(afterMember)
 
-    def test_first_name_must_not_contain_more_than_50_characters(self):
-        self.user.first_name = 'x' * 51
-        self._assert_user_is_invalid()
+    def test_reject_application(self):
+        self.other_member.is_member = False        
+        beforeCount = UserClubs.objects.count()
+        self.owner.reject_application(self.other_member)
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount + 1)
 
+    def test_reject_application_for_a_member(self):     
+        beforeCount = UserClubs.objects.count()
+        self.owner.reject_application(self.other_member)
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount)
 
-    def test_last_name_must_not_be_blank(self):
-        self.user.last_name = ''
-        self._assert_user_is_invalid()
+    def test_on_delete_user(self):
+        beforeCount = UserClubs.objects.count()
+        self.user.delete()
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount + 1)
 
-    def test_last_name_need_not_be_unique(self):
-        second_user = self._create_second_user()
-        self.user.last_name = second_user.last_name
-        self._assert_user_is_valid()
-
-    def test_last_name_may_contain_50_characters(self):
-        self.user.last_name = 'x' * 50
-        self._assert_user_is_valid()
-
-    def test_last_name_must_not_contain_more_than_50_characters(self):
-        self.user.last_name = 'x' * 51
-        self._assert_user_is_invalid()
-
-    def test_personal_statement_must_not_contain_more_than_1000_characters(self):
-        self.user.last_name = 'x' * 1001
-        self._assert_user_is_invalid()
-
-
-    def test_username_must_not_be_blank(self):
-        self.user.username = ''
-        self._assert_user_is_invalid()
-
-    def test_username_must_be_unique(self):
-        second_user = self._create_second_user()
-        self.user.username = second_user.username
-        self._assert_user_is_invalid()
-
-
-    def test_username_must_contain_at_symbol(self):
-        self.user.username = 'johndoe.example.org'
-        self._assert_user_is_invalid()
-
-    def test_username_must_contain_domain_name(self):
-        self.user.username = 'johndoe@.org'
-        self._assert_user_is_invalid()
-
-    def test_username_must_contain_domain(self):
-        self.user.username = 'johndoe@example'
-        self._assert_user_is_invalid()
-
-    def test_username_must_not_contain_more_than_one_at(self):
-        self.user.username = 'johndoe@@example.org'
-        self._assert_user_is_invalid()
-
-
-    def test_bio_may_be_blank(self):
-        self.user.bio = ''
-        self._assert_user_is_valid()
-
-    def test_statement_may_be_blank(self):
-        self.user.statement = ''
-        self._assert_user_is_invalid()
-
-    def test_bio_need_not_be_unique(self):
-        second_user = self._create_second_user()
-        self.user.bio = second_user.bio
-        self._assert_user_is_valid()
-
-    def test_bio_may_contain_520_characters(self):
-        self.user.bio = 'x' * 520
-        self._assert_user_is_valid()
-
-    def test_bio_must_not_contain_more_than_520_characters(self):
-        self.user.bio = 'x' * 521
-        self._assert_user_is_invalid()
-
-    def _assert_user_is_valid(self):
-        try:
-            self.user.full_clean()
-        except (ValidationError):
-            self.fail('Test user should be valid')
-
-    def _assert_user_is_invalid(self):
-        with self.assertRaises(ValidationError):
-            self.user.full_clean()
-
-    def _create_second_user(self):
-        second_user = User.objects.get(username = 'janedoe1@example.org')
-        return second_user
-
-    def test_valid_club(self):
-        self._assert_club_is_valid()
-
-    def test_club_name_must_not_be_blank(self):
-        self.club.name = ''
-        self._assert_club_is_invalid()
-
-    def test_description_may_contain_520_characters(self):
-        self.club.description = 'x' * 520
-        self._assert_club_is_valid()
-
-    def test_description_must_not_contain_more_than_520_characters(self):
-        self.club.description = 'x' * 521
-        self._assert_club_is_invalid()
-
-    def test_location_can_be_blank(self):
-        self.club.description = ''
-        self._assert_club_is_valid()
-
-    def test_location_may_contain_20_characters(self):
-        self.club.location = 'x' * 20
-        self._assert_club_is_valid()
-
-    def test_location_must_not_contain_more_than_20_characters(self):
-        self.club.location = 'x' * 21
-        self._assert_club_is_invalid()
-
-    def test_location_must_not_be_blank(self):
-        self.club.location = ''
-        self._assert_club_is_invalid()
-
-    def test_club_name_must_not_be_blank(self):
-        self.club.name = ''
-        self._assert_club_is_invalid()
-
-    # def test_club_name_must_be_unique(self):
-    #     second_club = self._create_second_club()
-    #     self.club.name = second_club.name
-    #     self._assert_club_is_invalid()
-
-    def _assert_club_is_valid(self):
-        try:
-            self.club.full_clean()
-        except (ValidationError):
-            self.fail('Test club should be valid')
-
-    def _assert_club_is_invalid(self):
-        with self.assertRaises(ValidationError):
-            self.club.full_clean()
-
-    def _create_second_club(self):
-        second_club = Club.objects.get(name = 'Club2')
-        return second_club
+    def test_on_delete_club(self):
+        beforeCount = UserClubs.objects.count()
+        self.club.delete()
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount + 2)

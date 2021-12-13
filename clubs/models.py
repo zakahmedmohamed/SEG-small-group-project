@@ -24,7 +24,6 @@ class User(AbstractUser):
     statement = models.CharField(max_length=1000, blank=False)
     chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=0)
 
-
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -90,3 +89,7 @@ class UserClubs(models.Model):
     def approve_application(self,user):
         user.is_member = True
         user.save()
+
+    def reject_application(self,user):
+        if user.is_member == False:
+            user.delete()
