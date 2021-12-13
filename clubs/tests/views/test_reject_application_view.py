@@ -31,15 +31,16 @@ class RejectApplicationTest(TestCase):
     def test_reject_application_who_is_not_member(self):
         self.client.login(username=self.user.username, password='Password123')
         is_member_before = self.other_member.is_member
-        self.member.reject_application(self.other_member)
         response = self.client.get(self.url, follow=True)
+        self.member.reject_application(self.other_member)
         is_member_after = self.other_member.is_member
         self.assertFalse(is_member_before)
         self.assertFalse(is_member_after)
-        #response_url = reverse('application_list', kwargs={'club_name': self.other_member.club.name})
-        #self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        response_url = reverse('application_list', kwargs={'club_name': self.other_member.club.name})
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'application_list.html')
 
-    def test_approve_application_who_is_already_member(self):
+    def test_reject_application_who_is_already_member(self):
         self.client.login(username=self.user.username, password='Password123')
         self.other_member.is_member = True
         is_member_before = self.other_member.is_member
