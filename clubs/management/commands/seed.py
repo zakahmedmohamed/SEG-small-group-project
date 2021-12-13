@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from clubs.models import User
+from clubs.models import User, Club, UserClubs
 
 class Command(BaseCommand):
     """The database seeder."""
@@ -11,6 +11,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('seeding data...')
         self.generate_users()
+        self.generate_clubs()
+        self.generate_UserClubs()
         print('done.')
 
     def generate_users(self):
@@ -23,9 +25,6 @@ class Command(BaseCommand):
             bio = "My name is jeb",
             statement = 'I guide others to treasure I cannot possess',
             chess_xp = 1,
-            is_member = True,
-            is_owner = False,
-            is_officer = False
         )
 
         valentina = User.objects.create_user(
@@ -35,10 +34,7 @@ class Command(BaseCommand):
             password = 'Password123',
             bio = "My name is val",
             statement = 'I hate Tuesdays...',
-            chess_xp = 2,
-            is_member = True,
-            is_owner = False,
-            is_officer = True
+            chess_xp = 2
         )
 
         billie = User.objects.create_user(
@@ -48,10 +44,7 @@ class Command(BaseCommand):
             password = 'Password123',
             bio = "Name's Bill",
             statement = 'Zzz',
-            chess_xp = 3,
-            is_member = True,
-            is_owner = True,
-            is_officer = True
+            chess_xp = 3
         )
         userList.append(jebediah)
         userList.append(valentina)
@@ -65,13 +58,50 @@ class Command(BaseCommand):
                 password = 'Password123',
                 bio = self.faker.text(max_nb_chars=520),
                 statement = self.faker.text(max_nb_chars=20),
-                chess_xp = self.faker.random_digit(),
-                is_member = self.faker.boolean(chance_of_getting_true=50),
-                is_owner = False,
-                is_officer = self.faker.boolean(chance_of_getting_true=30)
+                chess_xp = self.faker.random_digit()
             )
             userList.append(user)
 
         for user in userList:
             user.full_clean()
             user.save()
+        
+    def generate_clubs(self):
+        club_list = []
+        Somalia = Club.objects.create(
+            name = 'Somalia',
+            description = 'This is Somalia',
+            location = 'Somalia'
+        )
+        Bangladesh = Club.objects.create(
+            name = 'Bangladesh',
+            description = 'This is Bangladesh',
+            location = 'Bangladesh'
+        )
+        club_list.append(Somalia)
+        club_list.append(Bangladesh)
+        
+        for club in club_list:
+            print(club.name)
+            club.full_clean()
+            club.save()
+    
+    def generate_UserClubs(self):
+        user_clubs_list = []
+        OwnerOne = UserClubs.objects.create(
+            user = User.objects.get(username = 'jeb@example.org'),
+            club = Club.objects.get(name = 'Bangladesh'),
+            is_applicant = False,
+            is_member= False,
+            is_owner = True,
+            is_officer = False
+        )
+        OwnerOne = UserClubs.objects.create(
+            user = User.objects.get(username = 'billie@example.org'),
+            club = Club.objects.get(name = 'Somalia'),
+            is_applicant = False,
+            is_member= False,
+            is_owner = True,
+            is_officer = False
+        )
+

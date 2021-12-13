@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.db.models import Q
 from clubs.forms import Log_in_form
 from clubs.models import User
 from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, PasswordForm
@@ -110,9 +111,6 @@ def create_club(request):
 def home(request):
     return render(request, 'home.html')
 
-@login_required
-def user_home(request):
-    return render(request, 'user_home.html')
 
 @login_required
 @member_required
@@ -124,7 +122,7 @@ def club_home(request, club_name):
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
     #form.fields['clubs'] = clubs
-    return render(request, 'club_home.html', {'club': club_name, 'user': club_user})
+    return render(request, 'club_home.html', {'club': club_name, 'clubUser': club_user})
 
 @login_prohibited
 def log_in(request):
@@ -145,9 +143,10 @@ def log_in(request):
 
 @login_required
 def club_list(request):
-    joined_clubs = UserClubs.objects.all().filter(user = request.user)
-    clubs = Club.objects.filter().order_by()
-    return render(request, 'club_list.html', {'clubs':clubs})
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True) # All the clubs the user is in
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs 
+    return render(request, 'club_list.html', {'clubs':clubs, 'joined_clubs':joined_clubs})
 
 @login_required
 def my_clubs(request):
@@ -156,7 +155,10 @@ def my_clubs(request):
     clubs = Club.objects.filter(id__in = clubIDs)
     #clubs = Club.objects.filter().order_by()
     user = request.user
-    return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user })
+    owner_dict = {}
+    for c in clubs:
+        owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
+    return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
 @login_required
 @member_required
@@ -167,7 +169,6 @@ def view_members(request,club_name):
     if currentClub.is_officer:
         {'currentClub',currentClub}
     """
-
     #currentUser = request.user
     #currentClub = UserClubs.objects.get(user = currentUser.id, club = club_name)
     clubObject = Club.objects.get(name = club_name)
