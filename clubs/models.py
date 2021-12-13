@@ -90,3 +90,7 @@ class UserClubs(models.Model):
     def approve_application(self,user):
         user.is_member = True
         user.save()
+
+    def reject_application(self,user):
+        if user.is_member == False:
+            user.delete()

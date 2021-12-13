@@ -49,13 +49,26 @@ class UserClubModelTestCase(TestCase):
         self.assertTrue(afterOtherMemberOwner)
         self.assertTrue(afterOtherMemberOfficer)
 
-    def test_demote_officer(self):
+    def test_approve_application(self):
         self.other_member.is_member = False
         beforeMember = self.other_member.is_member
         self.owner.approve_application(self.other_member)
         afterMember = self.other_member.is_member
         self.assertFalse(beforeMember)
         self.assertTrue(afterMember)
+
+    def test_reject_application(self):
+        self.other_member.is_member = False        
+        beforeCount = UserClubs.objects.count()
+        self.owner.reject_application(self.other_member)
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount + 1)
+
+    def test_reject_application_for_a_member(self):     
+        beforeCount = UserClubs.objects.count()
+        self.owner.reject_application(self.other_member)
+        afterCount = UserClubs.objects.count()
+        self.assertEqual(beforeCount, afterCount)
 
     def test_on_delete_user(self):
         beforeCount = UserClubs.objects.count()

@@ -27,6 +27,7 @@ urlpatterns = [
     path('log_in/', views.log_in, name='log_in'),
     path('application_list/<club_name>/', views.application_list, name='application_list'),
     path('approve_application/<club_name>/<int:user_id>', views.approve_application, name='approve_application'),
+    path('reject_application/<club_name>/<int:user_id>', views.reject_application, name='reject_application'),
     path('create_club/', views.create_club, name = 'create_club'),
     path('club_list/', views.club_list, name='club_list'),
     path('my_clubs/', views.my_clubs, name='my_clubs'),

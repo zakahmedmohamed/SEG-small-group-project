@@ -224,6 +224,20 @@ def approve_application(request, club_name, user_id):
         return redirect('application_list', club_name=club_name)
 
 @login_required
+@officer_required
+def reject_application(request, club_name, user_id):
+    try:
+        club = Club.objects.get(name = club_name)
+        officer = UserClubs.objects.get(user = request.user, club = club)
+        user = UserClubs.objects.get(id=user_id)
+        #club_name = user.club.name
+    except ObjectDoesNotExist:
+        return redirect('my_clubs')
+    else:
+        officer.reject_application(user)
+        return redirect('application_list', club_name=club_name)
+
+@login_required
 @owner_required
 def owner_commands(request, club_name):
     selected_club = Club.objects.get(name = club_name)
