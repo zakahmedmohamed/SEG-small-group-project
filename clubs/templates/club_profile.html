@@ -14,13 +14,18 @@
                 <p>Owner: {{owner.user.full_name}}</p>
                 <p><img src="{{ owner.user.mini_gravatar }}" alt="Gravatar of {{ owner.user.full_name }}" class="rounded-circle profile-image" ></p>
                 <p>Bio: {{owner.user.bio}}</p>
-                <p><a href = '{%url 'home' %}'>Home!</a></p>
               {% csrf_token%}
+              {% if current_user.is_applicant %}
+              <p>
+                 Applied!
+              </p>
+              {% else %}
               <p>
                 <a href='{% url 'club_application' club.id %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
               Apply!
             </a>
           </p>
+              {% endif %}
         </div>
       </div>
     </div>

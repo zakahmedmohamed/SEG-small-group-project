@@ -2,7 +2,7 @@
 {% block body %}
 <div class="wrapper">
   <h2>Change Profile</h2>
-    <form action="{% url 'profile' %}" method="post">
+    <form action="{% url 'change_profile' %}" method="post">
       {% csrf_token %}
       {% for field in form %}
       {% if forloop.counter <= 3 %}

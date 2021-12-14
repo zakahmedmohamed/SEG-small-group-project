@@ -5,7 +5,7 @@ from clubs.models import User, Club, UserClubs
 class Command(BaseCommand):
     """The database seeder."""
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
