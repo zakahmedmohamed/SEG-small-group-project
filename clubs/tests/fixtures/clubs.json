@@ -1,7 +1,7 @@
 [
   {
     "model": "clubs.club",
-    "pk": 3,
+    "pk": 10,
     "fields": {
       "name": "TheGrand",
       "description": "The best",
@@ -11,9 +11,9 @@
   },
   {
     "model": "clubs.club",
-    "pk": 4,
+    "pk": 11,
     "fields": {
-      "name": "Club2",
+      "name": "ClubB",
       "description": "Second best",
       "location": "London",
       "created_at": "2021-11-04T13:12:12+00:00"

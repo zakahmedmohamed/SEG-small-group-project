@@ -73,5 +73,5 @@ class clubModelTestCase(TestCase):
             self.club.full_clean()
 
     def _create_second_club(self):
-        second_club = Club.objects.get(name = 'Club2')
+        second_club = Club.objects.get(name = 'ClubB')
         return second_club

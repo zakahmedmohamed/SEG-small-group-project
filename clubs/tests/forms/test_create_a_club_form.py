@@ -50,12 +50,6 @@ class Create_A_Club_Form_testCase(TestCase):
         form = Create_A_Club_Form(data=self.form_input)
         self.assertFalse(form.is_valid())
 
-    def test_form_has_necessary_fields(self):
-        form = Create_A_Club_Form()
-        self.assertIn('name', form.fields)
-        self.assertIn('description', form.fields)
-        self.assertIn('location', form.fields)
-
     def test_form_must_save_correctly(self):
         form = Create_A_Club_Form(data=self.form_input)
         before_count = Club.objects.count()
