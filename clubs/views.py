@@ -127,7 +127,7 @@ def club_home(request, club_name):
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
     #form.fields['clubs'] = clubs
-    return render(request, 'club_home.html', {'club': club_name, 'clubUser': club_user})
+    return render(request, 'club_home.html', {'clubs': clubs, 'club': club_name, 'clubUser': club_user})
 
 @login_prohibited
 def log_in(request):
@@ -148,10 +148,11 @@ def log_in(request):
 
 @login_required
 def club_list(request):
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True) # All the clubs the user is in
-    clubIDs = joined_clubs.values_list('club')
-    clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs 
-    return render(request, 'club_list.html', {'clubs':clubs, 'joined_clubs':joined_clubs})
+    clubs = Club.objects.filter().order_by()
+    owner_dict = {}
+    for c in clubs:
+        owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
+    return render(request, 'club_list.html', {'clubs':clubs, 'owners':owner_dict})
 
 @login_required
 def my_clubs(request):
@@ -177,9 +178,12 @@ def view_members(request,club_name):
     #currentUser = request.user
     #currentClub = UserClubs.objects.get(user = currentUser.id, club = club_name)
     clubObject = Club.objects.get(name = club_name)
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.filter(id__in = clubIDs)
     currentClub = UserClubs.objects.all().get(club = clubObject, user = request.user)
     members = UserClubs.objects.all().filter(club = clubObject).filter(is_member=True)
-    return (render(request, 'view_members.html',{'users':members, 'currentClub': currentClub} ))
+    return (render(request, 'view_members.html',{'users':members, 'currentClub': currentClub, 'clubs': clubs} ))
 
 @login_required
 def club_profile(request,club_name):
@@ -202,7 +206,10 @@ def club_application(request, club_name):
 def application_list(request, club_name):
     apply_club = Club.objects.get(name = club_name)
     users = UserClubs.objects.filter(club = apply_club, is_member = False)
-    return render(request, 'application_list.html', {'users': users, 'club_name':club_name})
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.filter(id__in = clubIDs)
+    return render(request, 'application_list.html', {'users': users, 'club_name':club_name, 'clubs':clubs})
 
 @login_required
 @officer_required
@@ -222,7 +229,10 @@ def approve_application(request, club_name, user_id):
 def owner_commands(request, club_name):
     selected_club = Club.objects.get(name = club_name)
     members = UserClubs.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
-    return (render(request, 'owner_commands.html',{'members':members, 'selected_club': selected_club} ))
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.filter(id__in = clubIDs)
+    return (render(request, 'owner_commands.html',{'members':members, 'selected_club': selected_club, 'clubs':clubs} ))
 
 @login_required
 @owner_required
