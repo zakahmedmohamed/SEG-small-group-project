@@ -1,0 +1,31 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row-profile">
+    <div class="col-md-3">
+      <div class="profile-sidebar">
+        <div class="user-gravatar">
+          <img src="{{ user.gravatar }}" alt=" Gravatar of {{ user.full_name }}" class="rounded-circle profile-image">
+          <div class="user-info">
+            <div class="user-name">
+              {{ user.full_name }}
+            </div>
+            <div class="username">
+              {{ user.username }}
+            </div>
+            <div class="user-level">
+              Chess xp: {{ user.chess_xp }}
+            </div>
+            <div class="user-bio">
+              Bio: {{ user.bio }}
+            </div>
+            <div class="user-statement">
+              Statment: {{ user.statement }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

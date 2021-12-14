@@ -5,7 +5,7 @@ from clubs.models import User, Club, UserClubs
 class Command(BaseCommand):
     """The database seeder."""
     def __init__(self):
-        super.__init__
+        super.__init__()
         self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         for user in userList:
             user.full_clean()
             user.save()
-        
+
     def generate_clubs(self):
         club_list = []
         Somalia = Club.objects.create(
@@ -80,12 +80,12 @@ class Command(BaseCommand):
         )
         club_list.append(Somalia)
         club_list.append(Bangladesh)
-        
+
         for club in club_list:
             print(club.name)
             club.full_clean()
             club.save()
-    
+
     def generate_UserClubs(self):
         user_clubs_list = []
         OwnerOne = UserClubs.objects.create(
@@ -104,4 +104,3 @@ class Command(BaseCommand):
             is_owner = True,
             is_officer = False
         )
-

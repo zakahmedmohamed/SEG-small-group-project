@@ -150,7 +150,7 @@ def log_in(request):
 def club_list(request):
     joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True) # All the clubs the user is in
     clubIDs = joined_clubs.values_list('club')
-    clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs 
+    clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs
     return render(request, 'club_list.html', {'clubs':clubs, 'joined_clubs':joined_clubs})
 
 @login_required
@@ -164,6 +164,16 @@ def my_clubs(request):
     for c in clubs:
         owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
+
+@login_required
+def member_profile(request, user_id):
+    # user = get_user_model()
+    try:
+        user = User.objects.get(id = user_id)
+    except ObjectDoesNotExist:
+        return redirect('home')
+    else:
+        return render(request, 'member_profile.html', {'user': user})
 
 @login_required
 @member_required
