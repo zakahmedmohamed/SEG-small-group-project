@@ -143,7 +143,7 @@ def log_in(request):
 
 @login_required
 def club_list(request):
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True) # All the clubs the user is in
+    joined_clubs = UserClubs.objects.all().filter(user = request.user) # All the clubs the user is in
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.exclude(id__in = clubIDs)   #All the clubs 
     return render(request, 'club_list.html', {'clubs':clubs, 'joined_clubs':joined_clubs})
