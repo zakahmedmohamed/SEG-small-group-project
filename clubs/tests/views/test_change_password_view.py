@@ -14,7 +14,7 @@ class PasswordViewTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='janedoe@example.org')
-        self.url = reverse('password')
+        self.url = reverse('change_password')
         self.form_input = {
             'password': 'Password123',
             'new_password': 'NewPassword123',
@@ -22,13 +22,13 @@ class PasswordViewTest(TestCase):
         }
 
     def test_password_url(self):
-        self.assertEqual(self.url, '/password/')
+        self.assertEqual(self.url, '/change_password/')
 
     def test_get_password(self):
         self.client.login(username=self.user.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'password.html')
+        self.assertTemplateUsed(response, 'change_password.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, PasswordForm))
 
@@ -52,7 +52,7 @@ class PasswordViewTest(TestCase):
         self.form_input['password'] = 'WrongPassword123'
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'password.html')
+        self.assertTemplateUsed(response, 'change_password.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, PasswordForm))
         self.user.refresh_from_db()
@@ -64,7 +64,7 @@ class PasswordViewTest(TestCase):
         self.form_input['password_confirmation'] = 'WrongPassword123'
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'password.html')
+        self.assertTemplateUsed(response, 'change_password.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, PasswordForm))
         self.user.refresh_from_db()
