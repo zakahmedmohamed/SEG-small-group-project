@@ -7,7 +7,7 @@ from clubs.forms import SignUpForm, Create_A_Club_Form
 from clubs.models import User, Club, UserClubs
 from clubs.tests.helpers import LogInTester
 
-class SignUpViewTestCase(TestCase, LogInTester):
+class Create_club_test(TestCase, LogInTester):
 
     fixtures = ["clubs/tests/fixtures/users.json"]
 

@@ -15,6 +15,8 @@ class Club_Profile_Test(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.club = Club.objects.get(name = "TheGrand")
         self.user_club = UserClubs.objects.create(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.club2 = Club.objects.get(name = 'ClubB')
+        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_profile', kwargs={'club_name': self.club.name})
 
     def test_show_user_url(self):
@@ -22,7 +24,8 @@ class Club_Profile_Test(TestCase):
 
     def test_get_show_club_profile_with_valid_user(self):
         self.client.login(username=self.user.username, password='Password123')
-        self._create_test_users(10)
+        test_user_count = 10
+        self._create_test_users(test_user_count)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'club_profile.html')
@@ -31,7 +34,7 @@ class Club_Profile_Test(TestCase):
         self.assertContains(response, "London")
         self.assertContains(response, "Jane Doe")
         self.assertContains(response, "My bio")
-        self.assertContains(response, "Number of members: 11")
+        self.assertContains(response, f"Number of members: {test_user_count + 1}")
 
     def _create_test_users(self, user_count = 10):
         for user_id in range(user_count):

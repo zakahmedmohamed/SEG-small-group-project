@@ -20,6 +20,18 @@ class OwnerCommandsTest(TestCase):
         is_owner = True
         )
         self.club_user.save()
+        self.user2 = User.objects.get(username = 'janedoe1@example.org')
+        self.club_user2 = UserClubs.objects.create(
+        user = self.user2,
+        club = self.club,
+        is_applicant = False,
+        is_member = False,
+        is_officer = False,
+        is_owner = False
+        )
+        self.club_user2.save()
+        self.club2 = Club.objects.get(name = 'ClubB')
+        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('owner_commands', kwargs = {'club_name': self.club.name})
 
     def test_owner_commands_url(self):
@@ -51,9 +63,11 @@ class OwnerCommandsTest(TestCase):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_owner_commands_as_not_owner_fails(self):
-        self.club_user.is_owner = False
-        self.club_user.save()
-        self.client.login(username=self.user.username, password='Password123')
+        self.club_user2.is_applicant=True
+        self.club_user2.is_member=True
+        self.club_user2.is_officer=True
+        self.club_user2.save()
+        self.client.login(username=self.user2.username, password='Password123')
         response = self.client.get(self.url)
         redirect_url = reverse('club_list')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

@@ -143,11 +143,14 @@ def log_in(request):
 
 @login_required
 def club_list(request):
-    clubs = Club.objects.filter().order_by()
+    all_clubs = Club.objects.filter().order_by()
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    my_clubs = Club.objects.filter(id__in = clubIDs)
     owner_dict = {}
-    for c in clubs:
+    for c in all_clubs:
         owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
-    return render(request, 'club_list.html', {'clubs':clubs, 'owners':owner_dict})
+    return render(request, 'club_list.html', {'all_clubs':all_clubs, 'owners':owner_dict, 'clubs':my_clubs})
 
 @login_required
 def my_clubs(request):
@@ -205,7 +208,7 @@ def club_application(request, club_name):
             #club_user = UserClubs(user = new_user, club = apply_club)
             #club_user.save()
         return redirect('club_list')
-    
+
 @login_required
 @officer_required
 def application_list(request, club_name):
