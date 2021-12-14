@@ -1,23 +1,27 @@
 {% extends "base_content.html" %}
 {% block content %}
 <div id="cover-image">
-  <div class="container vh-100">
+  <div class="container vh-100 w-100 h-50">
     <div class="row h-100">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-2 offset-lg-4">
-          <h1 class="cover-heading">{{club}}</h1>
+          <h2 class="cover-heading">{{club}}</h2>
+          
           {% csrf_token%}
           <ul>
             <div class="card cover-card">
               <a href="{% url 'view_members' club %}" class="btn btn-lg btn-secondary">
                 View Members!
               </a>
+              <br/>
               <p>
                 {% if clubUser.is_officer %}
                 <a href="{% url 'application_list' club %}" class="btn btn-lg btn-secondary">
                   Approve or reject applications!
                 </a>
                 {% endif %}
+              </p>
+              <p>
                 {% if clubUser.is_owner%}
                 <a href="{% url 'owner_commands' club %}" class="btn btn-lg btn-secondary">
                   Promote, demote or tranfer ownership as the club's owner
