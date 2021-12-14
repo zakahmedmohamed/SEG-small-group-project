@@ -65,7 +65,7 @@ def sign_up(request):
     return render(request, 'sign_up.html', {'form': form})
 
 @login_required
-def profile(request):
+def change_profile(request):
     current_user = request.user
     if request.method == 'POST':
         form = UserForm(instance=current_user, data=request.POST)
@@ -75,10 +75,10 @@ def profile(request):
             return redirect('my_clubs')
     else:
         form = UserForm(instance=current_user)
-    return render(request, 'profile.html', {'form': form})
+    return render(request, 'change_profile.html', {'form': form})
 
 @login_required
-def password(request):
+def change_password(request):
     current_user = request.user
     if request.method == 'POST':
         form = PasswordForm(data=request.POST)
@@ -92,7 +92,7 @@ def password(request):
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
                 return redirect('my_clubs')
     form = PasswordForm()
-    return render(request, 'password.html', {'form': form})
+    return render(request, 'change_password.html', {'form': form})
 
 @login_required
 def create_club(request):

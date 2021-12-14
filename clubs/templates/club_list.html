@@ -5,14 +5,14 @@
     <div class="row h-100 ">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-3 offset-lg-4">
-          <h4 style="text-align: center">My Clubs</h5>
+          <h4 style="text-align: center">Club list</h5>
           <ul class="nav nav-tabs" id="clubTabs" role="tablist">
         {% for club in all_clubs %}
           <li class="nav-item">
             {% if forloop.counter == 1 %}
-            <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
+            <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#id{{club.id}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
           {% else %}
-            <button class="nav-link" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
+            <button class="nav-link" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#id{{club.id}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
           {% endif %}
             </li>
             {%empty%}
@@ -27,9 +27,9 @@
         <div class="tab-content">
           {% for club in all_clubs %}
           {% if forloop.counter == 1 %}
-           <div class="tab-pane fade show active" id="{{club.name}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
+           <div class="tab-pane fade show active" id="id{{club.id}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
           {% else %}
-             <div class="tab-pane fade" id="{{club.name}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
+             <div class="tab-pane fade" id="id{{club.id}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
           {% endif %}
             <p>Description: {{club.description}}</p>
             <p>Location: {{club.location}}</p>
