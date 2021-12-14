@@ -7,7 +7,7 @@
         <div class="card cover-card offset-md-3 offset-lg-4">
           <h4 style="text-align: center">My Clubs</h5>
           <ul class="nav nav-tabs" id="clubTabs" role="tablist">
-        {% for club in clubs %}
+        {% for club in all_clubs %}
           <li class="nav-item">
             {% if forloop.counter == 1 %}
             <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
@@ -25,7 +25,7 @@
       </ul>
 
         <div class="tab-content">
-          {% for club in clubs %}
+          {% for club in all_clubs %}
           {% if forloop.counter == 1 %}
            <div class="tab-pane fade show active" id="{{club.name}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
           {% else %}
