@@ -205,7 +205,7 @@ def club_application(request, club_name):
             #club_user = UserClubs(user = new_user, club = apply_club)
             #club_user.save()
         return redirect('club_list')
-    
+
 @login_required
 @officer_required
 def application_list(request, club_name):

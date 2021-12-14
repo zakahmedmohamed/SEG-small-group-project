@@ -18,6 +18,8 @@ class TransferOwnershipTest(TestCase):
         self.member.save()
         self.other_member = UserClubs(user = self.other_user ,club = self.club, is_member = True)
         self.other_member.save()
+        self.club2 = Club.objects.get(name = 'ClubB')
+        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('transfer_ownership', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 
     def test_transfer_ownership_url(self):

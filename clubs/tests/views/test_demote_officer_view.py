@@ -3,7 +3,7 @@ from django.urls import reverse
 from clubs.models import User, UserClubs, Club
 from clubs.tests.helpers import reverse_with_next
 
-class ShowUserTest(TestCase):
+class Demote_officer_test(TestCase):
 
     fixtures = [
         'clubs/tests/fixtures/users.json',

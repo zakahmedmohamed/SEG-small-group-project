@@ -11,6 +11,7 @@ class MyClubListTest(TestCase):
     def setUp(self):
         self.club = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
+        self.no_club_user = User.objects.get(username = 'janedoe1@example.org')
         self.club_user = UserClubs.objects.create(
         user = self.user,
         club = self.club,
@@ -39,6 +40,14 @@ class MyClubListTest(TestCase):
             my_club = Club.objects.all().get(name='TheGrand')
             club_url = reverse('club_home', kwargs={'club_name': my_club.name})
             self.assertContains(response, club_url)
+
+    def test_get_user_empty_club_list(self):
+        self.client.login(username=self.no_club_user.username, password='Password123')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'my_clubs.html')
+        self.assertContains(response, 'No clubs joined')
+        self.assertContains(response, 'Please join or create a club')
 
     def test_get_club_list_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
