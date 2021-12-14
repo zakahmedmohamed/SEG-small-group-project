@@ -39,7 +39,7 @@
             <p>Owner: <img src="{{ value.user.mini_gravatar }}" class="rounded-circle profile-image" > {{value.user.full_name}}</p>
             {% endif %}
             {% endfor %}
-            <a href='{% url 'club_home' club.name %}' class="btn btn-sm btn-secondary">
+            <a href='{% url 'club_profile' club.name %}' class="btn btn-sm btn-secondary">
               View club
             </a>
           </div>

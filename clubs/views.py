@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.db.models import Q
 from clubs.forms import Log_in_form
 from clubs.models import User
 from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, PasswordForm
