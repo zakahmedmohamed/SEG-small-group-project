@@ -79,7 +79,7 @@ class Create_A_Club_Form(forms.ModelForm):
         }
 
     def save(self):
-        #create a new clun and save it
+        #create a new club and save it
         super().save(commit = False)
         club = Club.objects.create(
             name = self.cleaned_data.get('name'),
@@ -102,7 +102,7 @@ class UserForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'username': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}),
-            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), 
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}),
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 

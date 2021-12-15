@@ -7,7 +7,6 @@ class Command(BaseCommand):
             super().__init__()
 
         def handle(self, *args, **options):
-            #print("TODO: The database unseeder will be added here...")
             user_set = User.objects.all()
             userClubs_set = UserClubs.objects.all()
             club_set = Club.objects.all()
@@ -17,7 +16,7 @@ class Command(BaseCommand):
                 if user.is_superuser == False:
                     user.delete()
             for club in club_set.iterator():
-                club.delete() 
+                club.delete()
             for userClub in userClubs_set.iterator():
-                userClub.delete() 
+                userClub.delete()
             print('done.')

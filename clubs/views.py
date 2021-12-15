@@ -102,8 +102,8 @@ def create_club(request):
             newClub = form.save()
             #clubName = form.cleaned_data['name']
             club_user = UserClubs(user = request.user, club = newClub)
-            club_user.is_member = True
-            club_user.is_officer = True
+            club_user.is_member = False
+            club_user.is_officer = False
             club_user.is_owner = True
             club_user.save()
             return redirect('club_list')

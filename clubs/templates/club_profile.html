@@ -10,10 +10,8 @@
                 <p>Description: {{club.description}}</p>
                 <p>Created: {{club.created_at}}</p>
                 <p>Number of members: {{memberSize}}</p>
-
                 <p>Owner: {{owner.user.full_name}}</p>
                 <p><img src="{{ owner.user.mini_gravatar }}" alt="Gravatar of {{ owner.user.full_name }}" class="rounded-circle profile-image" ></p>
-                <p>Bio: {{owner.user.bio}}</p>
               {% csrf_token%}
               {% if current_user.is_applicant %}
               <p>
