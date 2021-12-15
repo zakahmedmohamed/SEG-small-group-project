@@ -190,6 +190,9 @@ def view_members(request,club_name):
 """View for the club profile page"""
 @login_required
 def club_profile(request,club_name):
+    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.filter(id__in = clubIDs)
     try:
         currentClub = Club.objects.get(name = club_name)
     except ObjectDoesNotExist:
@@ -198,7 +201,7 @@ def club_profile(request,club_name):
         memberSize = UserClubs.objects.all().filter(club = currentClub, is_member = True).count()
         owner = UserClubs.objects.all().get(club = currentClub, is_owner = True)
         have_applied = UserClubs.objects.all().filter(club = currentClub, user = request.user).exists()
-        return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied}))
+        return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied, 'clubs':clubs}))
 
 """View to apply for a club"""
 @login_required
