@@ -53,7 +53,7 @@ class promote_member_test(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'owner_commands.html')
 
-    def test_get_follow_toggle_with_invalid_id(self):
+    def test_get_promote_member_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('promote_member', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)

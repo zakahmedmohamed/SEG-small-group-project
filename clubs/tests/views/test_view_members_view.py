@@ -3,7 +3,7 @@ from django.urls import reverse
 from clubs.models import User, Club, UserClubs
 from clubs.tests.helpers import LogInTester
 
-class UserListTest(TestCase, LogInTester):
+class ViewMembersTest(TestCase, LogInTester):
     fixtures = ["clubs/tests/fixtures/users.json", "clubs/tests/fixtures/clubs.json"]
     
 
@@ -15,7 +15,7 @@ class UserListTest(TestCase, LogInTester):
         self.url = reverse('view_members', kwargs={'club_name': self.member.club.name})
 
 
-    def test_show_members_url(self):
+    def test_view_members_url(self):
         self.assertEqual(self.url,f'/view_members/{self.member.club.name}/')
 
     def test_get_view_members_as_officer(self):

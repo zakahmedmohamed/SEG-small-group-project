@@ -3,7 +3,7 @@ from django.urls import reverse
 from clubs.models import User, UserClubs, Club
 from clubs.tests.helpers import reverse_with_next
 
-class Club_application_test(TestCase):
+class ClubApplicationTest(TestCase):
 
     fixtures = [
         'clubs/tests/fixtures/users.json',
@@ -19,7 +19,7 @@ class Club_application_test(TestCase):
         UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_application', kwargs={'club_name': self.club.name})
 
-    def test_follow_toggle_url(self):
+    def test_follow_club_application_url(self):
         self.assertEqual(self.url,f'/club_application/{self.club.name}/')
 
     def test_get_club_application_redirects_when_not_logged_in(self):

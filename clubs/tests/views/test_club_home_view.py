@@ -21,7 +21,7 @@ class Club_Home_Test(TestCase):
         self.member_user_club = UserClubs.objects.create(user = self.member_user, club = self.club, is_member = True, is_officer = False, is_owner = False)
         self.url = reverse('club_home', kwargs={'club_name': self.club.name})
 
-    def test_show_user_url(self):
+    def test_show_club_home_url(self):
         self.assertEqual(self.url,f'/club_home/{self.club.name}/')
 
     def test_get_show_club_home_with_valid_owner_user(self):
@@ -51,7 +51,7 @@ class Club_Home_Test(TestCase):
         self.assertNotContains(response, "Approve or reject applications!")
         self.assertNotContains(response, "Promote, demote or tranfer ownership as the club's owner")
 
-    def test_get_club_profile_redirects_when_not_logged_in(self):
+    def test_get_club_home_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

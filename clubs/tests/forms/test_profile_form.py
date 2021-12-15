@@ -4,7 +4,7 @@ from django.test import TestCase
 from clubs.forms import UserForm
 from clubs.models import User
 
-class UserFormTestCase(TestCase):
+class ProfileFormTestCase(TestCase):
     """Unit tests of the user form."""
 
     fixtures = ['clubs/tests/fixtures/users.json']

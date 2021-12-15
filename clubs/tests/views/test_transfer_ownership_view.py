@@ -78,7 +78,7 @@ class TransferOwnershipTest(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_list.html')
 
-    def test_get_ftransfer_ownership_with_invalid_id(self):
+    def test_get_transfer_ownership_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('transfer_ownership', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)
