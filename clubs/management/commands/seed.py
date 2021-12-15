@@ -46,9 +46,29 @@ class Command(BaseCommand):
             statement = 'Zzz',
             chess_xp = 3
         )
+        owner1 = User.objects.create_user(
+            first_name = 'Bob',
+            last_name = 'Doe',
+            username = 'bob@example.org',
+            password = 'Password123',
+            bio = "Name's Bob",
+            statement = 'Whooo',
+            chess_xp = 10
+        )
+        owner2 = User.objects.create_user(
+            first_name = 'Jane',
+            last_name = 'Doe',
+            username = 'jane@example.org',
+            password = 'Password123',
+            bio = "Name's Jane",
+            statement = 'Thank you',
+            chess_xp = 40
+        )
         userList.append(jebediah)
         userList.append(valentina)
         userList.append(billie)
+        userList.append(owner1)
+        userList.append(owner2)
 
         for i in range(20):
             user = User.objects.create_user(
@@ -68,18 +88,30 @@ class Command(BaseCommand):
         
     def generate_clubs(self):
         club_list = []
-        Somalia = Club.objects.create(
-            name = 'Somalia',
-            description = 'This is Somalia',
-            location = 'Somalia'
+        club1 = Club.objects.create(
+            name = 'Kerbal Chess Club',
+            description = 'This is kerbal chess club',
+            location = 'New york'
         )
-        Bangladesh = Club.objects.create(
-            name = 'Bangladesh',
-            description = 'This is Bangladesh',
-            location = 'Bangladesh'
+        club2 = Club.objects.create(
+            name = 'The Grand',
+            description = 'This is the grand',
+            location = 'London'
         )
-        club_list.append(Somalia)
-        club_list.append(Bangladesh)
+        club3 = Club.objects.create(
+            name = 'Club B',
+            description = 'This is club b',
+            location = 'Bristol'
+        )
+        club4 = Club.objects.create(
+            name = 'Dragonfly',
+            description = 'This is Dragonfly',
+            location = 'London'
+        )
+        club_list.append(club1)
+        club_list.append(club2)
+        club_list.append(club3)
+        club_list.append(club4)
         
         for club in club_list:
             print(club.name)
@@ -87,21 +119,67 @@ class Command(BaseCommand):
             club.save()
     
     def generate_UserClubs(self):
-        user_clubs_list = []
-        OwnerOne = UserClubs.objects.create(
+        UserClubs.objects.create(
             user = User.objects.get(username = 'jeb@example.org'),
-            club = Club.objects.get(name = 'Bangladesh'),
-            is_applicant = False,
-            is_member= False,
+            club = Club.objects.get(name = 'Kerbal Chess Club'),
+            is_member= True,
+            is_applicant= True,
             is_owner = True,
-            is_officer = False
+            is_officer = True
         )
-        OwnerOne = UserClubs.objects.create(
+        UserClubs.objects.create(
             user = User.objects.get(username = 'billie@example.org'),
-            club = Club.objects.get(name = 'Somalia'),
-            is_applicant = False,
-            is_member= False,
+            club = Club.objects.get(name = 'Kerbal Chess Club'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = False,
+            is_officer = True
+        )
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'val@example.org'),
+            club = Club.objects.get(name = 'Kerbal Chess Club'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = False,
+            is_officer = True
+        )
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'jeb@example.org'),
+            club = Club.objects.get(name = 'The Grand'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = False,
+            is_officer = True
+        )
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'billie@example.org'),
+            club = Club.objects.get(name = 'Club B'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = True,
+            is_officer = True
+        )
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'val@example.org'),
+            club = Club.objects.get(name = 'Dragonfly'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = False,
+            is_officer = False
+        )
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'bob@example.org'),
+            club = Club.objects.get(name = 'The Grand'),
+            is_member= True,
+            is_applicant= True,
             is_owner = True,
             is_officer = False
         )
-
+        UserClubs.objects.create(
+            user = User.objects.get(username = 'jane@example.org'),
+            club = Club.objects.get(name = 'Dragonfly'),
+            is_member= True,
+            is_applicant= True,
+            is_owner = True,
+            is_officer = True
+        )

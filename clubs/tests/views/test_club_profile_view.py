@@ -14,12 +14,12 @@ class Club_Profile_Test(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='janedoe@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.user_club = UserClubs.objects.create(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.user_club = UserClubs.objects.create(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_profile', kwargs={'club_name': self.club.name})
 
-    def test_show_user_url(self):
+    def test_show_club_profile_url(self):
         self.assertEqual(self.url,f'/club_profile/{self.club.name}/')
 
     def test_get_show_club_profile_with_valid_user(self):
@@ -36,20 +36,6 @@ class Club_Profile_Test(TestCase):
         self.assertContains(response, "My bio")
         self.assertContains(response, f"Number of members: {test_user_count + 1}")
 
-    def _create_test_users(self, user_count = 10):
-        for user_id in range(user_count):
-            self.user2 = User.objects.create_user(
-                f'user{user_id}@example.org',
-                password='Password123',
-                first_name='First',
-                last_name='Last',
-                bio='Bio',
-                statement = 'Statement',
-                chess_xp = 10,
-            )
-            self.club_user = UserClubs(user = self.user2, club = self.club, is_member = True)
-            self.club_user.save()
-
     def test_get_club_profile_with_invalid_club(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('club_profile', kwargs={'club_name': self.club.name + "Not a club"})
@@ -62,3 +48,17 @@ class Club_Profile_Test(TestCase):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def _create_test_users(self, user_count = 10):
+        for user_id in range(user_count):
+            self.user2 = User.objects.create_user(
+                f'user{user_id}@example.org',
+                password='Password123',
+                first_name='First',
+                last_name='Last',
+                bio='Bio',
+                statement = 'Statement',
+                chess_xp = 10,
+            )
+            self.club_user = UserClubs(user = self.user2, club = self.club, is_applicant = True, is_member = True)
+            self.club_user.save()

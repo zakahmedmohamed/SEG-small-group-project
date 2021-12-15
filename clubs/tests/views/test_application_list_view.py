@@ -31,7 +31,7 @@ class ApplicationListTest(TestCase):
         )
         self.club_user2.save()
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('application_list', kwargs = {'club_name': self.club.name})
 
     def test_application_list_url(self):
@@ -83,6 +83,6 @@ class ApplicationListTest(TestCase):
             self.club_user = UserClubs.objects.create(
             user = self.user,
             club = self.club,
-            is_member = False,
+            is_applicant = True
             )
             self.club_user.save()

@@ -14,12 +14,12 @@ class TransferOwnershipTest(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.member = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.member.save()
-        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_member = True)
+        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_applicant = True, is_member = True)
         self.other_member.save()
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('transfer_ownership', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 
     def test_transfer_ownership_url(self):
@@ -78,7 +78,7 @@ class TransferOwnershipTest(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_list.html')
 
-    def test_get_ftransfer_ownership_with_invalid_id(self):
+    def test_get_transfer_ownership_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('transfer_ownership', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)

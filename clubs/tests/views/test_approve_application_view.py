@@ -3,7 +3,7 @@ from django.urls import reverse
 from clubs.models import User, UserClubs, Club
 from clubs.tests.helpers import reverse_with_next
 
-class Approve_application_test(TestCase):
+class ApproveApplicationTest(TestCase):
 
     fixtures = [
         'clubs/tests/fixtures/users.json',
@@ -14,8 +14,8 @@ class Approve_application_test(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True)
-        self.member.save()
+        self.club_user = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
+        self.club_user.save()
         self.other_member = UserClubs(user = self.other_user ,club = self.club)
         self.other_member.save()
         self.url = reverse('approve_application', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
@@ -31,7 +31,7 @@ class Approve_application_test(TestCase):
     def test_approve_application_who_is_not_member(self):
         self.client.login(username=self.user.username, password='Password123')
         is_member_before = self.other_member.is_member
-        self.member.approve_application(self.other_member)
+        self.club_user.approve_application(self.other_member)
         response = self.client.get(self.url, follow=True)
         is_member_after = self.other_member.is_member
         self.assertFalse(is_member_before)
@@ -44,7 +44,7 @@ class Approve_application_test(TestCase):
         self.client.login(username=self.user.username, password='Password123')
         self.other_member.is_member = True
         is_member_before = self.other_member.is_member
-        self.member.approve_application(self.other_member)
+        self.club_user.approve_application(self.other_member)
         response = self.client.get(self.url, follow=True)
         is_member_after = self.other_member.is_member
         self.assertTrue(is_member_before)
@@ -53,10 +53,10 @@ class Approve_application_test(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'application_list.html')
 
-    """def test_get_approve_application_with_invalid_id(self):
+    def test_get_approve_application_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('approve_application', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)
         response_url = reverse('my_clubs')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'my_clubs.html')"""
+        self.assertTemplateUsed(response, 'my_clubs.html')

@@ -14,9 +14,9 @@ class promote_member_test(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.member = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.member.save()
-        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_member = True)
+        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_applicant = True, is_member = True)
         self.other_member.save()
         self.url = reverse('promote_member', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 
@@ -36,9 +36,9 @@ class promote_member_test(TestCase):
         is_officer_after = self.other_member.is_officer
         self.assertFalse(is_officer_before)
         self.assertTrue(is_officer_after)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')
 
     def test_promote_user_who_is_already_officer(self):
         self.client.login(username=self.user.username, password='Password123')
@@ -49,14 +49,14 @@ class promote_member_test(TestCase):
         is_officer_after = self.other_member.is_officer
         self.assertTrue(is_officer_before)
         self.assertTrue(is_officer_after)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')
 
-    def test_get_follow_toggle_with_invalid_id(self):
+    def test_get_promote_member_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('promote_member', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')

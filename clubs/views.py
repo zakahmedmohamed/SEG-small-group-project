@@ -12,6 +12,7 @@ from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, Passwo
 from clubs.models import Club, UserClubs
 from .models import User
 
+"""Redirect URL if you are logged in"""
 def login_prohibited(view_function):
     def modified_view_function(request):
         if request.user.is_authenticated:
@@ -20,6 +21,7 @@ def login_prohibited(view_function):
             return view_function(request)
     return modified_view_function
 
+"""Redirect URL if you are not an owner"""
 def owner_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
@@ -30,6 +32,7 @@ def owner_required(view_function):
             return view_function(request, club_name, **kwargs)
     return modified_view_function
 
+"""Redirect URL if you are not an officer"""
 def officer_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
@@ -40,6 +43,7 @@ def officer_required(view_function):
             return view_function(request, club_name, **kwargs)
     return modified_view_function
 
+"""Redirect URL if you are not a member"""
 def member_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
@@ -50,7 +54,7 @@ def member_required(view_function):
             return view_function(request, club_name, **kwargs)
     return modified_view_function
 
-# View for the sign up page
+"""View for the sign up page"""
 def sign_up(request):
     if request.method =='POST':
         form = SignUpForm(request.POST)
@@ -64,6 +68,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+"""View to change profile"""
 @login_required
 def change_profile(request):
     current_user = request.user
@@ -77,6 +82,7 @@ def change_profile(request):
         form = UserForm(instance=current_user)
     return render(request, 'change_profile.html', {'form': form})
 
+"""View tp change password"""
 @login_required
 def change_password(request):
     current_user = request.user
@@ -94,6 +100,7 @@ def change_password(request):
     form = PasswordForm()
     return render(request, 'change_password.html', {'form': form})
 
+"""View to create a club"""
 @login_required
 def create_club(request):
     if request.method =='POST':
@@ -106,12 +113,12 @@ def create_club(request):
         form = Create_A_Club_Form()
     return render(request, 'create_club.html', {'form': form})
 
-# Create your views here.
+"""View to see home page"""
 @login_prohibited
 def home(request):
     return render(request, 'home.html')
 
-
+"""View to see a club home page"""
 @login_required
 @member_required
 def club_home(request, club_name):
@@ -124,6 +131,7 @@ def club_home(request, club_name):
     #form.fields['clubs'] = clubs
     return render(request, 'club_home.html', {'clubs': clubs, 'club': club_name, 'clubUser': club_user})
 
+"""View to log in"""
 @login_prohibited
 def log_in(request):
     if request.method == "POST":
@@ -141,6 +149,7 @@ def log_in(request):
     next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form':form, 'next':next})
 
+"""View for the club list page"""
 @login_required
 def club_list(request):
     all_clubs = Club.objects.filter().order_by()
@@ -152,6 +161,7 @@ def club_list(request):
         owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
     return render(request, 'club_list.html', {'all_clubs':all_clubs, 'owners':owner_dict, 'clubs':my_clubs})
 
+"""View for the my clubs page"""
 @login_required
 def my_clubs(request):
     joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
@@ -164,6 +174,7 @@ def my_clubs(request):
         owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
+"""View for the members list"""
 @login_required
 @member_required
 def view_members(request,club_name):
@@ -176,6 +187,7 @@ def view_members(request,club_name):
     current_user = UserClubs.objects.all().get(user = request.user,club = selected_club)
     return (render(request, 'view_members.html',{'members':members, 'selected_club': selected_club, 'clubs':clubs, 'current_user': current_user} ))
 
+"""View for the club profile page"""
 @login_required
 def club_profile(request,club_name):
     try:
@@ -188,6 +200,7 @@ def club_profile(request,club_name):
         have_applied = UserClubs.objects.all().filter(club = currentClub, user = request.user).exists()
         return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied}))
 
+"""View to apply for a club"""
 @login_required
 def club_application(request, club_name):
     try:
@@ -202,6 +215,7 @@ def club_application(request, club_name):
             #club_user.save()
         return redirect('club_list')
 
+"""View for list of club applications"""
 @login_required
 @officer_required
 def application_list(request, club_name):
@@ -212,6 +226,7 @@ def application_list(request, club_name):
     clubs = Club.objects.filter(id__in = clubIDs)
     return render(request, 'application_list.html', {'users': users, 'club_name':club_name, 'clubs':clubs})
 
+"""View to approve a application"""
 @login_required
 @officer_required
 def approve_application(request, club_name, user_id):
@@ -226,6 +241,7 @@ def approve_application(request, club_name, user_id):
         officer.approve_application(user)
         return redirect('application_list', club_name=club_name)
 
+"""View to remove a application"""
 @login_required
 @officer_required
 def reject_application(request, club_name, user_id):
@@ -241,6 +257,7 @@ def reject_application(request, club_name, user_id):
         return redirect('application_list', club_name=club_name)
 
 
+"""View to promote a member"""
 @login_required
 @owner_required
 def promote_member(request, club_name, user_id):
@@ -254,6 +271,7 @@ def promote_member(request, club_name, user_id):
         owner.promote_member(user)
         return redirect('view_members', club_name = club_name)
 
+"""View to demote an officer"""
 @login_required
 @owner_required
 def demote_officer(request, club_name, user_id):
@@ -267,6 +285,7 @@ def demote_officer(request, club_name, user_id):
         owner.demote_officer(user)
         return redirect('view_members', club_name = club_name)
 
+"""View to transfer ownership to another member"""
 @login_required
 @owner_required
 def transfer_ownership(request, club_name, user_id):
@@ -280,16 +299,7 @@ def transfer_ownership(request, club_name, user_id):
         owner.transfer_ownership(user)
         return redirect('club_home', club_name = club_name)
 
+"""View to log out"""
 def log_out(request):
     logout(request)
     return redirect('home')
-
-"""
-def user_list(request):
-    users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users})
-
-def show_user(request, user_id):
-    users = get_user_model().objects.get(id=user_id)
-    return render(request, 'show_user.html', {'users': users})
-"""

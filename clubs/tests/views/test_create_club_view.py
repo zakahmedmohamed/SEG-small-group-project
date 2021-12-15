@@ -22,7 +22,7 @@ class Create_club_test(TestCase, LogInTester):
             'location': 'London',
         }
 
-    def test_sign_up_url(self):
+    def test_create_club_url(self):
         self.assertEqual(self.url,'/create_club/')
 
     def test_get_create_club(self):
@@ -45,7 +45,7 @@ class Create_club_test(TestCase, LogInTester):
         self.assertTrue(isinstance(form, Create_A_Club_Form))
         self.assertTrue(form.is_bound)
 
-    def test_succesful_sign_up(self):
+    def test_succesful_create_club(self):
         before_count = Club.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Club.objects.count()

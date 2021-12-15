@@ -3,20 +3,8 @@ from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 
-#Create your models here.
 class User(AbstractUser):
-    """User model used for authentication and microblog authoring."""
-
-    # username = models.CharField(
-    #     max_length=30,
-    #     unique=True,
-    #     validators=[RegexValidator(
-    #         regex=r'^@\w{3,}$',
-    #         message='Username must consist of @ followed by at least three alphanumericals'
-    #     )]
-    # )
-    # email = models.EmailField(unique=True, blank=False)
-
+    """User model used for clubs application."""
     username = models.EmailField(unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -41,17 +29,20 @@ class User(AbstractUser):
         return self.username
 
     def make_club_owner(self, new_club):
+        """Make a new user club who is the owner of the specified club"""
         club_user = UserClubs(user = self, club = new_club)
+        club_user.is_applicant = True
         club_user.is_member = True
         club_user.is_officer = True
         club_user.is_owner = True
         club_user.save()
 
     def apply_club(self, new_club):
-        club_user = UserClubs(user = self, club = new_club)
+        club_user = UserClubs(user = self, club = new_club, is_applicant = True)
         club_user.save()
 
 class Club(models.Model):
+    """Club model used for clubs application."""
     name = models.CharField(max_length=20, unique=True, blank=False)
     description = models.CharField(max_length=520, blank=True)
     location = models.CharField(max_length=20, blank=False)
@@ -64,6 +55,7 @@ class Club(models.Model):
         ordering = ['created_at']
 
 class UserClubs(models.Model):
+    """User Clubs model used for a many-to-many relationship with User and Club."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     is_applicant = models.BooleanField(default=False)
@@ -91,5 +83,5 @@ class UserClubs(models.Model):
         user.save()
 
     def reject_application(self,user):
-        if user.is_member == False:
+        if user.is_member == False and user.is_applicant == True:
             user.delete()
