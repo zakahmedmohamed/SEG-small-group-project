@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club
+from clubs.models import User, Club, UserClubs
 from clubs.tests.helpers import reverse_with_next
 
 class ClubListTest(TestCase):
@@ -12,6 +12,9 @@ class ClubListTest(TestCase):
         self.url = reverse('club_list')
         self.club = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
+        self.club2 = Club.objects.get(name = 'ClubB')
+        UserClubs(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
 
     def test_club_list_url(self):
         self.assertEqual(self.url,'/club_list/')
@@ -41,3 +44,4 @@ class ClubListTest(TestCase):
             location='London'
             club = Club(name=name,description=description,location=location)
             club.save()
+            UserClubs(user = self.user, club = club, is_member = True, is_officer = True, is_owner = True).save()
