@@ -5,11 +5,11 @@
     <div class="row h-100">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-2 offset-lg-4">
-          <h2 class="cover-heading">{{club}}</h2>
+          <h2 class="cover-heading" style="text-align: center">{{club}}</h2>
 
           {% csrf_token%}
           <ul>
-            <div class="card cover-card">
+            <div class="card cover-card" style="text-align:center">
               <a href="{% url 'view_members' club %}" class="btn btn-lg btn-secondary">
                 View Members!
               </a>
@@ -18,13 +18,6 @@
                 {% if clubUser.is_officer %}
                 <a href="{% url 'application_list' club %}" class="btn btn-lg btn-secondary">
                   Approve or reject applications!
-                </a>
-                {% endif %}
-              </p>
-              <p>
-                {% if clubUser.is_owner%}
-                <a href="{% url 'owner_commands' club %}" class="btn btn-lg btn-secondary">
-                  Promote, demote or tranfer ownership as the club's owner
                 </a>
                 {% endif %}
               </p>

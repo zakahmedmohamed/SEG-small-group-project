@@ -178,21 +178,14 @@ def my_clubs(request):
 @login_required
 @member_required
 def view_members(request,club_name):
-    """
-    currentUser = request.user
-    currentClub = UserClubs.objects.get(user = currentUser.id).objects.filter(club = club_name)
-    if currentClub.is_officer:
-        {'currentClub',currentClub}
-    """
-    #currentUser = request.user
-    #currentClub = UserClubs.objects.get(user = currentUser.id, club = club_name)
-    clubObject = Club.objects.get(name = club_name)
+
+    selected_club = Club.objects.get(name = club_name)
+    members = UserClubs.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
     joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
-    currentClub = UserClubs.objects.all().get(club = clubObject, user = request.user)
-    members = UserClubs.objects.all().filter(club = clubObject).filter(is_member=True)
-    return (render(request, 'view_members.html',{'users':members, 'currentClub': currentClub, 'clubs': clubs} ))
+    current_user = UserClubs.objects.all().get(user = request.user,club = selected_club)
+    return (render(request, 'view_members.html',{'members':members, 'selected_club': selected_club, 'clubs':clubs, 'current_user': current_user} ))
 
 """View for the club profile page"""
 @login_required
@@ -263,16 +256,6 @@ def reject_application(request, club_name, user_id):
         officer.reject_application(user)
         return redirect('application_list', club_name=club_name)
 
-"""View for the commands an owner can do"""
-@login_required
-@owner_required
-def owner_commands(request, club_name):
-    selected_club = Club.objects.get(name = club_name)
-    members = UserClubs.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
-    clubIDs = joined_clubs.values_list('club')
-    clubs = Club.objects.filter(id__in = clubIDs)
-    return (render(request, 'owner_commands.html',{'members':members, 'selected_club': selected_club, 'clubs':clubs} ))
 
 """View to promote a member"""
 @login_required
@@ -283,10 +266,10 @@ def promote_member(request, club_name, user_id):
         owner = UserClubs.objects.get(user = request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
     except ObjectDoesNotExist:
-        return redirect('owner_commands', club_name = club_name)
+        return redirect('view_members', club_name = club_name)
     else:
         owner.promote_member(user)
-        return redirect('owner_commands', club_name = club_name)
+        return redirect('view_members', club_name = club_name)
 
 """View to demote an officer"""
 @login_required
@@ -297,10 +280,10 @@ def demote_officer(request, club_name, user_id):
         owner = UserClubs.objects.get(user = request.user, club = club)
         user = UserClubs.objects.get(id=user_id)
     except ObjectDoesNotExist:
-        return redirect('owner_commands', club_name = club_name)
+        return redirect('view_members', club_name = club_name)
     else:
         owner.demote_officer(user)
-        return redirect('owner_commands', club_name = club_name)
+        return redirect('view_members', club_name = club_name)
 
 """View to transfer ownership to another member"""
 @login_required

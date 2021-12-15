@@ -31,7 +31,6 @@ class Club_Home_Test(TestCase):
         self.assertTemplateUsed(response, 'club_home.html')
         self.assertContains(response, "View Members!")
         self.assertContains(response, "Approve or reject applications!")
-        self.assertContains(response, "Promote, demote or tranfer ownership as the club's owner")
 
     def test_get_show_club_home_with_valid_officer_user(self):
         self.client.login(username=self.officer_user.username, password='Password123')
@@ -40,7 +39,6 @@ class Club_Home_Test(TestCase):
         self.assertTemplateUsed(response, 'club_home.html')
         self.assertContains(response, "View Members!")
         self.assertContains(response, "Approve or reject applications!")
-        self.assertNotContains(response, "Promote, demote or tranfer ownership as the club's owner")
 
     def test_get_show_club_home_with_valid_member_user(self):
         self.client.login(username=self.member_user.username, password='Password123')
@@ -49,7 +47,6 @@ class Club_Home_Test(TestCase):
         self.assertTemplateUsed(response, 'club_home.html')
         self.assertContains(response, "View Members!")
         self.assertNotContains(response, "Approve or reject applications!")
-        self.assertNotContains(response, "Promote, demote or tranfer ownership as the club's owner")
 
     def test_get_club_home_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)

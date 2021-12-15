@@ -1,33 +1,62 @@
-{% extends "base_content.html" %}
+{% extends 'base_content.html' %}
 {% block content %}
-<div id = "cover-image">
+<div id="cover-image">
   <div class="container vh-100">
     <div class="row h-100">
-      <div class="col-12 my-auto">
-        <div class="card cover-card offset-md-2 offset-lg-4">
-          <h1 class="cover-heading">Members List</h1>
-            <div class = "card cover-card">
-            <ul style="list-style-type:none;">
-              {%for user in users%}
-                <li><img src="{{ user.user.mini_gravatar }}" alt="Gravatar of {{ user.user.full_name }}" class="rounded-circle profile-image" > {{user.user.full_name}}</li>
-                <li>Bio: {{user.user.bio}}</li>
-                {% if currentClub.is_officer%}
-                <li>Username: {{user.user.username}}</li>
-                <li> Chess xp: {{user.user.chess_xp}}</li>
-                <li>Statement: {{user.user.statement}}</li>
-                {% endif %}
-                {% endfor %}
-                </ul>
-              </div>
-          {% csrf_token%}
-          <p><br/>
-            <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
-              Home Page
-            </a>
-          </p>
+      <div class ="col-12 my auto">
+        <h1 style="text-align: center; color:white;">Members</h1>
+        <div class="container-fluid" style="background-color:azure">
+        <ul class = "nav nav-tabs" id="memberTabs" role="tablist">
+          {% for member in members %}
+          <li class ="nav-item">
+            {% if forloop.counter == 1 %}
+            <button class="nav-link active" id="{{member.user.full_name}}Tab" href="#{{member.user.full_name}}" data-bs-toggle="tab" data-bs-target="#id{{member.user.id}}" type="button" role="tab" aria-controls="{{member.user.full_name}}" aria-selected="false">{{member.user.full_name}}</button>
+            {% else %}
+            <button class="nav-link" id="{{member.user.full_name}}Tab" href="#{{member.user.full_name}}" data-bs-toggle="tab" data-bs-target="#id{{member.user.id}}" type="button" role="tab" aria-controls="{{member.user.full_name}}" aria-selected="false">{{member.user.full_name}}</button>
+            {% endif %}
+          </li>
+          {%empty%}
+          <ul style="list-style-type:none">
+            <li>&nbsp;</li>
+            <li><h5>No members</h5></li>
+            <li><p>Get members to join your club</p></li>
+          </ul>
+          {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+          {% for member in members %}
+          {% if forloop.counter == 1 %}
+          <div class="tab-pane fade show active" id="id{{member.user.id}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
+          {% else %}
+          <div class="tab-pane fade" id="id{{member.user.id}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
+          {% endif %}
+            <img src="{{ member.user.mini_gravatar }}" alt="Gravatar of {{ member.user.full_name }}" class="rounded-circle profile-image" > {{member.user.full_name}}</li>
+            <p>Bio: {{member.user.bio}}</p>
+            {% if current_user.is_officer %}
+            <p>Statement: {{member.user.statement}}</p>
+            <p>Chess XP: {{member.user.chess_xp}}</p>
+            {% if current_user.is_owner %}
+              {% if not member.is_officer %}
+                <a href='{% url 'promote_member' selected_club.name member.id %}' class="btn btn-sm btn-secondary">
+                  Promote Member
+                </a> 
+              {% else %}
+                <a href='{% url 'demote_officer' selected_club.name member.id %}' class="btn btn-sm btn-secondary">
+                  Demote Officer
+                </a> 
+              {% endif %}
+              <a href='{% url 'transfer_ownership' selected_club.name member.id %}' class="btn btn-sm btn-secondary">
+                Transfer ownership of club
+              </a>
+            {% endif %}
+            {% endif %}
+            <p>&nbsp;</p>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock %}
+{% endblock%}
