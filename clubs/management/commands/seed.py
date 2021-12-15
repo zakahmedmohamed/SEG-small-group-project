@@ -123,6 +123,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'jeb@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
+            is_applicant= True,
             is_owner = True,
             is_officer = True
         )
@@ -130,6 +131,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'billie@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
+            is_applicant= True,
             is_owner = False,
             is_officer = True
         )
@@ -137,6 +139,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'val@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
+            is_applicant= True,
             is_owner = False,
             is_officer = True
         )
@@ -144,6 +147,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'jeb@example.org'),
             club = Club.objects.get(name = 'The Grand'),
             is_member= True,
+            is_applicant= True,
             is_owner = False,
             is_officer = True
         )
@@ -151,6 +155,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'billie@example.org'),
             club = Club.objects.get(name = 'Club B'),
             is_member= True,
+            is_applicant= True,
             is_owner = True,
             is_officer = True
         )
@@ -158,6 +163,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'val@example.org'),
             club = Club.objects.get(name = 'Dragonfly'),
             is_member= True,
+            is_applicant= True,
             is_owner = False,
             is_officer = False
         )
@@ -165,6 +171,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'bob@example.org'),
             club = Club.objects.get(name = 'The Grand'),
             is_member= True,
+            is_applicant= True,
             is_owner = True,
             is_officer = False
         )
@@ -172,6 +179,7 @@ class Command(BaseCommand):
             user = User.objects.get(username = 'jane@example.org'),
             club = Club.objects.get(name = 'Dragonfly'),
             is_member= True,
+            is_applicant= True,
             is_owner = True,
             is_officer = True
         )

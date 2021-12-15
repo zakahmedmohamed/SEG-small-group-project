@@ -32,7 +32,7 @@ class ViewMembersTest(TestCase, LogInTester):
             self.assertContains(response, f'Bio{user_id}')
             self.assertContains(response, f'user{user_id}@example.org')
             self.assertContains(response, f'Statement{user_id}')
-            self.assertContains(response, f'Chess xp: {user_id}')
+            self.assertContains(response, f'Chess XP: {user_id}')
 
 
     def test_get_view_members_as_member(self):
@@ -51,7 +51,7 @@ class ViewMembersTest(TestCase, LogInTester):
             self.assertContains(response, f'Bio{user_id}')
             self.assertNotContains(response, f'user{user_id}@example.org')
             self.assertNotContains(response, f'Statement{user_id}')
-            self.assertNotContains(response, f'Chess xp: {user_id}')
+            self.assertNotContains(response, f'Chess XP: {user_id}')
 
 
     def _create_test_users(self, user_count):
