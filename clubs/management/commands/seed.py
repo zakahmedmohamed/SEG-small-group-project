@@ -70,21 +70,21 @@ class Command(BaseCommand):
         userList.append(owner1)
         userList.append(owner2)
 
-        for i in range(20):
-            user = User.objects.create_user(
-                first_name = self.faker.first_name(),
-                last_name = self.faker.last_name(),
-                username = self.faker.email(),
-                password = 'Password123',
-                bio = self.faker.text(max_nb_chars=520),
-                statement = self.faker.text(max_nb_chars=20),
-                chess_xp = self.faker.random_digit()
-            )
-            userList.append(user)
+        # for i in range(20):
+        #     user = User.objects.create_user(
+        #         first_name = self.faker.first_name(),
+        #         last_name = self.faker.last_name(),
+        #         username = self.faker.email(),
+        #         password = 'Password123',
+        #         bio = self.faker.text(max_nb_chars=520),
+        #         statement = self.faker.text(max_nb_chars=20),
+        #         chess_xp = self.faker.random_digit()
+        #     )
+        #     userList.append(user)
 
-        for user in userList:
-            user.full_clean()
-            user.save()
+        # for user in userList:
+        #     user.full_clean()
+        #     user.save()
         
     def generate_clubs(self):
         club_list = []
@@ -124,15 +124,15 @@ class Command(BaseCommand):
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
             is_applicant= True,
-            is_owner = True,
-            is_officer = True
+            is_owner = False,
+            is_officer = False
         )
         UserClubs.objects.create(
             user = User.objects.get(username = 'billie@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
             is_applicant= True,
-            is_owner = False,
+            is_owner = True,
             is_officer = True
         )
         UserClubs.objects.create(
@@ -156,16 +156,16 @@ class Command(BaseCommand):
             club = Club.objects.get(name = 'Club B'),
             is_member= True,
             is_applicant= True,
-            is_owner = True,
-            is_officer = True
+            is_owner = False,
+            is_officer = False
         )
         UserClubs.objects.create(
             user = User.objects.get(username = 'val@example.org'),
             club = Club.objects.get(name = 'Dragonfly'),
             is_member= True,
             is_applicant= True,
-            is_owner = False,
-            is_officer = False
+            is_owner = True,
+            is_officer = True
         )
         UserClubs.objects.create(
             user = User.objects.get(username = 'bob@example.org'),
@@ -177,7 +177,7 @@ class Command(BaseCommand):
         )
         UserClubs.objects.create(
             user = User.objects.get(username = 'jane@example.org'),
-            club = Club.objects.get(name = 'Dragonfly'),
+            club = Club.objects.get(name = 'Club B'),
             is_member= True,
             is_applicant= True,
             is_owner = True,

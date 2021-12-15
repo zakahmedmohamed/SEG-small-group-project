@@ -61,9 +61,9 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-
-            #For now goes back to sign up
             return redirect('my_clubs')
+
+        messages.add_message(request, messages.ERROR, "Details provided are incorrect")
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -96,7 +96,8 @@ def change_password(request):
                 current_user.save()
                 login(request, current_user)
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
-                return redirect('my_clubs')
+                return redirect('my_clubs')    
+  
     form = PasswordForm()
     return render(request, 'change_password.html', {'form': form})
 

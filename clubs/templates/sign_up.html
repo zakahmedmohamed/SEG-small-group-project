@@ -2,6 +2,9 @@
 {% block body %}
 <div class="wrapper">
   <h2>Sign Up</h2>
+  {% for message in messages %}
+  <br><b>{{ message }}</b>
+  {% endfor %}
     <form action="{% url 'sign_up' %}" method="post">
       {% csrf_token %}
       {% for field in form %}
