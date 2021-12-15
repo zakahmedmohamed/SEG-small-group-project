@@ -29,9 +29,6 @@ class SignUpForm(forms.ModelForm):
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 
-
-    #username = forms.EmailField(label="Email")
-
     new_password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
@@ -69,7 +66,11 @@ class SignUpForm(forms.ModelForm):
         return user
 
 class Create_A_Club_Form(forms.ModelForm):
+    """Form to create a club."""
+
     class Meta:
+        """Form options."""
+
         model = Club
         fields = ['name', 'description', 'location']
         widgets = {
@@ -79,7 +80,7 @@ class Create_A_Club_Form(forms.ModelForm):
         }
 
     def save(self):
-        #create a new clun and save it
+        """Create a new club"""
         super().save(commit = False)
         club = Club.objects.create(
             name = self.cleaned_data.get('name'),
@@ -122,7 +123,6 @@ class PasswordForm(forms.Form):
 
     def clean(self):
         """Clean the data and generate messages for any errors."""
-
         super().clean()
         new_password = self.cleaned_data.get('new_password')
         password_confirmation = self.cleaned_data.get('password_confirmation')

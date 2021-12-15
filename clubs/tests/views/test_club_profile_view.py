@@ -19,7 +19,7 @@ class Club_Profile_Test(TestCase):
         UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_profile', kwargs={'club_name': self.club.name})
 
-    def test_show_user_url(self):
+    def test_show_club_profile_url(self):
         self.assertEqual(self.url,f'/club_profile/{self.club.name}/')
 
     def test_get_show_club_profile_with_valid_user(self):

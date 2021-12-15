@@ -36,9 +36,9 @@ class Demote_officer_test(TestCase):
         is_officer_after = self.other_member.is_officer
         self.assertTrue(is_officer_before)
         self.assertFalse(is_officer_after)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')
 
     def test_demote_officer_who_is_not_officer(self):
         self.client.login(username=self.user.username, password='Password123')
@@ -49,14 +49,14 @@ class Demote_officer_test(TestCase):
         is_officer_after = self.other_member.is_officer
         self.assertFalse(is_officer_before)
         self.assertFalse(is_officer_after)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')
 
     def test_get_demote_officer_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('demote_officer', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
         response = self.client.get(url, follow=True)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        response_url = reverse('view_members', kwargs={'club_name': self.other_member.club.name})
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
+        self.assertTemplateUsed(response, 'view_members.html')

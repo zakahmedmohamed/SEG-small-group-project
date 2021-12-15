@@ -5,7 +5,7 @@ from django.test import TestCase
 from clubs.forms import Create_A_Club_Form
 from clubs.models import Club
 
-class Create_A_Club_Form_testCase(TestCase):
+class CreateAClubFormTestCase(TestCase):
     """Unit tests of the create a club form."""
 
     def setUp(self):

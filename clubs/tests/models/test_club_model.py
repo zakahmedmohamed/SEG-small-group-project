@@ -4,7 +4,7 @@ from django.test import TestCase
 from clubs.models import Club
 
 #Create your tests here
-class clubModelTestCase(TestCase):
+class ClubModelTestCase(TestCase):
     """Unit tests for the club model."""
 
     fixtures = ["clubs/tests/fixtures/clubs.json"]
