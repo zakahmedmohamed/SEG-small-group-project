@@ -15,11 +15,18 @@ class Club_application_test(TestCase):
         self.user2 = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True).save()
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        self.club_user = UserClubs.objects.create(
+        user = self.user,
+        club = self.club,
+        is_applicant = True,
+        is_member = True,
+        is_officer = True,
+        is_owner = True
+        )
+        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_application', kwargs={'club_name': self.club.name})
 
-    def test_follow_toggle_url(self):
+    def test_club_application_url(self):
         self.assertEqual(self.url,f'/club_application/{self.club.name}/')
 
     def test_get_club_application_redirects_when_not_logged_in(self):
@@ -29,12 +36,12 @@ class Club_application_test(TestCase):
 
     def tests_apply_for_club(self):
         self.client.login(username=self.user2.username, password='Password123')
-        is_member_before = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
-        self.user.apply_club(self.club)
+        is_applicant_before = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
+        self.user2.apply_club(self.club)
         response = self.client.get(self.url)
-        is_member_after = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
-        self.assertFalse(is_member_before)
-        self.assertTrue(is_member_after)
+        is_applicant_after = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
+        self.assertFalse(is_applicant_before)
+        self.assertTrue(is_applicant_after)
         response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
 
@@ -45,25 +52,14 @@ class Club_application_test(TestCase):
         response_url = response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
 
-
-
-    """def test_promote_user_who_is_already_officer(self):
+    def test_apply_for_applied_club(self):
         self.client.login(username=self.user.username, password='Password123')
-        self.other_member.is_officer = True
-        is_officer_before = self.other_member.is_officer
-        self.member.promote_member(self.other_member)
+        is_applicant_before = self.club_user.is_applicant
+        self.user.apply_club(self.club)
         response = self.client.get(self.url, follow=True)
-        is_officer_after = self.other_member.is_officer
-        self.assertTrue(is_officer_before)
-        self.assertTrue(is_officer_after)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
+        is_applicant_after = self.club_user.is_applicant
+        self.assertTrue(is_applicant_before)
+        self.assertTrue(is_applicant_after)
+        response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')
-
-    def test_get_follow_toggle_with_invalid_id(self):
-        self.client.login(username=self.user.username, password='Password123')
-        url = reverse('promote_member', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
-        response = self.client.get(url, follow=True)
-        response_url = reverse('owner_commands', kwargs={'club_name': self.other_member.club.name})
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'owner_commands.html')"""
+        self.assertTemplateUsed(response, 'club_list.html')

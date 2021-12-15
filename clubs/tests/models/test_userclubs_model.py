@@ -14,9 +14,9 @@ class UserClubModelTestCase(TestCase):
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.other_user = User.objects.get(username = 'janedoe1@example.org')
         self.club = Club.objects.get(name = 'TheGrand')
-        self.owner = UserClubs(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.owner = UserClubs(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.owner.save()
-        self.other_member = UserClubs(user = self.other_user, club = self.club, is_member = True)
+        self.other_member = UserClubs(user = self.other_user, club = self.club, is_applicant = True, is_member = True)
         self.other_member.save()
 
     def test_promote_member(self):
@@ -58,13 +58,13 @@ class UserClubModelTestCase(TestCase):
         self.assertTrue(afterMember)
 
     def test_reject_application(self):
-        self.other_member.is_member = False        
+        self.other_member.is_member = False
         beforeCount = UserClubs.objects.count()
         self.owner.reject_application(self.other_member)
         afterCount = UserClubs.objects.count()
         self.assertEqual(beforeCount, afterCount + 1)
 
-    def test_reject_application_for_a_member(self):     
+    def test_reject_application_for_a_member(self):
         beforeCount = UserClubs.objects.count()
         self.owner.reject_application(self.other_member)
         afterCount = UserClubs.objects.count()

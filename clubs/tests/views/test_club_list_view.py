@@ -13,8 +13,8 @@ class ClubListTest(TestCase):
         self.club = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club, is_member = True, is_officer = True, is_owner = True).save()
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
+        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
 
     def test_club_list_url(self):
         self.assertEqual(self.url,'/club_list/')

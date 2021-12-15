@@ -42,13 +42,14 @@ class User(AbstractUser):
 
     def make_club_owner(self, new_club):
         club_user = UserClubs(user = self, club = new_club)
+        club_user.is_applicant = True
         club_user.is_member = True
         club_user.is_officer = True
         club_user.is_owner = True
         club_user.save()
 
     def apply_club(self, new_club):
-        club_user = UserClubs(user = self, club = new_club)
+        club_user = UserClubs(user = self, club = new_club, is_applicant = True)
         club_user.save()
 
 class Club(models.Model):
@@ -91,5 +92,5 @@ class UserClubs(models.Model):
         user.save()
 
     def reject_application(self,user):
-        if user.is_member == False:
+        if user.is_member == False and user.is_applicant == True:
             user.delete()

@@ -14,9 +14,9 @@ class promote_member_test(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.member = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.member.save()
-        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_member = True)
+        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_applicant = True, is_member = True)
         self.other_member.save()
         self.url = reverse('promote_member', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 

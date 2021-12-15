@@ -14,9 +14,9 @@ class Demote_officer_test(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True, is_owner = True)
+        self.member = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.member.save()
-        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_member = True, is_officer = True)
+        self.other_member = UserClubs(user = self.other_user ,club = self.club, is_applicant = True, is_member = True, is_officer = True)
         self.other_member.save()
         self.url = reverse('demote_officer', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 
@@ -40,7 +40,7 @@ class Demote_officer_test(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'owner_commands.html')
 
-    def test_demote_officer_who_isnt_officer(self):
+    def test_demote_officer_who_is_not_officer(self):
         self.client.login(username=self.user.username, password='Password123')
         self.other_member.is_officer = False
         is_officer_before = self.other_member.is_officer
