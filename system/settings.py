@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,4 +141,6 @@ AUTH_USERCLUBS_MODEL = 'clubs.UserClubs'
 LOGIN_URL = 'log_in'
 
 #Activate django_heroku
-django_heroku.settings(locals())
+if '/app' in os.environ['HOME']:
+    import django_heroku
+    django_heroku.settings(locals())
