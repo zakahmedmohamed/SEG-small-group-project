@@ -12,6 +12,12 @@ from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, Passwo
 from clubs.models import Club, UserClubs
 from .models import User
 
+
+#This is a page that will be redirected too when a user doesnt have access to a url
+def access_denied(request):
+    return render(request, 'access_denied.html')
+
+#A function that validates whether the user has logged in
 def login_prohibited(view_function):
     def modified_view_function(request):
         if request.user.is_authenticated:
@@ -20,32 +26,35 @@ def login_prohibited(view_function):
             return view_function(request)
     return modified_view_function
 
+#A function that verifies whether the user is a owner
 def owner_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
         owner_user = UserClubs.objects.get(user=request.user, club = selected_club)
         if not owner_user.is_owner:
-            return redirect('club_list')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
 
+#A function that verifies whether the user is a officier
 def officer_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
         owner_user = UserClubs.objects.get(user=request.user, club = selected_club)
         if not owner_user.is_officer:
-            return redirect('club_list')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
 
+#A function that verifies whether the user is a member
 def member_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
         member_user = UserClubs.objects.filter(user=request.user, club = selected_club)
         if not member_user.exists() or not member_user.get().is_member:
-            return redirect('my_clubs')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
@@ -64,6 +73,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+#View for editing the user profile details
 @login_required
 def profile(request):
     current_user = request.user
@@ -77,6 +87,7 @@ def profile(request):
         form = UserForm(instance=current_user)
     return render(request, 'profile.html', {'form': form})
 
+# View for changning/updating the user's password
 @login_required
 def password(request):
     current_user = request.user
@@ -94,24 +105,24 @@ def password(request):
     form = PasswordForm()
     return render(request, 'password.html', {'form': form})
 
+#The view that will allow a user to create a club
 @login_required
 def create_club(request):
     if request.method =='POST':
         form = Create_A_Club_Form(request.POST)
         if form.is_valid():
             newClub = form.save()
-            #clubName = form.cleaned_data['name']
             club_user = UserClubs(user = request.user, club = newClub)
             club_user.is_member = True
             club_user.is_officer = True
             club_user.is_owner = True
             club_user.save()
-            return redirect('club_list')
+            return redirect('my_clubs')
     else:
         form = Create_A_Club_Form()
     return render(request, 'create_club.html', {'form': form})
 
-# Create your views here.
+# This is the home view that can only be accessed prior to log in
 @login_prohibited
 def home(request):
     return render(request, 'home.html')

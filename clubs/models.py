@@ -5,17 +5,7 @@ from django.core.validators import MinValueValidator, RegexValidator
 
 #Create your models here.
 class User(AbstractUser):
-    """User model used for authentication and microblog authoring."""
-
-    # username = models.CharField(
-    #     max_length=30,
-    #     unique=True,
-    #     validators=[RegexValidator(
-    #         regex=r'^@\w{3,}$',
-    #         message='Username must consist of @ followed by at least three alphanumericals'
-    #     )]
-    # )
-    # email = models.EmailField(unique=True, blank=False)
+    """User model used for authentication and participating in clubs."""
 
     username = models.EmailField(unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
@@ -42,6 +32,7 @@ class User(AbstractUser):
         return self.username
 
 class Club(models.Model):
+    """Club model which can be joined by Users"""
     name = models.CharField(max_length=20, unique=True, blank=False)
     description = models.CharField(max_length=520, blank=True)
     location = models.CharField(max_length=20, blank=False)
@@ -54,6 +45,8 @@ class Club(models.Model):
         ordering = ['created_at']
 
 class UserClubs(models.Model):
+    """A UserClubs Model is to maintain the many to many reletionships
+       as well as to create the User access rights - Owner,member,officier"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     is_applicant = models.BooleanField(default=False)

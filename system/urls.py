@@ -38,5 +38,6 @@ urlpatterns = [
     path('demote_officer/<club_name>/<int:user_id>', views.demote_officer, name='demote_officer'),
     path('transfer_ownership/<club_name>/<int:user_id>', views.transfer_ownership, name='transfer_ownership'),
     path('log_out/', views.log_out, name='log_out'),
+    path('access_denied/',views.access_denied,name='access_denied'),
 
 ]
