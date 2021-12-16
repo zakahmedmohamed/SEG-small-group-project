@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 from clubs.tests.helpers import LogInTester
 
 class ViewMembersTest(TestCase, LogInTester):
@@ -10,7 +10,7 @@ class ViewMembersTest(TestCase, LogInTester):
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.club = Club.objects.get(name = 'TheGrand')
-        self.member = UserClubs(user = self.user ,club = self.club, is_member = True, is_officer = True)
+        self.member = Membership(user = self.user ,club = self.club, is_member = True, is_officer = True)
         self.member.save()
         self.url = reverse('view_members', kwargs={'club_name': self.member.club.name})
 
@@ -32,7 +32,7 @@ class ViewMembersTest(TestCase, LogInTester):
             self.assertContains(response, f'Bio{user_id}')
             self.assertContains(response, f'user{user_id}@example.org')
             self.assertContains(response, f'Statement{user_id}')
-            self.assertContains(response, f'Chess xp: {user_id}')
+            self.assertContains(response, f'Chess XP: {user_id}')
 
 
     def test_get_view_members_as_member(self):
@@ -51,7 +51,7 @@ class ViewMembersTest(TestCase, LogInTester):
             self.assertContains(response, f'Bio{user_id}')
             self.assertNotContains(response, f'user{user_id}@example.org')
             self.assertNotContains(response, f'Statement{user_id}')
-            self.assertNotContains(response, f'Chess xp: {user_id}')
+            self.assertNotContains(response, f'Chess XP: {user_id}')
 
 
     def _create_test_users(self, user_count):
@@ -65,7 +65,7 @@ class ViewMembersTest(TestCase, LogInTester):
                 statement = f'Statement{user_id}',
                 chess_xp = f'{user_id}',
             )
-            user_club = UserClubs.objects.create(
+            user_club = Membership.objects.create(
             user = user,
             club = self.club,
             is_member = True,

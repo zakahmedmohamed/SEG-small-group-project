@@ -4,7 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 
 class User(AbstractUser):
-    """User model used for clubs application."""
+    """User model used for authentication and participating in clubs."""
+
     username = models.EmailField(unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
@@ -30,18 +31,19 @@ class User(AbstractUser):
 
     def make_club_owner(self, new_club):
         """Make a new user club who is the owner of the specified club"""
-        club_user = UserClubs(user = self, club = new_club)
+        club_user = Membership(user = self, club = new_club)
+        club_user.is_applicant = True
         club_user.is_member = True
         club_user.is_officer = True
         club_user.is_owner = True
         club_user.save()
 
     def apply_club(self, new_club):
-        club_user = UserClubs(user = self, club = new_club)
+        club_user = Membership(user = self, club = new_club, is_applicant = True)
         club_user.save()
 
 class Club(models.Model):
-    """Club model used for clubs application."""
+    """Club model which can be joined by Users"""
     name = models.CharField(max_length=20, unique=True, blank=False)
     description = models.CharField(max_length=520, blank=True)
     location = models.CharField(max_length=20, blank=False)
@@ -53,8 +55,9 @@ class Club(models.Model):
     class meta:
         ordering = ['created_at']
 
-class UserClubs(models.Model):
-    """User Clubs model used for a many-to-many relationship with User and Club."""
+class Membership(models.Model):
+    """A Membership Model is to maintain the many to many reletionships
+       as well as to create the User access rights - Owner,member,officier"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     is_applicant = models.BooleanField(default=False)
@@ -82,5 +85,5 @@ class UserClubs(models.Model):
         user.save()
 
     def reject_application(self,user):
-        if user.is_member == False:
+        if user.is_member == False and user.is_applicant == True:
             user.delete()

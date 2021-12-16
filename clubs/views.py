@@ -8,8 +8,13 @@ from django.http import HttpResponse
 from clubs.forms import Log_in_form
 from clubs.models import User
 from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, PasswordForm
-from clubs.models import Club, UserClubs
+from clubs.models import Club, Membership
 from .models import User
+
+
+#This is a page that will be redirected too when a user doesnt have access to a url
+def access_denied(request):
+    return render(request, 'access_denied.html')
 
 """Redirect URL if you are logged in"""
 def login_prohibited(view_function):
@@ -24,9 +29,9 @@ def login_prohibited(view_function):
 def owner_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
-        owner_user = UserClubs.objects.get(user=request.user, club = selected_club)
+        owner_user = Membership.objects.get(user=request.user, club = selected_club)
         if not owner_user.is_owner:
-            return redirect('club_list')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
@@ -35,9 +40,9 @@ def owner_required(view_function):
 def officer_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
-        owner_user = UserClubs.objects.get(user=request.user, club = selected_club)
+        owner_user = Membership.objects.get(user=request.user, club = selected_club)
         if not owner_user.is_officer:
-            return redirect('club_list')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
@@ -46,9 +51,9 @@ def officer_required(view_function):
 def member_required(view_function):
     def modified_view_function(request, club_name, **kwargs):
         selected_club = Club.objects.get(name = club_name)
-        member_user = UserClubs.objects.filter(user=request.user, club = selected_club)
+        member_user = Membership.objects.filter(user=request.user, club = selected_club)
         if not member_user.exists() or not member_user.get().is_member:
-            return redirect('my_clubs')
+            return redirect('access_denied')
         else:
             return view_function(request, club_name, **kwargs)
     return modified_view_function
@@ -60,9 +65,9 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-
-            #For now goes back to sign up
             return redirect('my_clubs')
+
+        messages.add_message(request, messages.ERROR, "Details provided are incorrect")
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -95,7 +100,8 @@ def change_password(request):
                 current_user.save()
                 login(request, current_user)
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
-                return redirect('my_clubs')
+                return redirect('my_clubs')    
+  
     form = PasswordForm()
     return render(request, 'change_password.html', {'form': form})
 
@@ -122,9 +128,9 @@ def home(request):
 @member_required
 def club_home(request, club_name):
     club = Club.objects.get(name = club_name)
-    club_user = UserClubs.objects.all().get(user = request.user, club = club)
+    club_user = Membership.objects.all().get(user = request.user, club = club)
     #form = Club_Navigation_Form(request.POST)
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
     #form.fields['clubs'] = clubs
@@ -152,25 +158,25 @@ def log_in(request):
 @login_required
 def club_list(request):
     all_clubs = Club.objects.filter().order_by()
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     my_clubs = Club.objects.filter(id__in = clubIDs)
     owner_dict = {}
     for c in all_clubs:
-        owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
+        owner_dict[c] = Membership.objects.all().get(club = c, is_owner = True)
     return render(request, 'club_list.html', {'all_clubs':all_clubs, 'owners':owner_dict, 'clubs':my_clubs})
 
 """View for the my clubs page"""
 @login_required
 def my_clubs(request):
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
     #clubs = Club.objects.filter().order_by()
     user = request.user
     owner_dict = {}
     for c in clubs:
-        owner_dict[c] = UserClubs.objects.all().get(club = c, is_owner = True)
+        owner_dict[c] = Membership.objects.all().get(club = c, is_owner = True)
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
 """View for the members list"""
@@ -179,25 +185,28 @@ def my_clubs(request):
 def view_members(request,club_name):
 
     selected_club = Club.objects.get(name = club_name)
-    members = UserClubs.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
+    members = Membership.objects.all().filter(club = selected_club).filter(is_member=True).exclude(user = request.user)
+    joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
-    current_user = UserClubs.objects.all().get(user = request.user,club = selected_club)
+    current_user = Membership.objects.all().get(user = request.user,club = selected_club)
     return (render(request, 'view_members.html',{'members':members, 'selected_club': selected_club, 'clubs':clubs, 'current_user': current_user} ))
 
 """View for the club profile page"""
 @login_required
 def club_profile(request,club_name):
+    joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
+    clubIDs = joined_clubs.values_list('club')
+    clubs = Club.objects.filter(id__in = clubIDs)
     try:
         currentClub = Club.objects.get(name = club_name)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
-        memberSize = UserClubs.objects.all().filter(club = currentClub, is_member = True).count()
-        owner = UserClubs.objects.all().get(club = currentClub, is_owner = True)
-        have_applied = UserClubs.objects.all().filter(club = currentClub, user = request.user).exists()
-        return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied}))
+        memberSize = Membership.objects.all().filter(club = currentClub, is_member = True).count()
+        owner = Membership.objects.all().get(club = currentClub, is_owner = True)
+        have_applied = Membership.objects.all().filter(club = currentClub, user = request.user).exists()
+        return (render(request, 'club_profile.html', {'club':currentClub, 'memberSize': memberSize, 'owner': owner, 'have_applied': have_applied, 'clubs':clubs}))
 
 """View to apply for a club"""
 @login_required
@@ -208,9 +217,9 @@ def club_application(request, club_name):
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
-        if(not(UserClubs.objects.filter(user = new_user, club = apply_club).exists())):
+        if(not(Membership.objects.filter(user = new_user, club = apply_club).exists())):
             new_user.apply_club(apply_club)
-            #club_user = UserClubs(user = new_user, club = apply_club)
+            #club_user = Membership(user = new_user, club = apply_club)
             #club_user.save()
         return redirect('club_list')
 
@@ -218,12 +227,16 @@ def club_application(request, club_name):
 @login_required
 @officer_required
 def application_list(request, club_name):
-    apply_club = Club.objects.get(name = club_name)
-    users = UserClubs.objects.filter(club = apply_club, is_member = False)
-    joined_clubs = UserClubs.objects.all().filter(user = request.user, is_member = True)
-    clubIDs = joined_clubs.values_list('club')
-    clubs = Club.objects.filter(id__in = clubIDs)
-    return render(request, 'application_list.html', {'users': users, 'club_name':club_name, 'clubs':clubs})
+    try:
+        apply_club = Club.objects.get(name = club_name)
+        users = Membership.objects.filter(club = apply_club, is_member = False)
+        joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
+        clubIDs = joined_clubs.values_list('club')
+        clubs = Club.objects.filter(id__in = clubIDs)
+        return render(request, 'application_list.html', {'users': users, 'club_name':club_name, 'clubs':clubs})
+    except ObjectDoesNotExist:
+        print("No applications")
+
 
 """View to approve a application"""
 @login_required
@@ -231,8 +244,8 @@ def application_list(request, club_name):
 def approve_application(request, club_name, user_id):
     try:
         club = Club.objects.get(name = club_name)
-        officer = UserClubs.objects.get(user = request.user, club = club)
-        user = UserClubs.objects.get(id=user_id)
+        officer = Membership.objects.get(user = request.user, club = club)
+        user = Membership.objects.get(id=user_id)
         #club_name = user.club.name
     except ObjectDoesNotExist:
         return redirect('my_clubs')
@@ -246,8 +259,8 @@ def approve_application(request, club_name, user_id):
 def reject_application(request, club_name, user_id):
     try:
         club = Club.objects.get(name = club_name)
-        officer = UserClubs.objects.get(user = request.user, club = club)
-        user = UserClubs.objects.get(id=user_id)
+        officer = Membership.objects.get(user = request.user, club = club)
+        user = Membership.objects.get(id=user_id)
         #club_name = user.club.name
     except ObjectDoesNotExist:
         return redirect('my_clubs')
@@ -262,8 +275,8 @@ def reject_application(request, club_name, user_id):
 def promote_member(request, club_name, user_id):
     try:
         club = Club.objects.get(name = club_name)
-        owner = UserClubs.objects.get(user = request.user, club = club)
-        user = UserClubs.objects.get(id=user_id)
+        owner = Membership.objects.get(user = request.user, club = club)
+        user = Membership.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('view_members', club_name = club_name)
     else:
@@ -276,8 +289,8 @@ def promote_member(request, club_name, user_id):
 def demote_officer(request, club_name, user_id):
     try:
         club = Club.objects.get(name = club_name)
-        owner = UserClubs.objects.get(user = request.user, club = club)
-        user = UserClubs.objects.get(id=user_id)
+        owner = Membership.objects.get(user = request.user, club = club)
+        user = Membership.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('view_members', club_name = club_name)
     else:
@@ -290,8 +303,8 @@ def demote_officer(request, club_name, user_id):
 def transfer_ownership(request, club_name, user_id):
     try:
         club = Club.objects.get(name = club_name)
-        owner = UserClubs.objects.get(user=request.user, club = club)
-        user = UserClubs.objects.get(id=user_id)
+        owner = Membership.objects.get(user=request.user, club = club)
+        user = Membership.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('club_home', club_name = club_name)
     else:

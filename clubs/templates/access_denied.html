@@ -1,0 +1,19 @@
+{% extends "base_content.html" %}
+{% block content %}
+<div id = "cover-image">
+    <div class="container vh-100">
+      <div class="row h-100">
+        <div class="col-12 my-auto">
+          <div class="card cover-card offset-md-2 offset-lg-4">
+            <h1 class="cover-heading">Error: You do not have access rights!</h1>
+            <p><br/>
+              <a href='{% url 'my_clubs' %}' class="btn btn-lg btn-secondary">
+                Home
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

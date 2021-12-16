@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import SignUpForm, Create_A_Club_Form
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 from clubs.tests.helpers import LogInTester
 
 class Create_club_test(TestCase, LogInTester):
@@ -51,7 +51,7 @@ class Create_club_test(TestCase, LogInTester):
         after_count = Club.objects.count()
         self.assertEqual(after_count, before_count+1)
         new_club = Club.objects.latest('created_at')
-        club_user = UserClubs.objects.get(club = new_club, user = self.user)
+        club_user = Membership.objects.get(club = new_club, user = self.user)
         self.assertEqual(self.user, club_user.user)
         response_url = reverse('my_clubs')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

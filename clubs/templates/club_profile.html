@@ -4,7 +4,7 @@
   <div class="container vh-100">
     <div class="row h-100">
       <div class="col-12 my-auto">
-        <div class="card cover-card offset-md-2 offset-lg-4">
+        <div class="card offset-md-3"style="text-align: center; width: 30rem;">
           <h1 class="cover-heading">{{club.name}}'s Profile</h1>
                 <p>Here you can view {{club.name}}'s Profile!</p>
                 <p>Description: {{club.description}}</p>
@@ -14,13 +14,16 @@
                 <p>Owner: {{owner.user.full_name}}</p>
                 <p><img src="{{ owner.user.mini_gravatar }}" alt="Gravatar of {{ owner.user.full_name }}" class="rounded-circle profile-image" ></p>
                 <p>Bio: {{owner.user.bio}}</p>
-                <p><a href = '{%url 'home' %}'>Home!</a></p>
               {% csrf_token%}
-              <p>
-                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary"> <!--Need a way of applying to a club-->
-              Apply!
-            </a>
-          </p>
+              {% if not have_applied %}
+                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary">
+                  Apply!
+                </a>
+              {% else %}
+                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary disabled">
+                  Already applied!
+                </a>
+              {% endif %}
         </div>
       </div>
     </div>

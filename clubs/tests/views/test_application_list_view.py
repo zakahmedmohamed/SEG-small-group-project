@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 from clubs.tests.helpers import reverse_with_next
 
 class ApplicationListTest(TestCase):
@@ -12,7 +12,7 @@ class ApplicationListTest(TestCase):
         self.club = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.user2 = User.objects.get(username = 'janedoe1@example.org')
-        self.club_user = UserClubs.objects.create(
+        self.club_user = Membership.objects.create(
         user = self.user,
         club = self.club,
         is_applicant = True,
@@ -21,7 +21,7 @@ class ApplicationListTest(TestCase):
         is_owner = True
         )
         self.club_user.save()
-        self.club_user2 = UserClubs.objects.create(
+        self.club_user2 = Membership.objects.create(
         user = self.user2,
         club = self.club,
         is_applicant = True,
@@ -31,7 +31,7 @@ class ApplicationListTest(TestCase):
         )
         self.club_user2.save()
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club2, is_member = True, is_officer = True, is_owner = True).save()
+        Membership(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('application_list', kwargs = {'club_name': self.club.name})
 
     def test_application_list_url(self):
@@ -80,9 +80,9 @@ class ApplicationListTest(TestCase):
                 statement = f'Statement{user_id}',
                 chess_xp = user_id
             )
-            self.club_user = UserClubs.objects.create(
+            self.club_user = Membership.objects.create(
             user = self.user,
             club = self.club,
-            is_member = False,
+            is_applicant = True
             )
             self.club_user.save()

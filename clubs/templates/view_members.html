@@ -32,8 +32,14 @@
           <div class="tab-pane fade" id="id{{member.user.id}}" role="tabpanel" aria-labelledby="{{club.name}}Tab">
           {% endif %}
             <img src="{{ member.user.mini_gravatar }}" alt="Gravatar of {{ member.user.full_name }}" class="rounded-circle profile-image" > {{member.user.full_name}}</li>
+            {% if member.is_owner %}
+            <p>
+            <p>Owner<p>
+            {% endif %}
             <p>Bio: {{member.user.bio}}</p>
+            
             {% if current_user.is_officer %}
+            <p>{{member.user}}</p>
             <p>Statement: {{member.user.statement}}</p>
             <p>Chess XP: {{member.user.chess_xp}}</p>
             {% if current_user.is_owner %}
