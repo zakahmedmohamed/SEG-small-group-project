@@ -180,19 +180,21 @@ def my_clubs(request):
         owner_dict[c] = Membership.objects.all().get(club = c, is_owner = True)
     return render(request, 'my_clubs.html', {'clubs':clubs, 'user':user, 'owners':owner_dict})
 
-"""View for the members list"""
+"""View for the member's profile"""
 @login_required
 def member_profile(request, user_id):
-    # user = get_user_model()
-    try:
-        user = User.objects.get(id = user_id)
-    except ObjectDoesNotExist:
-        return redirect('home')
+    if request.user.id == user_id:
+        try:
+            user = User.objects.get(id = user_id)
+        except ObjectDoesNotExist:
+            return redirect('home')
+        else:
+            joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
+            clubIDs = joined_clubs.values_list('club')
+            clubs = Club.objects.filter(id__in = clubIDs)
+            return render(request, 'member_profile.html', {'user': user, 'clubs': clubs})
     else:
-        joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
-        clubIDs = joined_clubs.values_list('club')
-        clubs = Club.objects.filter(id__in = clubIDs)
-        return render(request, 'member_profile.html', {'user': user, 'clubs': clubs})
+        return redirect('home')
 
 @login_required
 @member_required
