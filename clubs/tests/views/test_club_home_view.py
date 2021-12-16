@@ -29,31 +29,31 @@ class Club_Home_Test(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'club_home.html')
-        self.assertContains(response, "View Members!")
-        self.assertContains(response, "Approve or reject applications!")
+        self.assertContains(response, "View Members")
+        self.assertContains(response, "Manage Applications")
 
     def test_get_show_club_home_with_valid_officer_user(self):
         self.client.login(username=self.officer_user.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'club_home.html')
-        self.assertContains(response, "View Members!")
-        self.assertContains(response, "Approve or reject applications!")
+        self.assertContains(response, "View Members")
+        self.assertContains(response, "Manage Applications")
 
     def test_get_show_club_home_with_valid_member_user(self):
         self.client.login(username=self.member_user.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'club_home.html')
-        self.assertContains(response, "View Members!")
-        self.assertNotContains(response, "Approve or reject applications!")
+        self.assertContains(response, "View Members")
+        self.assertNotContains(response, "Manage Applications")
 
     def test_get_club_home_as_not_member_fails(self):
         self.member_user_club.is_member=False
         self.member_user_club.save()
         self.client.login(username=self.member_user.username, password='Password123')
         response = self.client.get(self.url)
-        redirect_url = reverse('my_clubs')
+        redirect_url = reverse('access_denied')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_club_profile_redirects_when_not_logged_in(self):

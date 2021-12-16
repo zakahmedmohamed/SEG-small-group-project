@@ -2,7 +2,7 @@ from django.test import TestCase
 from clubs.models import User
 from clubs.forms import PasswordForm
 
-class PasswordFormTestCase(TestCase):
+class ChangePasswordFormTestCase(TestCase):
 
     fixtures = ['clubs/tests/fixtures/users.json']
 

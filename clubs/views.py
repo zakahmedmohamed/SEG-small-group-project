@@ -305,12 +305,14 @@ def transfer_ownership(request, club_name, user_id):
         club = Club.objects.get(name = club_name)
         owner = Membership.objects.get(user=request.user, club = club)
         user = Membership.objects.get(id=user_id)
+        if user.is_officer:
+            owner.transfer_ownership(user)
+            return redirect('club_home', club_name = club_name)
+        else:
+            return redirect('access_denied')
     except ObjectDoesNotExist:
         return redirect('club_home', club_name = club_name)
-    else:
-        owner.transfer_ownership(user)
-        return redirect('club_home', club_name = club_name)
-
+        
 """View to log out"""
 def log_out(request):
     logout(request)

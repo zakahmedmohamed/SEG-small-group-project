@@ -66,7 +66,7 @@ class ApplicationListTest(TestCase):
     def test_get_application_list_redirects_when_user_is_not_officer_owner(self):
         self.client.login(username=self.user2.username, password='Password123')
         response = self.client.get(self.url)
-        redirect_url = reverse('club_list')
+        redirect_url = reverse('access_denied')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def _create_test_applicants(self, user_count=5):

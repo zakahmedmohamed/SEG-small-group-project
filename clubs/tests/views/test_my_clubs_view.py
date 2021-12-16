@@ -35,8 +35,6 @@ class MyClubsTest(TestCase):
         for club_id in range(5):
             self.assertNotContains(response, f'Club{club_id}')
             self.assertContains(response, self.club)
-            #self.assertContains(response, 'Apply for a club')
-            #self.assertContains(response, 'Create your own club')
             my_club = Club.objects.all().get(name='TheGrand')
             club_url = reverse('club_home', kwargs={'club_name': my_club.name})
             self.assertContains(response, club_url)

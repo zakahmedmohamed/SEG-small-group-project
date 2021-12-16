@@ -10,7 +10,7 @@ class ViewMembersTest(TestCase, LogInTester):
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.club = Club.objects.get(name = 'TheGrand')
-        self.member = Membership(user = self.user ,club = self.club, is_member = True, is_officer = True)
+        self.member = Membership(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True)
         self.member.save()
         self.url = reverse('view_members', kwargs={'club_name': self.member.club.name})
 
@@ -25,7 +25,6 @@ class ViewMembersTest(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'view_members.html')
-        #self.assertEqual(len(response.context['view_members']), 16)
         for user_id in range(15):
             self.assertContains(response, f'First{user_id}')
             self.assertContains(response, f'Last{user_id}')
@@ -44,7 +43,6 @@ class ViewMembersTest(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'view_members.html')
-        #self.assertEqual(len(response.context['view_members']), 16)
         for user_id in range(15):
             self.assertContains(response, f'First{user_id}')
             self.assertContains(response, f'Last{user_id}')
@@ -53,6 +51,14 @@ class ViewMembersTest(TestCase, LogInTester):
             self.assertNotContains(response, f'Statement{user_id}')
             self.assertNotContains(response, f'Chess XP: {user_id}')
 
+    def test_get_view_members_redirects_when_user_is_not_member(self):
+        self.member.is_officer = False
+        self.member.is_member = False
+        self.member.save()
+        self.client.login(username=self.user.username, password='Password123')
+        response = self.client.get(self.url)
+        redirect_url = reverse('access_denied')
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def _create_test_users(self, user_count):
         for user_id in range(user_count):

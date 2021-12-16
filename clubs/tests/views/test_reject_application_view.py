@@ -53,6 +53,20 @@ class RejectApplicationTest(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'application_list.html')
 
+    def test_reject_application_not_as_officer_or_owner(self):
+        self.member.is_officer = False
+        self.member.is_owner = False
+        self.member.save()
+        self.client.login(username=self.user.username, password='Password123')
+        is_applicant_before = self.other_member.is_applicant
+        response = self.client.get(self.url, follow=True)
+        is_applicant_after = self.other_member.is_applicant
+        self.assertTrue(is_applicant_before)
+        self.assertTrue(is_applicant_after)
+        response_url = reverse('access_denied')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'access_denied.html')
+
     def test_get_reject_application_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('reject_application', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})

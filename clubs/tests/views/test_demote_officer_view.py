@@ -53,6 +53,19 @@ class Demote_officer_test(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'view_members.html')
 
+    def test_demote_officer_not_as_owner(self):
+        self.member.is_owner = False
+        self.member.save()
+        self.client.login(username=self.user.username, password='Password123')
+        is_other_member_officer_before = self.other_member.is_officer
+        response = self.client.get(self.url, follow=True)
+        is_other_member_officer_after = self.other_member.is_officer
+        self.assertTrue(is_other_member_officer_before)
+        self.assertTrue(is_other_member_officer_after)
+        response_url = reverse('access_denied')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'access_denied.html')
+
     def test_get_demote_officer_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
         url = reverse('demote_officer', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id+9999})
