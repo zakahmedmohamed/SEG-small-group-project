@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from clubs.models import User,Club, UserClubs
+from clubs.models import User,Club, Membership
 
 class Command(BaseCommand):
         """The database unseeder."""
@@ -9,7 +9,7 @@ class Command(BaseCommand):
         def handle(self, *args, **options):
             #print("TODO: The database unseeder will be added here...")
             user_set = User.objects.all()
-            userClubs_set = UserClubs.objects.all()
+            userClubs_set = Membership.objects.all()
             club_set = Club.objects.all()
 
             print('unseeding data...')

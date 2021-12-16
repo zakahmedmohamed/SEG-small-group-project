@@ -1,16 +1,17 @@
 """Unit tests for the User model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from clubs.models import User
+from clubs.models import User, Club, Membership
 
 #Create your tests here
 class UserModelTestCase(TestCase):
     """Unit tests for the User model."""
 
-    fixtures = ["clubs/tests/fixtures/users.json"]
+    fixtures = ["clubs/tests/fixtures/users.json", "clubs/tests/fixtures/clubs.json"]
 
     def setUp(self):
         self.user = User.objects.get(username = 'janedoe@example.org')
+        self.club = Club.objects.get(name = 'TheGrand')
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -106,6 +107,34 @@ class UserModelTestCase(TestCase):
     def test_bio_must_not_contain_more_than_520_characters(self):
         self.user.bio = 'x' * 521
         self._assert_user_is_invalid()
+
+    def test_user_can_apply_for_a_club(self):
+        self.client.login(username=self.user.username, password='Password123')
+        beforeExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        beforeCount = Membership.objects.count()
+        self.user.apply_club(self.club)
+        afterExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        afterCount = Membership.objects.count()
+        self.assertFalse(beforeExists)
+        self.assertTrue(afterExists)
+        self.assertEqual(beforeCount + 1, afterCount)
+
+    def test_user_can_make_club_owner(self):
+        self.client.login(username=self.user.username, password='Password123')
+        beforeExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        beforeCount = Membership.objects.count()
+        self.user.make_club_owner(self.club)
+        afterExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        afterMember = Membership.objects.get(user = self.user, club = self.club).is_member
+        afterOfficer = Membership.objects.get(user = self.user, club = self.club).is_officer
+        afterOwner = Membership.objects.get(user = self.user, club = self.club).is_owner
+        afterCount = Membership.objects.count()
+        self.assertFalse(beforeExists)
+        self.assertTrue(afterExists)
+        self.assertTrue(afterMember)
+        self.assertTrue(afterOfficer)
+        self.assertTrue(afterOwner)
+        self.assertEqual(beforeCount + 1, afterCount)
 
     def _assert_user_is_valid(self):
         try:

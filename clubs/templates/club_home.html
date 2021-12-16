@@ -5,26 +5,19 @@
     <div class="row h-100">
       <div class="col-12 my-auto">
         <div class="card cover-card offset-md-2 offset-lg-4">
-          <h2 class="cover-heading">{{club}}</h2>
+          <h2 class="cover-heading" style="text-align: center">{{club}}</h2>
+
           {% csrf_token%}
           <ul>
-            <p>
-            <div class="card cover-card">
+            <div class="card cover-card" style="text-align:center">
               <a href="{% url 'view_members' club %}" class="btn btn-lg btn-secondary">
-               View Members
+                View Members
               </a>
               </p>
               <p>
                 {% if clubUser.is_officer %}
                 <a href="{% url 'application_list' club %}" class="btn btn-lg btn-secondary">
                   Manage Applications
-                </a>
-                {% endif %}
-              </p>
-              <p>
-                {% if clubUser.is_owner%}
-                <a href="{% url 'owner_commands' club %}" class="btn btn-lg btn-secondary">
-                  Ownership Commands
                 </a>
                 {% endif %}
               </p>

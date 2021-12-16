@@ -1,36 +1,66 @@
 {% extends 'base_content.html' %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-5 border border-primary rounded-3">
-      <div class="profile-sidebar">
-        <div class="user-gravatar">
-          <img src="{{ user.gravatar }}" alt=" Gravatar of {{ user.full_name }}" class="rounded-circle profile-image">
-          <div class="user-info m-3">
-            <div class="user-name">
-              <div class="border">
-                {{ user.full_name }}
+<div id = "cover-image">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="card m-2">
+          <div class="card-body">
+            <div class="profile-sidebar">
+              <div class="user-gravatar">
+                <img src="{{ user.gravatar }}" alt=" Gravatar of {{ user.full_name }}" class="rounded-circle profile-image">
+                <h3>{{ user.full_name }}</h3>
+                <div class="user-info m-3">
+                  <div class="user-name">
+                    <div class="border">
+                      {{ user.full_name }}
+                    </div>
+                  </div>
+                  <div class="border">
+                    <div class="username">
+                      {{ user.username }}
+                    </div>
+                  </div>
+                  <div class="border">
+                    <div class="user-level">
+                      Chess xp: {{ user.chess_xp }}
+                    </div>
+                  </div>
+                  <div class="border">
+                    <div class="user-bio">
+                      Bio: {{ user.bio }}
+                    </div>
+                  </div>
+                  <div class="border">
+                    <div class="user-statement">
+                      Statment: {{ user.statement }}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="border">
-              <div class="username">
-                {{ user.username }}
-              </div>
-            </div>
-            <div class="border">
-              <div class="user-level">
-                Chess xp: {{ user.chess_xp }}
-              </div>
-            </div>
-            <div class="border">
-              <div class="user-bio">
-                Bio: {{ user.bio }}
-              </div>
-            </div>
-            <div class="border">
-              <div class="user-statement">
-                Statment: {{ user.statement }}
-              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card m-2">
+          <div class="align-self-center">
+            <h1>Joined Clubs</h1>
+          </div>
+          <div class="card-body">
+            <div class="profile-clubsBar">
+              {% for club in clubs %}
+                <div class="card m-2">
+                  <div class="card-header text-white bg-info">
+                    {{ club.name }}
+                  </div>
+                  <div class="card-body card-body text-black bg-light">
+                    Location: {{ club.location }}
+                    <br>
+                    Description: {{ club.description }}
+                  </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>

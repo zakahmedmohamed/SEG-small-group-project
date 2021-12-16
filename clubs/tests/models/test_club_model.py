@@ -4,7 +4,7 @@ from django.test import TestCase
 from clubs.models import Club
 
 #Create your tests here
-class clubModelTestCase(TestCase):
+class ClubModelTestCase(TestCase):
     """Unit tests for the club model."""
 
     fixtures = ["clubs/tests/fixtures/clubs.json"]
@@ -73,5 +73,5 @@ class clubModelTestCase(TestCase):
             self.club.full_clean()
 
     def _create_second_club(self):
-        second_club = Club.objects.get(name = 'Club2')
+        second_club = Club.objects.get(name = 'ClubB')
         return second_club
