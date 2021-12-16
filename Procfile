@@ -1,1 +1,1 @@
-web: gunicorn SEG-small-group-project.wsgi
+web: gunicorn system.wsgi
