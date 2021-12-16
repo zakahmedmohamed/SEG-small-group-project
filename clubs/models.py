@@ -3,27 +3,14 @@ from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 
-#Create your models here.
 class User(AbstractUser):
-    """User model used for authentication and microblog authoring."""
-
-    # username = models.CharField(
-    #     max_length=30,
-    #     unique=True,
-    #     validators=[RegexValidator(
-    #         regex=r'^@\w{3,}$',
-    #         message='Username must consist of @ followed by at least three alphanumericals'
-    #     )]
-    # )
-    # email = models.EmailField(unique=True, blank=False)
-
+    """User model used for clubs application."""
     username = models.EmailField(unique=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=520, blank=True)
     statement = models.CharField(max_length=1000, blank=False)
     chess_xp = models.IntegerField(validators = [MinValueValidator(0)], default=0)
-    
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -41,7 +28,21 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def make_club_owner(self, new_club):
+        """Make a new user club who is the owner of the specified club"""
+        club_user = UserClubs(user = self, club = new_club)
+        club_user.is_applicant = True
+        club_user.is_member = True
+        club_user.is_officer = True
+        club_user.is_owner = True
+        club_user.save()
+
+    def apply_club(self, new_club):
+        club_user = UserClubs(user = self, club = new_club, is_applicant = True)
+        club_user.save()
+
 class Club(models.Model):
+    """Club model used for clubs application."""
     name = models.CharField(max_length=20, unique=True, blank=False)
     description = models.CharField(max_length=520, blank=True)
     location = models.CharField(max_length=20, blank=False)
@@ -54,9 +55,33 @@ class Club(models.Model):
         ordering = ['created_at']
 
 class UserClubs(models.Model):
+    """User Clubs model used for a many-to-many relationship with User and Club."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     is_applicant = models.BooleanField(default=False)
     is_member = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
     is_officer = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
+
+    def promote_member(self, user):
+        user.is_officer = True
+        user.save()
+
+    def demote_officer(self, user):
+        user.is_officer = False
+        user.save()
+
+    def transfer_ownership(self, user):
+        self.is_owner = False
+        user.is_officer = True
+        user.is_owner = True
+        self.save()
+        user.save()
+
+    def approve_application(self,user):
+        user.is_member = True
+        user.save()
+
+    def reject_application(self,user):
+        if user.is_member == False and user.is_applicant == True:
+            user.delete()

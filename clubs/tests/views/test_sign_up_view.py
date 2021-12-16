@@ -10,24 +10,21 @@ from clubs.tests.helpers import LogInTester
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
 
-#    fixtures = ["clubs/tests/fixtures/default_user.json"]
-
-#    def setUp1(self):
-#        self.user = User.objects.get(username = 'janedoe@example.org')
-#        self.url = reverse('sign_up')
+    fixtures = ["clubs/tests/fixtures/users.json"]
 
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
-            'first_name': 'Jane',
+            'first_name': 'John',
             'last_name': 'Doe',
-            'username': 'janedoe@example.org',
-            'bio': 'My bio',
-            'statement': 'My statement',
-            'chess_xp': 100,
+            'username': 'johndoe@example.org',
+            'bio': 'My bio2',
+            'statement': 'My statement2',
+            'chess_xp': 101,
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
+        self.user = User.objects.get(username = 'janedoe@example.org')
 
     def test_sign_up_url(self):
         self.assertEqual(self.url,'/sign_up/')
@@ -58,8 +55,6 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count+1)
-
-        #for now goes to sign_up
         response_url = reverse('my_clubs')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'my_clubs.html')

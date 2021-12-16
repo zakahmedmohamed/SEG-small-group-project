@@ -29,6 +29,9 @@
               <td>
                 <a href="{% url 'approve_application' club_name applicant.id %}">Approve application</a>
               </td>
+              <td>
+                <a href="{% url 'reject_application' club_name applicant.id %}">Reject application</a>
+              </td>
             </tr>
             {% endfor %}
             {% if not users%}

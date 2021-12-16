@@ -24,6 +24,19 @@
       "chess_xp": 120,
       "password": "pbkdf2_sha256$260000$J2lF6XU0Fja3RAKAcXfdgg$beXUkWTIrzCY3oZhuY6fhqJi8ngXjnfuI+qMMgACeno="
     }
+  },
+  {
+    "model": "clubs.user",
+    "pk": 3,
+    "fields": {
+      "username": "janedoe2@example.org",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "bio": "This bio",
+      "statement": "This statement",
+      "chess_xp": 90,
+      "password": "pbkdf2_sha256$260000$J2lF6XU0Fja3RAKAcXfdgg$beXUkWTIrzCY3oZhuY6fhqJi8ngXjnfuI+qMMgACeno="
+    }
   }
 
 ]
