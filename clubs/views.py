@@ -129,11 +129,9 @@ def home(request):
 def club_home(request, club_name):
     club = Club.objects.get(name = club_name)
     club_user = Membership.objects.all().get(user = request.user, club = club)
-    #form = Club_Navigation_Form(request.POST)
     joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
-    #form.fields['clubs'] = clubs
     return render(request, 'club_home.html', {'clubs': clubs, 'club': club_name, 'clubUser': club_user})
 
 """View to log in"""
@@ -172,7 +170,6 @@ def my_clubs(request):
     joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
     clubIDs = joined_clubs.values_list('club')
     clubs = Club.objects.filter(id__in = clubIDs)
-    #clubs = Club.objects.filter().order_by()
     user = request.user
     owner_dict = {}
     for c in clubs:
@@ -234,8 +231,6 @@ def club_application(request, club_name):
     else:
         if(not(Membership.objects.filter(user = new_user, club = apply_club).exists())):
             new_user.apply_club(apply_club)
-            #club_user = Membership(user = new_user, club = apply_club)
-            #club_user.save()
         return redirect('club_list')
 
 """View for list of club applications"""
@@ -261,7 +256,6 @@ def approve_application(request, club_name, user_id):
         club = Club.objects.get(name = club_name)
         officer = Membership.objects.get(user = request.user, club = club)
         user = Membership.objects.get(id=user_id)
-        #club_name = user.club.name
     except ObjectDoesNotExist:
         return redirect('my_clubs')
     else:
@@ -276,7 +270,6 @@ def reject_application(request, club_name, user_id):
         club = Club.objects.get(name = club_name)
         officer = Membership.objects.get(user = request.user, club = club)
         user = Membership.objects.get(id=user_id)
-        #club_name = user.club.name
     except ObjectDoesNotExist:
         return redirect('my_clubs')
     else:

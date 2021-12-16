@@ -6,26 +6,6 @@
       <div class="col-12 my-auto">
         <div class="card offset-md-3"style="text-align: center; width: 30rem;">
           <h1 class="cover-heading">{{club.name}}'s Profile</h1>
-<<<<<<< HEAD
-                <p>Here you can view {{club.name}}'s Profile!</p>
-                <p>Description: {{club.description}}</p>
-                <p>Location: {{club.location}}</p>
-                <p>Created: {{club.created_at}}</p>
-                <p>Number of members: {{memberSize}}</p>
-                <p>Owner: {{owner.user.full_name}}</p>
-                <p><img src="{{ owner.user.mini_gravatar }}" alt="Gravatar of {{ owner.user.full_name }}" class="rounded-circle profile-image" ></p>
-                <p>Bio: {{owner.user.bio}}</p>
-              {% csrf_token%}
-              {% if not have_applied %}
-                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary">
-                  Apply!
-                </a>
-              {% else %}
-                <a href='{% url 'club_application' club.name %}' class="btn btn-lg btn-secondary disabled">
-                  Already applied!
-                </a>
-              {% endif %}
-=======
           <p>Here you can view {{club.name}}'s Profile!</p>
           <p>Description: {{club.description}}</p>
           <p>Location: {{club.location}}</p>
@@ -44,7 +24,6 @@
               Already applied!
             </a>
           {% endif %}
->>>>>>> 9ad7bcf2b830898afeb4ad332849018b8acb4817
         </div>
       </div>
     </div>

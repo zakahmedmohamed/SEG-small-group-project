@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,Club, Membership 
+from .models import User,Club, Membership
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
@@ -24,8 +24,8 @@ class SignUpForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'username': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
-            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}), # needs to be resized properly - Ammar
-            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), # needs to be resized properly - Ammar
+            'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}),
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}),
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 
@@ -103,7 +103,7 @@ class UserForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
             'username': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
             'bio': forms.Textarea(attrs={'placeholder': 'Enter your bio'}),
-            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}), 
+            'statement': forms.Textarea(attrs={'placeholder': 'Enter your statement'}),
             "chess_xp": forms.NumberInput(attrs={'placeholder': 'Enter your chess experience level'}),
         }
 
