@@ -186,14 +186,14 @@ def member_profile(request, user_id):
         try:
             user = User.objects.get(id = user_id)
         except ObjectDoesNotExist:
-            return redirect('home')
+            return redirect('access_denied')
         else:
             joined_clubs = Membership.objects.all().filter(user = request.user, is_member = True)
             clubIDs = joined_clubs.values_list('club')
             clubs = Club.objects.filter(id__in = clubIDs)
             return render(request, 'member_profile.html', {'user': user, 'clubs': clubs})
     else:
-        return redirect('home')
+        return redirect('access_denied')
 
 @login_required
 @member_required
@@ -327,7 +327,7 @@ def transfer_ownership(request, club_name, user_id):
             return redirect('access_denied')
     except ObjectDoesNotExist:
         return redirect('club_home', club_name = club_name)
-        
+
 """View to log out"""
 def log_out(request):
     logout(request)

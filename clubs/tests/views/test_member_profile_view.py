@@ -10,6 +10,7 @@ class ShowUserTest(TestCase, LogInTester):
     def setUp(self):
         self.club1 = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
+        self.user2 = User.objects.get(username = 'janedoe1@example.org')
 
         self.club_user = Membership.objects.create(
             user = self.user,
@@ -59,11 +60,20 @@ class ShowUserTest(TestCase, LogInTester):
         self.assertContains(response, "London")
         self.assertContains(response, "Second best")
 
+    def test_get_show_user_with_other_user_id(self):
+        self.client.login(username = self.user.username, password = "Password123")
+        self.assertTrue(self._is_logged_in())
+        url = reverse('member_profile', kwargs={'user_id': self.user2.id})
+        response = self.client.get(url, follow=True)
+        response_url = reverse('access_denied')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'access_denied.html')
+
     def test_get_show_user_with_invalid_id(self):
         self.client.login(username = self.user.username, password = "Password123")
         self.assertTrue(self._is_logged_in())
-        url = reverse('member_profile', kwargs={'user_id': self.user.id+1})
+        url = reverse('member_profile', kwargs={'user_id': self.user.id+99999})
         response = self.client.get(url, follow=True)
-        response_url = reverse('my_clubs')
+        response_url = reverse('access_denied')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'my_clubs.html')
+        self.assertTemplateUsed(response, 'access_denied.html')
