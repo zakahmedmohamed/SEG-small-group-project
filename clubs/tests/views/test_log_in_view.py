@@ -73,10 +73,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, Log_in_form))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
-        #messages_list = list(response.context['messages'])
-        #self.assertEqual(len(messages_list), 1)
-        #self.assertEqual(messages_list[0].level, messages.ERROR)
-
+        
     def test_log_in_with_blank_password(self):
         form_input = { 'username': 'janedoe@example.org', 'password': '' }
         response = self.client.post(self.url, form_input)
@@ -86,9 +83,6 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, Log_in_form))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
-        #messages_list = list(response.context['messages'])
-        #self.assertEqual(len(messages_list), 1)
-        #self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_succesful_log_in(self):
         form_input = { 'username': 'janedoe@example.org', 'password': 'Password123' }
@@ -117,13 +111,6 @@ class LogInViewTestCase(TestCase, LogInTester):
         redirect_url = reverse('my_clubs')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'my_clubs.html')
-
-    #def test_post_log_in_with_incorrect_credentials_and_redirect(self):
-    #    redirect_url = reverse('club_list')
-    #    form_input = { 'username': 'janedoe@example.org', 'password': 'WrongPassword123', 'next': redirect_url }
-    #    response = self.client.post(self.url, form_input)
-    #    next = response.context['next']
-    #    self.assertEqual(next, redirect_url)
 
     def test_valid_log_in_by_inactive_user(self):
         self.user.is_active = False

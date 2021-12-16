@@ -4,8 +4,7 @@ from django.test import TestCase
 from clubs.models import Membership, User, Club
 from django.utils import timezone
 
-#Create your tests here
-class UserClubModelTestCase(TestCase):
+class MembershipTestCase(TestCase):
     """Unit tests for the Membership model."""
 
     fixtures = ["clubs/tests/fixtures/users.json", "clubs/tests/fixtures/clubs.json"]
@@ -37,17 +36,13 @@ class UserClubModelTestCase(TestCase):
     def test_transfer_ownership(self):
         beforeOwner = self.owner.is_owner
         beforeOtherMemberOwner = self.other_member.is_owner
-        beforeOtherMemberOfficer = self.other_member.is_officer
         self.owner.transfer_ownership(self.other_member)
         afterOwner = self.owner.is_owner
         afterOtherMemberOwner = self.other_member.is_owner
-        afterOtherMemberOfficer = self.other_member.is_officer
         self.assertTrue(beforeOwner)
         self.assertFalse(beforeOtherMemberOwner)
-        self.assertFalse(beforeOtherMemberOfficer)
         self.assertFalse(afterOwner)
         self.assertTrue(afterOtherMemberOwner)
-        self.assertTrue(afterOtherMemberOfficer)
 
     def test_approve_application(self):
         self.other_member.is_member = False

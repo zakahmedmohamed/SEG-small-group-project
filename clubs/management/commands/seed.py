@@ -173,7 +173,7 @@ class Command(BaseCommand):
             is_member= True,
             is_applicant= True,
             is_owner = True,
-            is_officer = False
+            is_officer = True
         )
         Membership.objects.create(
             user = User.objects.get(username = 'jane@example.org'),

@@ -5,7 +5,6 @@ from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
-from django.db.models import Q
 from clubs.forms import Log_in_form
 from clubs.models import User
 from .forms import SignUpForm, Create_A_Club_Form, Log_in_form, UserForm, PasswordForm
@@ -321,12 +320,14 @@ def transfer_ownership(request, club_name, user_id):
         club = Club.objects.get(name = club_name)
         owner = Membership.objects.get(user=request.user, club = club)
         user = Membership.objects.get(id=user_id)
+        if user.is_officer:
+            owner.transfer_ownership(user)
+            return redirect('club_home', club_name = club_name)
+        else:
+            return redirect('access_denied')
     except ObjectDoesNotExist:
         return redirect('club_home', club_name = club_name)
-    else:
-        owner.transfer_ownership(user)
-        return redirect('club_home', club_name = club_name)
-
+        
 """View to log out"""
 def log_out(request):
     logout(request)

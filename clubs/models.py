@@ -75,7 +75,6 @@ class Membership(models.Model):
 
     def transfer_ownership(self, user):
         self.is_owner = False
-        user.is_officer = True
         user.is_owner = True
         self.save()
         user.save()

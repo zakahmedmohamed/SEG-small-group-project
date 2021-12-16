@@ -33,7 +33,7 @@ class SignUpForm(forms.ModelForm):
         label='Password',
         widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
         validators=[RegexValidator(
-            regex=r'^(?=.[A-Z])(?=.[a-z])(?=.[0-9]).$',
+            regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
             message='Password must contain an uppercase character, a lowercase '
                     'character and a number'
             )]
@@ -114,7 +114,7 @@ class PasswordForm(forms.Form):
         label='Password',
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
         validators=[RegexValidator(
-            regex=r'^(?=.[A-Z])(?=.[a-z])(?=.[0-9]).$',
+            regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
             message='Password must contain an uppercase character, a lowercase '
                     'character and a number'
             )]

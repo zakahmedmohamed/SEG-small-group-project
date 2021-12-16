@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from clubs.models import Club
 
-#Create your tests here
 class ClubModelTestCase(TestCase):
     """Unit tests for the club model."""
 
