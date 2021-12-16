@@ -50,5 +50,6 @@ $ python3 manage.py test
 
 ## Sources
 The packages used by this application are specified in `requirements.txt`
+
 Inspiration taken from clucker videos on Keats.
 
