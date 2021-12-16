@@ -1,1 +1,1 @@
-web: gunicorn clubs.wsgi
+web: gunicorn SEG-small-group-project.wsgi
