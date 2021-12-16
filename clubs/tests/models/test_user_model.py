@@ -1,7 +1,7 @@
 """Unit tests for the User model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 
 #Create your tests here
 class UserModelTestCase(TestCase):
@@ -110,25 +110,25 @@ class UserModelTestCase(TestCase):
 
     def test_user_can_apply_for_a_club(self):
         self.client.login(username=self.user.username, password='Password123')
-        beforeExists = UserClubs.objects.filter(user = self.user, club = self.club).exists()
-        beforeCount = UserClubs.objects.count()
+        beforeExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        beforeCount = Membership.objects.count()
         self.user.apply_club(self.club)
-        afterExists = UserClubs.objects.filter(user = self.user, club = self.club).exists()
-        afterCount = UserClubs.objects.count()
+        afterExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        afterCount = Membership.objects.count()
         self.assertFalse(beforeExists)
         self.assertTrue(afterExists)
         self.assertEqual(beforeCount + 1, afterCount)
 
     def test_user_can_make_club_owner(self):
         self.client.login(username=self.user.username, password='Password123')
-        beforeExists = UserClubs.objects.filter(user = self.user, club = self.club).exists()
-        beforeCount = UserClubs.objects.count()
+        beforeExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        beforeCount = Membership.objects.count()
         self.user.make_club_owner(self.club)
-        afterExists = UserClubs.objects.filter(user = self.user, club = self.club).exists()
-        afterMember = UserClubs.objects.get(user = self.user, club = self.club).is_member
-        afterOfficer = UserClubs.objects.get(user = self.user, club = self.club).is_officer
-        afterOwner = UserClubs.objects.get(user = self.user, club = self.club).is_owner
-        afterCount = UserClubs.objects.count()
+        afterExists = Membership.objects.filter(user = self.user, club = self.club).exists()
+        afterMember = Membership.objects.get(user = self.user, club = self.club).is_member
+        afterOfficer = Membership.objects.get(user = self.user, club = self.club).is_officer
+        afterOwner = Membership.objects.get(user = self.user, club = self.club).is_owner
+        afterCount = Membership.objects.count()
         self.assertFalse(beforeExists)
         self.assertTrue(afterExists)
         self.assertTrue(afterMember)

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 from clubs.tests.helpers import reverse_with_next
 
 class MyClubsTest(TestCase):
@@ -12,7 +12,7 @@ class MyClubsTest(TestCase):
         self.club = Club.objects.get(name = 'TheGrand')
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.no_club_user = User.objects.get(username = 'janedoe1@example.org')
-        self.club_user = UserClubs.objects.create(
+        self.club_user = Membership.objects.create(
         user = self.user,
         club = self.club,
         is_applicant = True,

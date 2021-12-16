@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 
 class Command(BaseCommand):
     """The database seeder."""
@@ -12,7 +12,7 @@ class Command(BaseCommand):
         print('seeding data...')
         self.generate_users()
         self.generate_clubs()
-        self.generate_UserClubs()
+        self.generate_Membership()
         print('done.')
 
     def generate_users(self):
@@ -70,21 +70,6 @@ class Command(BaseCommand):
         userList.append(owner1)
         userList.append(owner2)
 
-        # for i in range(20):
-        #     user = User.objects.create_user(
-        #         first_name = self.faker.first_name(),
-        #         last_name = self.faker.last_name(),
-        #         username = self.faker.email(),
-        #         password = 'Password123',
-        #         bio = self.faker.text(max_nb_chars=520),
-        #         statement = self.faker.text(max_nb_chars=20),
-        #         chess_xp = self.faker.random_digit()
-        #     )
-        #     userList.append(user)
-
-        # for user in userList:
-        #     user.full_clean()
-        #     user.save()
         
     def generate_clubs(self):
         club_list = []
@@ -118,8 +103,8 @@ class Command(BaseCommand):
             club.full_clean()
             club.save()
     
-    def generate_UserClubs(self):
-        UserClubs.objects.create(
+    def generate_Membership(self):
+        Membership.objects.create(
             user = User.objects.get(username = 'jeb@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
@@ -127,7 +112,7 @@ class Command(BaseCommand):
             is_owner = False,
             is_officer = False
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'billie@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
@@ -135,7 +120,7 @@ class Command(BaseCommand):
             is_owner = True,
             is_officer = True
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'val@example.org'),
             club = Club.objects.get(name = 'Kerbal Chess Club'),
             is_member= True,
@@ -143,7 +128,7 @@ class Command(BaseCommand):
             is_owner = False,
             is_officer = True
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'jeb@example.org'),
             club = Club.objects.get(name = 'The Grand'),
             is_member= True,
@@ -151,7 +136,7 @@ class Command(BaseCommand):
             is_owner = False,
             is_officer = True
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'billie@example.org'),
             club = Club.objects.get(name = 'Club B'),
             is_member= True,
@@ -159,7 +144,7 @@ class Command(BaseCommand):
             is_owner = False,
             is_officer = False
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'val@example.org'),
             club = Club.objects.get(name = 'Dragonfly'),
             is_member= True,
@@ -167,7 +152,7 @@ class Command(BaseCommand):
             is_owner = True,
             is_officer = True
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'bob@example.org'),
             club = Club.objects.get(name = 'The Grand'),
             is_member= True,
@@ -175,7 +160,7 @@ class Command(BaseCommand):
             is_owner = True,
             is_officer = False
         )
-        UserClubs.objects.create(
+        Membership.objects.create(
             user = User.objects.get(username = 'jane@example.org'),
             club = Club.objects.get(name = 'Club B'),
             is_member= True,

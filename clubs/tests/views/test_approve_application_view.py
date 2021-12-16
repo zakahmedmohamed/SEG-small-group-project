@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, UserClubs, Club
+from clubs.models import User, Membership, Club
 from clubs.tests.helpers import reverse_with_next
 
 class ApproveApplicationTest(TestCase):
@@ -14,9 +14,9 @@ class ApproveApplicationTest(TestCase):
         self.user = User.objects.get(username='janedoe@example.org')
         self.other_user = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.club_user = UserClubs(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
+        self.club_user = Membership(user = self.user ,club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.club_user.save()
-        self.other_member = UserClubs(user = self.other_user ,club = self.club)
+        self.other_member = Membership(user = self.other_user ,club = self.club)
         self.other_member.save()
         self.url = reverse('approve_application', kwargs={'club_name': self.other_member.club.name, 'user_id': self.other_user.id})
 

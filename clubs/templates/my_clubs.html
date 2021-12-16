@@ -10,11 +10,7 @@
         {% for club in clubs %}        
           <li class="nav-item">
           {% if forloop.counter == 1 %}
-<<<<<<< HEAD
-            <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#{{club.name}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
-=======
             <button class="nav-link active" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#id{{club.id}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
->>>>>>> 5688e56b8145c9d25f41ac148dd5b4ab02928684
           {% else %}
             <button class="nav-link" id="{{club.name}}Tab" href="#{{club.name}}" data-bs-toggle="tab" data-bs-target="#id{{club.id}}" type="button" role="tab" aria-controls="{{club.name}}" aria-selected="false">{{club.name}}</button>
           {% endif %}

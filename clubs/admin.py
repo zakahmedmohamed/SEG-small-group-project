@@ -1,6 +1,6 @@
 """Congifuration of the adminstrative interface for clubs."""
 from django.contrib import admin
-from clubs.models import Club, UserClubs
+from clubs.models import Club, Membership
 from .models import User
 
 @admin.register(User)
@@ -16,8 +16,8 @@ class ClubAdmin(admin.ModelAdmin):
         'name','description','location'
     ]
 
-@admin.register(UserClubs)
-class UserClubsAdmin(admin.ModelAdmin):
+@admin.register(Membership)
+class MembershipAdmin(admin.ModelAdmin):
     list_display = [
         'user','club','is_owner','is_officer','is_member'
     ]

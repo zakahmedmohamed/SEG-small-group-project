@@ -1,12 +1,12 @@
 """Unit tests for the Club model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from clubs.models import UserClubs, User, Club
+from clubs.models import Membership, User, Club
 from django.utils import timezone
 
 #Create your tests here
 class UserClubModelTestCase(TestCase):
-    """Unit tests for the UserClubs model."""
+    """Unit tests for the Membership model."""
 
     fixtures = ["clubs/tests/fixtures/users.json", "clubs/tests/fixtures/clubs.json"]
 
@@ -14,9 +14,9 @@ class UserClubModelTestCase(TestCase):
         self.user = User.objects.get(username = 'janedoe@example.org')
         self.other_user = User.objects.get(username = 'janedoe1@example.org')
         self.club = Club.objects.get(name = 'TheGrand')
-        self.owner = UserClubs(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
+        self.owner = Membership(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.owner.save()
-        self.other_member = UserClubs(user = self.other_user, club = self.club, is_applicant = True, is_member = True)
+        self.other_member = Membership(user = self.other_user, club = self.club, is_applicant = True, is_member = True)
         self.other_member.save()
 
     def test_promote_member(self):
@@ -59,25 +59,25 @@ class UserClubModelTestCase(TestCase):
 
     def test_reject_application(self):
         self.other_member.is_member = False
-        beforeCount = UserClubs.objects.count()
+        beforeCount = Membership.objects.count()
         self.owner.reject_application(self.other_member)
-        afterCount = UserClubs.objects.count()
+        afterCount = Membership.objects.count()
         self.assertEqual(beforeCount, afterCount + 1)
 
     def test_reject_application_for_a_member(self):
-        beforeCount = UserClubs.objects.count()
+        beforeCount = Membership.objects.count()
         self.owner.reject_application(self.other_member)
-        afterCount = UserClubs.objects.count()
+        afterCount = Membership.objects.count()
         self.assertEqual(beforeCount, afterCount)
 
     def test_on_delete_user(self):
-        beforeCount = UserClubs.objects.count()
+        beforeCount = Membership.objects.count()
         self.user.delete()
-        afterCount = UserClubs.objects.count()
+        afterCount = Membership.objects.count()
         self.assertEqual(beforeCount, afterCount + 1)
 
     def test_on_delete_club(self):
-        beforeCount = UserClubs.objects.count()
+        beforeCount = Membership.objects.count()
         self.club.delete()
-        afterCount = UserClubs.objects.count()
+        afterCount = Membership.objects.count()
         self.assertEqual(beforeCount, afterCount + 2)

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Club, UserClubs
+from clubs.models import User, Club, Membership
 from clubs.tests.helpers import reverse_with_next
 
 class Club_Profile_Test(TestCase):
@@ -14,9 +14,9 @@ class Club_Profile_Test(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='janedoe@example.org')
         self.club = Club.objects.get(name = "TheGrand")
-        self.user_club = UserClubs.objects.create(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
+        self.user_club = Membership.objects.create(user = self.user, club = self.club, is_applicant = True, is_member = True, is_officer = True, is_owner = True)
         self.club2 = Club.objects.get(name = 'ClubB')
-        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
+        Membership(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_profile', kwargs={'club_name': self.club.name})
 
     def test_show_club_profile_url(self):
@@ -60,5 +60,5 @@ class Club_Profile_Test(TestCase):
                 statement = 'Statement',
                 chess_xp = 10,
             )
-            self.club_user = UserClubs(user = self.user2, club = self.club, is_applicant = True, is_member = True)
+            self.club_user = Membership(user = self.user2, club = self.club, is_applicant = True, is_member = True)
             self.club_user.save()

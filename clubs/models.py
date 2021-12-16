@@ -31,7 +31,7 @@ class User(AbstractUser):
 
     def make_club_owner(self, new_club):
         """Make a new user club who is the owner of the specified club"""
-        club_user = UserClubs(user = self, club = new_club)
+        club_user = Membership(user = self, club = new_club)
         club_user.is_applicant = True
         club_user.is_member = True
         club_user.is_officer = True
@@ -39,7 +39,7 @@ class User(AbstractUser):
         club_user.save()
 
     def apply_club(self, new_club):
-        club_user = UserClubs(user = self, club = new_club, is_applicant = True)
+        club_user = Membership(user = self, club = new_club, is_applicant = True)
         club_user.save()
 
 class Club(models.Model):
@@ -55,8 +55,8 @@ class Club(models.Model):
     class meta:
         ordering = ['created_at']
 
-class UserClubs(models.Model):
-    """A UserClubs Model is to maintain the many to many reletionships
+class Membership(models.Model):
+    """A Membership Model is to maintain the many to many reletionships
        as well as to create the User access rights - Owner,member,officier"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)

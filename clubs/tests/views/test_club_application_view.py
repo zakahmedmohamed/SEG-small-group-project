@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, UserClubs, Club
+from clubs.models import User, Membership, Club
 from clubs.tests.helpers import reverse_with_next
 
 class ClubApplicationTest(TestCase):
@@ -15,7 +15,7 @@ class ClubApplicationTest(TestCase):
         self.user2 = User.objects.get(username='janedoe1@example.org')
         self.club = Club.objects.get(name = "TheGrand")
         self.club2 = Club.objects.get(name = 'ClubB')
-        self.club_user = UserClubs.objects.create(
+        self.club_user = Membership.objects.create(
         user = self.user,
         club = self.club,
         is_applicant = True,
@@ -23,7 +23,7 @@ class ClubApplicationTest(TestCase):
         is_officer = True,
         is_owner = True
         )
-        UserClubs(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
+        Membership(user = self.user, club = self.club2, is_applicant = True, is_member = True, is_officer = True, is_owner = True).save()
         self.url = reverse('club_application', kwargs={'club_name': self.club.name})
 
     def test_club_application_url(self):
@@ -36,10 +36,10 @@ class ClubApplicationTest(TestCase):
 
     def tests_apply_for_club(self):
         self.client.login(username=self.user2.username, password='Password123')
-        is_applicant_before = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
+        is_applicant_before = Membership.objects.filter(user = self.user2, club = self.club).exists()
         self.user2.apply_club(self.club)
         response = self.client.get(self.url)
-        is_applicant_after = UserClubs.objects.filter(user = self.user2, club = self.club).exists()
+        is_applicant_after = Membership.objects.filter(user = self.user2, club = self.club).exists()
         self.assertFalse(is_applicant_before)
         self.assertTrue(is_applicant_after)
         response_url = reverse('club_list')
