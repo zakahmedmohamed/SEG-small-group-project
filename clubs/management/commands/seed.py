@@ -70,6 +70,21 @@ class Command(BaseCommand):
         userList.append(owner1)
         userList.append(owner2)
 
+        # for i in range(20):
+        #     user = User.objects.create_user(
+        #         first_name = self.faker.first_name(),
+        #         last_name = self.faker.last_name(),
+        #         username = self.faker.email(),
+        #         password = 'Password123',
+        #         bio = self.faker.text(max_nb_chars=520),
+        #         statement = self.faker.text(max_nb_chars=20),
+        #         chess_xp = self.faker.random_digit()
+        #     )
+        #     userList.append(user)
+
+        # for user in userList:
+        #     user.full_clean()
+        #     user.save()
 
     def generate_clubs(self):
         club_list = []

@@ -5,19 +5,19 @@
     <form action="{% url 'create_club' %}" method="post">
       {% csrf_token %}
       {% for field in form %}
-      {% if forloop.counter <= 1 %}
-        <div class="input-box">
-          {{ field }}
-        </div>
-      {% elif forloop.counter < 3 %}
-        <div class="input-box-biostat">
-          {{ field }}
-        </div>
-      {% else %}
-        <div class="input-box">
-          {{ field }}
-        </div>
-      {% endif %}
+        {% if forloop.counter <= 1 %}
+          <div class="input-box">
+            {{ field }}
+          </div>
+        {% elif forloop.counter < 3 %}
+          <div class="input-box-biostat">
+            {{ field }}
+          </div>
+        {% else %}
+          <div class="input-box">
+            {{ field }}
+          </div>
+        {% endif %}
       {% endfor %}
       <div class="input-box button">
         <input type="submit" value="Register Now">
