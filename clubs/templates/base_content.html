@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
   {% include "partials/navbar.html" %}
-  {% include "partials/messages.html" %}
+  <div id = "cover-image">
+    {% include "partials/messages.html" %}
+  </div>
   {% block content %}
   {% endblock %}
 {% endblock %}
